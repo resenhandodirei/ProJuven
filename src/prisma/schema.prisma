@@ -11,15 +11,15 @@ model login {
   id             Int        @id @default(autoincrement())
   nome           String     @db.VarChar(100)
   genero         String?    @db.VarChar(20)
-  tipo_de_perfil TipoDePerfilEnum @map("tipo de perfil")
+  tipo_de_perfil TipoDePerfilEnum 
   email          String     @unique @db.VarChar(255)
   senha          String     @db.VarChar(255)
 }
 
 enum TipoDePerfilEnum {
-  estagiario
   adm
   defensor
-  assessor_juridico
+  servidor
   psicossocial
+  estagiario
 }
