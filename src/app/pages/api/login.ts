@@ -1,4 +1,3 @@
-// src/app/pages/api/login.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
@@ -11,14 +10,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Método não permitido' });
   }
 
-  const { email, password } = req.body;
+  const { email, senha } = req.body;
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.login.findUnique({ where: { email } });
   if (!user) {
     return res.status(401).json({ message: 'Usuário não encontrado' });
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(senha, user.senha);
   if (!isPasswordValid) {
     return res.status(401).json({ message: 'Senha incorreta' });
   }
