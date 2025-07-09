@@ -14,9 +14,10 @@ export function withAuth(handler: Function) {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-      (req as any).user = decoded; // Anexa o payload à requisição
+      // @ts-ignore
+      req.user = decoded;
       return handler(req, res);
-    } catch (err) {
+    } catch (error) {
       return res.status(401).json({ message: 'Token inválido ou expirado' });
     }
   };
