@@ -1,50 +1,66 @@
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { useState } from 'react';
-import { NextPage } from 'next';
+
+const loginUser = async (email: string, senha: string) => {
+  const response = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, senha }),
+  });
+
+  const data = await response.json();
+  return { ok: response.ok, data };
+};
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');
 
-    // Verifica se campos estão vazios
     if (!email || !senha) {
       setErro('Por favor, preencha todos os campos.');
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErro('Por favor, insira um e-mail válido.');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha }),
-      });
+      const { ok, data } = await loginUser(email, senha);
 
-      const data = await res.json();
-
-      if (res.ok) {
+      if (ok) {
         localStorage.setItem('token', data.token);
         router.push('/dashboard');
       } else {
         setErro(data.message || 'E-mail ou senha incorretos.');
       }
-    } catch (error) {
-      setErro('Erro ao conectar com o servidor. Tente novamente.');
+    } catch {
+      setErro('Erro de conexão. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
-      <head>
-        <meta />
+      <Head>
+        <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-      </head>
+      </Head>
+
       <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold text-center mb-6">Entrar</h1>
@@ -78,9 +94,14 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+              disabled={loading}
+              className={`w-full py-2 rounded-md transition text-white ${
+                loading
+                  ? 'bg-blue-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700'
+              }`}
             >
-              Acessar
+              {loading ? 'Entrando...' : 'Acessar'}
             </button>
           </form>
         </div>
