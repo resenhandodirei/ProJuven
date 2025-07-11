@@ -1,16 +1,24 @@
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import { useState } from 'react';
+import { NextPage } from 'next';
+import app from '../pages/_app';
 
-const loginUser = async (email: string, senha: string) => {
-  const response = await fetch('/api/login', {
+
+const login = async (email: string, password: string, router: ReturnType<typeof useRouter>) => {
+  const res = await fetch('/api/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, senha }),
+    body: JSON.stringify({ email, password })
   });
 
-  const data = await response.json();
-  return { ok: response.ok, data };
+  const data = await res.json();
+  if (res.ok) {
+    localStorage.setItem('token', data.token); // sugestão usar cookies HttpOnly em produção
+    router.push('/dashboard');
+  } else {
+    alert(data.message);
+  }
+
 };
 
 export default function LoginPage() {
@@ -19,12 +27,12 @@ export default function LoginPage() {
   const [erro, setErro] = useState('');
   const [loading, setLoading] = useState(false);
 
+
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');
-
     if (!email || !senha) {
       setErro('Por favor, preencha todos os campos.');
       return;
@@ -55,13 +63,13 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <Head>
-        <title>Login</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
 
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <><head>
+      <meta />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold text-center mb-6">Entrar</h1>
 
@@ -77,8 +85,8 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                required
-              />
+                required />
+
             </div>
 
             <div>
@@ -88,8 +96,8 @@ export default function LoginPage() {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                required
-              />
+                required />
+
             </div>
 
             <button
@@ -109,3 +117,4 @@ export default function LoginPage() {
     </>
   );
 }
+
