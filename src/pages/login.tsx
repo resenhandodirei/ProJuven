@@ -47,45 +47,48 @@ export default function LoginPage() {
   };
 
   return (
+    <><head>
+      <meta />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">Entrar</h1>
+        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+          <h1 className="text-2xl font-bold text-center mb-6">Entrar</h1>
 
-        {erro && (
-          <p className="text-red-600 text-sm text-center mb-4">{erro}</p>
-        )}
+          {erro && (
+            <p className="text-red-600 text-sm text-center mb-4">{erro}</p>
+          )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">E-mail</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">E-mail</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                required />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Senha</label>
-            <input
-              type="password"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Senha</label>
+              <input
+                type="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                required />
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Acessar
-          </button>
-        </form>
-      </div>
-    </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Acessar
+            </button>
+          </form>
+        </div>
+      </div></>
   );
 }
