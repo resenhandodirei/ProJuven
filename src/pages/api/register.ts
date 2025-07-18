@@ -1,4 +1,3 @@
-// src/app/pages/api/register.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
@@ -10,22 +9,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Método não permitido' });
   }
 
-  const { email, password } = req.body;
+  const { email, senha, nome, tipo_de_perfil } = req.body;
 
-  if (!email || !password) {
+  if (!email || !senha || !nome || !tipo_de_perfil) {
     return res.status(400).json({ message: 'Email e senha são obrigatórios' });
   }
 
   try {
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const existingUser = await prisma.login.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: 'Usuário já existe' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(senha, 10);
 
-    const user = await prisma.user.create({
-      data: { email, password: hashedPassword },
+    const user = await prisma.login.create({
+      data: { email, senha: hashedPassword, nome, tipo_de_perfil },
     });
 
     return res.status(201).json({
