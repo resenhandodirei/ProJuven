@@ -53,15 +53,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
         tipoPerfil: data.tipoPerfil,
       };
 
-      Cookies.set('user', JSON.stringify(userData));
       setUser(userData);
+      Cookies.set('user', JSON.stringify(userData));
 
       // Redirecionar por perfil
-      if (data.tipoPerfil === 'admin') router.push('/admin');
-      else if (data.tipoPerfil === 'coordenador') router.push('/coordenador');
-      else router.push('/voluntario');
+      switch (userData.tipoPerfil) {
+        case 'admin':
+          router.push('/admin/dashboard');
+          break;
+        case 'defensor':
+          router.push('/defensor/dashboard');
+          break;
+        case 'psicossocial':
+          router.push('/psicossocial/dashboard');
+          break;
+        case 'servidor':
+          router.push('/servidor/dashboard');
+          break;
+          case 'estagiario':
+          router.push('/estagiario/dashboard');
+        default:
+          throw new Error('Perfil de usuário desconhecido');
+      }
+
     } catch (error) {
-      alert('Erro ao fazer login: ' + error.message);
+      if (error instanceof Error) {
+        alert('Erro ao fazer login: ' + error.message);
+      } else {
+        alert('Erro ao fazer login.');
+      }
     }
   };
 
