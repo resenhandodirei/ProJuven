@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import app from '../pages/_app';
 
 
@@ -26,39 +27,61 @@ export default function LoginPage() {
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
   const [loading, setLoading] = useState(false);
-
-
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErro('');
+
+    //Validação simples
     if (!email || !senha) {
       setErro('Por favor, preencha todos os campos.');
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErro('Por favor, insira um e-mail válido.');
-      return;
-    }
-
-    setLoading(true);
-
     try {
-      const { ok, data } = await loginUser(email, senha);
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha }),
+      });
 
-      if (ok) {
-        localStorage.setItem('token', data.token);
-        router.push('/dashboard');
-      } else {
+      if (!response.ok) {
+        const data = await response.json();
         setErro(data.message || 'E-mail ou senha incorretos.');
+        return;
       }
-    } catch {
+      //Validação de e-mail com regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setErro('Por favor, insira um e-mail válido.');
+        return;
+      }
+
+      setLoading(true);
+
+      const data = await response.json();
+      setErro(''); // Limpa o erro se o login for bem-sucedido
+
+      // Armazena o token no localStorage
+      localStorage.setItem('token', data.token);
+
+      // Redireciona para a página de dashboard
+      try {
+        const { ok, data } = await loginUser(email, senha);
+
+        if (ok) {
+          localStorage.setItem('token', data.token);
+          router.push('/dashboard');
+        } else {
+          setErro(data.message || 'E-mail ou senha incorretos.');
+        }
+      } catch {
+        setErro('Erro de conexão. Tente novamente mais tarde.');
+      } finally {
+        setLoading(false);
+      }
+    } catch (error) {
       setErro('Erro de conexão. Tente novamente mais tarde.');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -112,7 +135,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 rounded-md transition text-white ${
+              className={`w-full py-2 rounded-md text-white transition ${
                 loading
                   ? 'bg-blue-400 cursor-not-allowed'
                   : 'bg-blue-600 hover:bg-blue-700'
