@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 interface User {
   id: string;
   email: string;
-  tipoPerfil: 'admin' | 'coordenador' | 'voluntario';
+  tipoPerfil: 'admin' | 'defensor' | 'psicossocial' | 'servidor' | 'estagiario';
 }
 
 interface AuthContextType {
@@ -23,7 +23,8 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter(); 
 
   const isAuthenticated = !!user;
 
@@ -43,7 +44,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (!response.ok) {
-        throw new Error('Login inválido');
+        const data = await response.json()
+        throw new Error(data?.message || 'Erro ao fazer login');
       }
 
       const data = await response.json();
@@ -53,15 +55,44 @@ export function AuthProvider({ children }: AuthProviderProps) {
         tipoPerfil: data.tipoPerfil,
       };
 
-      Cookies.set('user', JSON.stringify(userData));
       setUser(userData);
+      Cookies.set('user', JSON.stringify(userData));
 
       // Redirecionar por perfil
-      if (data.tipoPerfil === 'admin') router.push('/admin');
-      else if (data.tipoPerfil === 'coordenador') router.push('/coordenador');
-      else router.push('/voluntario');
-    } catch (error) {
-      alert('Erro ao fazer login: ' + error.message);
+      switch (userData.tipoPerfil) {
+        case 'admin':
+          router.push('/admin/dashboard');
+          console.log('Login bem-sucedido, redirecionando...');
+          break;
+        case 'defensor':
+          router.push('/defensor/dashboard');
+          console.log('Login bem-sucedido, redirecionando...');
+          break;
+        case 'psicossocial':
+          router.push('/psicossocial/dashboard');
+          console.log('Login bem-sucedido, redirecionando...');
+          break;
+        case 'servidor':
+          router.push('/servidor/dashboard');
+          console.log('Login bem-sucedido, redirecionando...');
+          break;
+        case 'estagiario':
+          router.push('/estagiario/dashboard');
+          console.log('Login bem-sucedido, redirecionando...');
+          break;
+        default:
+          throw new Error('Perfil de usuário desconhecido');
+      }
+
+    } catch (error: any) {
+      console.error('Erro ao fazer login:', error);
+
+      if (error.response) {
+        console.log('Erro de resposta do servidor:', error.response.data);
+        setError(error.response.data?.message || 'Erro desconhecido');
+      } else {
+        setError('Erro de conexão. Detalhes: ' + error.message);
+      }
     }
   };
 
@@ -74,6 +105,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
       {children}
+      {/* Optionally render error message */}
+      {error && <div style={{ color: 'red' }}>{error}</div>}
     </AuthContext.Provider>
   );
 }
+function setError(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
