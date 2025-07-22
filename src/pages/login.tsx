@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 //import Head from 'next/head';
 import app from '../pages/_app';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 const login = async (email: string, password: string, router: ReturnType<typeof useRouter>) => {
   const res = await fetch('/api/login', {
@@ -148,6 +149,8 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
+
+    <Footer />
     </>
   );
 }
