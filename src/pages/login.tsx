@@ -100,6 +100,15 @@ export default function LoginPage() {
 
             </div>
 
+            <div className="text-right">
+              <a
+                href="/recuperar-senha"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Esqueci minha senha
+              </a>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
@@ -118,3 +127,7 @@ export default function LoginPage() {
   );
 }
 
+
+function loginUser(email: string, senha: string): { ok: any; data: any; } | PromiseLike<{ ok: any; data: any; }> {
+  throw new Error('Function not implemented.');
+}
