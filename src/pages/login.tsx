@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPage } from 'next';
-import Head from 'next/head';
+//import Head from 'next/head';
 import app from '../pages/_app';
-
+import Navbar from '@/components/navbar';
 
 const login = async (email: string, password: string, router: ReturnType<typeof useRouter>) => {
   const res = await fetch('/api/login', {
@@ -92,6 +92,8 @@ export default function LoginPage() {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
+
+    <Navbar />
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold text-center mb-6">Entrar</h1>
