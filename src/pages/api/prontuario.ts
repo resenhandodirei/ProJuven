@@ -5,35 +5,47 @@ let prontuarios: any[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { jovemId, nomeJovem, responsavel, descricao, data } = req.body;
+  const {
+    nomeJovem,
+    numeroProcesso,
+    faseProcessual,
+    atoInfracional,
+    idade,
+    raca,
+    genero,
+    estadoSaudeMental,
+    centroSocioeducativo,
+    medidaSocioeducativa,
+    dataApreensao,
+    violenciaInstitucional,
+    historico
+  } = req.body;
 
-    if (!jovemId || !nomeJovem || !descricao || !data) {
-      return res.status(400).json({ message: 'Preencha todos os campos obrigatórios.' });
-    }
-
-    const novoProntuario = {
-      id: prontuarios.length + 1,
-      jovemId,
-      nomeJovem,
-      responsavel: responsavel || null,
-      descricao,
-      data,
-    };
-
-    prontuarios.push(novoProntuario);
-
-    return res.status(201).json({
-      message: 'Prontuário criado com sucesso!',
-      prontuario: novoProntuario,
-    });
+  if (!nomeJovem || !numeroProcesso || !faseProcessual) {
+    return res.status(400).json({ message: 'Preencha os campos obrigatórios.' });
   }
 
-  if(req.method === 'GET') {
-    return res.status(200).json({
-        total: prontuarios.length,
-        prontuarios,
-    });
-  }
+  const novoProntuario = { id: prontuarios.length + 1, ...req.body };
+  prontuarios.push(novoProntuario);
 
-  return res.status(405).json({ message: 'Método não permitido' });
+        return res.status(201).json({ 
+            message: 'Prontuário criado com sucesso!', 
+            prontuario: novoProntuario 
+        });
+
+        return res.status(201).json({
+            message: 'Prontuário criado com sucesso!',
+            prontuario: novoProntuario,
+        });
+
+
+        
+}
+if(req.method === 'GET') {
+            return res.status(200).json({
+                total: prontuarios.length,
+                prontuarios,
+        });
+    return res.status(405).json({ message: 'Método não permitido' });
+}
 }
