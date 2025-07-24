@@ -97,10 +97,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logout = () => {
-    Cookies.remove('user');
-    setUser(null);
-    router.push('/login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null); // limpa o estado global
+    router.push('/login'); // redireciona para login
   };
+
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
