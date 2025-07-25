@@ -11,7 +11,7 @@ export default function Ficha() {
   const [errors, setErrors] = useState<{ nome?: string; cpf?: string }>({});
 
   // Função para validar CPF segundo as regras da Receita Federal
-  const validarCPF = (cpf: string): boolean => {
+  const validarCPF = (cpf: string) => {
     const cleaned = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
 
     if (cleaned.length !== 11) return false;
@@ -25,7 +25,6 @@ export default function Ficha() {
     let sum = 0;
     for (let i = 0; i < 9; i++) {
       sum += digits[i] * (10 - i);
-    }
     let firstCheck = (sum * 10) % 11;
     if (firstCheck === 10) firstCheck = 0;
 
@@ -42,22 +41,53 @@ export default function Ficha() {
     return secondCheck === digits[10];
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { nome?: string; cpf?: string } = {};
     setLoading(true);
 
     // Valida CPF
-    if (!cpf.trim()) {
-      newErrors.cpf = "O CPF é obrigatório.";
-    } else if (!validarCPF(cpf)) {
-      newErrors.cpf = "CPF inválido. Verifique os dígitos.";
-    }
+    if (!nome.trim()) newErrors.nome = "O nome é obrigatório.";
+    if (!cpf.trim()) newErrors.cpf = "O CPF é obrigatório.";
+    else if (!validarCPF(cpf)) newErrors.cpf = "CPF inválido.";
 
     setErrors(newErrors);
 
     // Se houver erros, não prossegue
     if (Object.keys(newErrors).length > 0) return;
+
+    try {
+    const response = await fetch("/api/ficha", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome,
+        cpf,
+        responsavel,
+        dataNascimento,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      alert(`Erro: ${error.message}`);
+      setLoading(false);
+      return;
+    }
+
+    alert("Ficha cadastrada com sucesso!");
+    setNome("");
+    setCpf("");
+    setResponsavel("");
+    setDataNascimento("");
+  } catch (error) {
+    alert("Erro ao conectar com o servidor");
+  } finally {
+    setLoading(false);
+  }
+};
 
     // Por enquanto, só mostra no console. Depois integraremos com a API.
     console.log({
@@ -77,6 +107,31 @@ export default function Ficha() {
       alert("Ficha cadastrada (simulação)!");
     }, 2000);
   };
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    const newErrors: { nome?: string; cpf?: string } = {};
+
+    if (!nome.trim()) newErrors.nome = "O nome é obrigatório.";
+    if (!cpf.trim()) newErrors.cpf = "O CPF é obrigatório.";
+    else if (!validarCPF(cpf)) newErrors.cpf = "CPF inválido.";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
+    setLoading(true);
+
+    // Simula envio e reset
+    setTimeout(() => {
+      setLoading(false);
+      setNome("");
+      setCpf("");
+      setResponsavel("");
+      setDataNascimento("");
+      alert("Ficha cadastrada (simulação)!");
+    }, 2000);
+  }
 
   return (
     <>
