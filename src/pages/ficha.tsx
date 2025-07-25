@@ -8,10 +8,56 @@ export default function Ficha() {
   const [responsavel, setResponsavel] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ nome?: string; cpf?: string }>({});
+
+  // Função para validar CPF segundo as regras da Receita Federal
+  const validarCPF = (cpf: string): boolean => {
+    const cleaned = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
+
+    if (cleaned.length !== 11) return false;
+
+    // Rejeita CPFs com todos os dígitos iguais
+    if (/^(\d)\1{10}$/.test(cleaned)) return false;
+
+    const digits = cleaned.split("").map(Number);
+
+    // Validação do primeiro dígito verificador (J)
+    let sum = 0;
+    for (let i = 0; i < 9; i++) {
+      sum += digits[i] * (10 - i);
+    }
+    let firstCheck = (sum * 10) % 11;
+    if (firstCheck === 10) firstCheck = 0;
+
+    if (firstCheck !== digits[9]) return false;
+
+    // Validação do segundo dígito verificador (K)
+    sum = 0;
+    for (let i = 0; i < 10; i++) {
+      sum += digits[i] * (11 - i);
+    }
+    let secondCheck = (sum * 10) % 11;
+    if (secondCheck === 10) secondCheck = 0;
+
+    return secondCheck === digits[10];
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const newErrors: { nome?: string; cpf?: string } = {};
     setLoading(true);
+
+    // Valida CPF
+    if (!cpf.trim()) {
+      newErrors.cpf = "O CPF é obrigatório.";
+    } else if (!validarCPF(cpf)) {
+      newErrors.cpf = "CPF inválido. Verifique os dígitos.";
+    }
+
+    setErrors(newErrors);
+
+    // Se houver erros, não prossegue
+    if (Object.keys(newErrors).length > 0) return;
 
     // Por enquanto, só mostra no console. Depois integraremos com a API.
     console.log({
@@ -29,7 +75,7 @@ export default function Ficha() {
       setResponsavel("");
       setDataNascimento("");
       alert("Ficha cadastrada (simulação)!");
-    }, 1000);
+    }, 2000);
   };
 
   return (
