@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import FormActions from '@/components/FormActions';
 
 const RegisterPage = () => {
 
@@ -49,6 +50,7 @@ const RegisterPage = () => {
 
   return (
     <>
+    
       <head>
         <meta />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -127,6 +129,13 @@ const RegisterPage = () => {
               <option value="estagiario">Estagiário</option>
             </select>
           </div>
+
+          <FormActions
+            onSave={() => handleSubmit(new Event('submit') as unknown as React.FormEvent)}
+            isLoading={false} // Implement loading state if needed
+            onCancel={() => router.push('/login')}
+            onBack={() => router.push('/')}
+            />
 
           <button
             type="submit"
