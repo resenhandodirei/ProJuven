@@ -1,6 +1,8 @@
 import { useState } from "react";
 import React from "react";
 import TailwindJS from "@/components/tailwindjs";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 export default function Ficha() {
   const [nome, setNome] = useState("");
@@ -136,6 +138,8 @@ export default function Ficha() {
   return (
     <>
       <TailwindJS />
+
+      <Navbar />
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white shadow-md rounded-xl">
         <h1 className="text-2xl font-bold mb-4">Cadastro de Ficha</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -177,6 +181,7 @@ export default function Ficha() {
           </button>
         </form>
       </div>
+      <Footer />
     </>
   );
 }

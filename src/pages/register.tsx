@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import FormActions from '@/components/FormActions';
+import TailwindJS from '@/components/tailwindjs';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 const RegisterPage = () => {
 
@@ -51,11 +54,8 @@ const RegisterPage = () => {
   return (
     <>
     
-      <head>
-        <meta />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-      </head>
+      <TailwindJS />
+      <Navbar />
 
       <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
         <form
@@ -140,6 +140,8 @@ const RegisterPage = () => {
           
         </form>
       </div>
+
+      <Footer />
     </>
   );
 };
