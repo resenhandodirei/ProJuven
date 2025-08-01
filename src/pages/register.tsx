@@ -6,6 +6,8 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import InputSelect from '@/components/InputSelect';
 import FormWrapper from "@/components/FormWrapper";
+import InputText from "@/components/InputText";
+
 
 const RegisterPage = () => {
 
@@ -62,18 +64,25 @@ const RegisterPage = () => {
       <div className="max-w-2xl mx-auto mt-10">
       <FormWrapper title="Dados Pessoais" description="Preencha suas informações básicas.">
         <div className="grid grid-cols-1 gap-4">
-          <input
-            type="text"
-            placeholder="Nome completo"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
+        <InputText
+            label="Nome Completo"
+            name="nome"
+            value={formData.nome}
+            onChange={handleChange}
+            placeholder="Digite seu nome completo"
+            required
+        />
+        <InputText
+            label="E-mail"
+            name="email"
             type="email"
-            placeholder="E-mail institucional"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Digite seu e-mail"
+            required
+            />
 
+        </div>
 
         <div>
             <label className="block text-sm font-medium text-gray-700">Senha</label>
