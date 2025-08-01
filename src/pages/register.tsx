@@ -7,6 +7,7 @@ import Footer from '@/components/footer';
 import InputSelect from '@/components/InputSelect';
 import FormWrapper from "@/components/FormWrapper";
 import InputText from "@/components/InputText";
+import InputDate from "@/components/InputDate";
 
 
 const RegisterPage = () => {
@@ -19,6 +20,8 @@ const RegisterPage = () => {
     confirmarSenha: '',
     perfil: '',
   });
+
+ 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -109,7 +112,6 @@ const RegisterPage = () => {
               className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
-
 
           <InputSelect
           label="Perfil"
