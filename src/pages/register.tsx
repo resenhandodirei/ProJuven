@@ -113,7 +113,6 @@ const RegisterPage = () => {
             />
           </div>
 
-      <p className="mt-4">Data escolhida: {selectedDate}</p>
           <InputSelect
           label="Perfil"
           name="profile"
