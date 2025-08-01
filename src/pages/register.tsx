@@ -4,6 +4,8 @@ import FormActions from '@/components/FormActions';
 import TailwindJS from '@/components/tailwindjs';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
+import InputSelect from '@/components/InputSelect';
+import FormWrapper from "@/components/FormWrapper";
 
 const RegisterPage = () => {
 
@@ -57,41 +59,27 @@ const RegisterPage = () => {
       <TailwindJS />
       <Navbar />
 
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg space-y-4"
-        >
-          <h1 className="text-2xl font-bold text-center text-gray-800">Cadastro de Usuário</h1>
+      <div className="max-w-2xl mx-auto mt-10">
+      <FormWrapper title="Dados Pessoais" description="Preencha suas informações básicas.">
+        <div className="grid grid-cols-1 gap-4">
+          <input
+            type="text"
+            placeholder="Nome completo"
+            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="email"
+            placeholder="E-mail institucional"
+            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Nome completo</label>
-            <input
-              type="text"
-              name="nome"
-              required
-              value={formData.nome}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">E-mail institucional</label>
-            <input
-              type="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
-
-          <div>
+        <div>
             <label className="block text-sm font-medium text-gray-700">Senha</label>
             <input
               type="password"
+              placeholder='Digite sua senha'
               name="senha"
               required
               value={formData.senha}
@@ -104,6 +92,7 @@ const RegisterPage = () => {
             <label className="block text-sm font-medium text-gray-700">Confirmar senha</label>
             <input
               type="password"
+              placeholder='Confirme sua senha'
               name="confirmarSenha"
               required
               value={formData.confirmarSenha}
@@ -112,33 +101,29 @@ const RegisterPage = () => {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Perfil</label>
-            <select
-              name="perfil"
-              required
-              value={formData.perfil}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-            >
-              <option value="">Selecione o perfil</option>
-              <option value="adm">Administrador</option>
-              <option value="defensor">Defensor</option>
-              <option value="psicossocial">Psicossocial</option>
-              <option value="servidor">Servidor</option>
-              <option value="estagiario">Estagiário</option>
-            </select>
-          </div>
 
-          <FormActions
+          <InputSelect
+          label="Perfil"
+          name="profile"
+          value=""
+          onChange={() => {}}
+          options={[
+            { label: "Administrador", value: "admin" },
+            { label: "Defensor", value: "defensor" },
+            { label: "Psicossocial", value: "psicossocial" },
+            { label: "Servidor", value: "servidor" },
+            { label: "Estagiário", value: "estagiario"},
+          ]}
+        />
+
+           <FormActions
             onSave={() => handleSubmit(new Event('submit') as unknown as React.FormEvent)}
             isLoading={false} // Implement loading state if needed
             onCancel={() => router.push('/login')}
             onBack={() => router.push('/')}
-            />
-
-          
-        </form>
+            /> 
+      </FormWrapper>
+       
       </div>
 
       <Footer />
