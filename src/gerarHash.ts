@@ -1,4 +1,3 @@
-// gerarHash.ts
 import bcrypt from 'bcryptjs';
 
 async function gerarHash() {

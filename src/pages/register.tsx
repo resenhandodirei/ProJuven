@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import FormActions from '@/components/FormActions';
-import TailwindJS from '@/components/tailwindjs';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import InputSelect from '@/components/InputSelect';
@@ -61,7 +60,6 @@ const RegisterPage = () => {
   return (
     <>
     
-      <TailwindJS />
       <Navbar />
 
       <div className="max-w-2xl mx-auto mt-10">

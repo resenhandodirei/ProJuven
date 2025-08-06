@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Textarea from "@/components/Textarea";
+import TextareaComponent from "@/components/Textarea";
 
 export default function ExampleTextareaPage() {
   const [descricao, setDescricao] = useState("");
@@ -8,7 +8,7 @@ export default function ExampleTextareaPage() {
     <div className="max-w-md mx-auto mt-10 p-4 border rounded-lg shadow">
       <h1 className="text-xl font-bold mb-4">Descrição do Caso</h1>
 
-      <Textarea
+      <TextareaComponent
         label="Descreva o caso"
         name="descricao"
         value={descricao}
