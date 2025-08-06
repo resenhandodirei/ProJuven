@@ -1,5 +1,6 @@
 import React from "react";
-import TailwindJS from "./tailwindjs";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface FormActionsProps {
   onSave?: () => void;
@@ -16,7 +17,6 @@ const FormActions: React.FC<FormActionsProps> = ({
 }) => {
   return (
     <>
-    <TailwindJS />
     <div className="flex justify-end gap-4 mt-6">
       {onBack && (
         <button

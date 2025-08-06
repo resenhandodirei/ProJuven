@@ -1,6 +1,5 @@
 import { useState } from "react";
 import React from "react";
-import TailwindJS from "@/components/tailwindjs";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
@@ -137,7 +136,7 @@ export default function Ficha() {
 
   return (
     <>
-      <TailwindJS />
+    
 
       <Navbar />
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white shadow-md rounded-xl">

@@ -1,10 +1,9 @@
 import React from "react";
-import TailwindJS from "./tailwindjs";
+import { useState } from "react";
 
 export default function Footer() {
   return (
     <>
-    <TailwindJS />
     <footer className="bg-gray-900 text-gray-300 py-6 mt-auto">
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
         {/* Logo e texto */}
