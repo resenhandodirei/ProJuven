@@ -7,14 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model login {
-  id             Int        @id @default(autoincrement())
-  nome           String     @db.VarChar(100)
-  genero         String?    @db.VarChar(20)
-  tipo_de_perfil TipoDePerfilEnum 
-  email          String     @unique @db.VarChar(255)
-  senha          String     @db.VarChar(255)
-}
+/**
+ * ===== ENUMS =====
+ */
 
 enum TipoDePerfilEnum {
   adm
@@ -22,4 +17,100 @@ enum TipoDePerfilEnum {
   servidor
   psicossocial
   estagiario
+}
+
+/**
+ * ===== MODELS =====
+ */
+
+/**
+ * Usuários / contas de login
+ */
+model Login {
+  id           Int              @id @default(autoincrement())
+  nome         String           @db.VarChar(100)
+  genero       String?          @db.VarChar(20)
+  tipoDePerfil TipoDePerfilEnum @map("tipo_de_perfil")
+  email        String           @unique @db.VarChar(255)
+  senha        String           @db.VarChar(255)
+
+  fichas              Ficha[]                  @relation("CriadorFicha")
+  prontuariosJuridico ProntuarioJuridico[]     @relation("CriadorProntuarioJuridico")
+  prontuariosPsico    ProntuarioPsicossocial[] @relation("CriadorProntuarioPsicossocial")
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("login")
+}
+
+/**
+ * Ficha simples (os campos que você solicitou)
+ */
+model Ficha {
+  id              String   @id @default(uuid())
+  nomeAtendido    String   @map("nome_atendido")
+  cpf             String   @map("cpf")
+  numeroProcesso  String   @map("numero_processo")
+  nomeResponsavel String   @map("nome_responsavel")
+  dataNascimento  DateTime @map("data_nascimento")
+
+  descricao String?
+
+  idUsuarioCriador Int   @map("id_usuario_criador")
+  criador          Login @relation("CriadorFicha", fields: [idUsuarioCriador], references: [id])
+
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  ProntuarioJuridico     ProntuarioJuridico[]
+  ProntuarioPsicossocial ProntuarioPsicossocial[]
+
+  @@map("ficha")
+}
+
+/**
+ * ===== PRONTUÁRIOS (estrutura básica pronta para expansão) =====
+ */
+
+model ProntuarioJuridico {
+  id String @id @default(uuid())
+
+  idUsuarioCriador Int   @map("id_usuario_criador")
+  criador          Login @relation("CriadorProntuarioJuridico", fields: [idUsuarioCriador], references: [id])
+
+  // ligação opcional com ficha
+  fichaId String?
+  ficha   Ficha?  @relation(fields: [fichaId], references: [id])
+
+  // campos básicos iniciais (adicione mais conforme a checklist)
+  pessoaQueAtendeu String?   @map("pessoa_que_atendeu")
+  numeroProcesso   String?   @map("numero_processo")
+  nomeJovem        String?   @map("nome_jovem")
+  cpf              String?   @map("cpf")
+  dataNascimento   DateTime? @map("data_nascimento")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("prontuario_juridico")
+}
+
+model ProntuarioPsicossocial {
+  id String @id @default(uuid())
+
+  idUsuarioCriador Int   @map("id_usuario_criador")
+  criador          Login @relation("CriadorProntuarioPsicossocial", fields: [idUsuarioCriador], references: [id])
+
+  fichaId String?
+  ficha   Ficha?  @relation(fields: [fichaId], references: [id])
+
+  // campos iniciais
+  avaliacaoInicial  String? @map("avaliacao_inicial")
+  historicoFamiliar String? @map("historico_familiar")
+  observacoes       String? @map("observacoes")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("prontuario_psicossocial")
 }
