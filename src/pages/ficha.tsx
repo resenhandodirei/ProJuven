@@ -136,8 +136,6 @@ export default function Ficha() {
 
   return (
     <>
-    
-
       <Navbar />
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white shadow-md rounded-xl">
         <h1 className="text-2xl font-bold mb-4">Cadastro de Ficha</h1>
@@ -156,7 +154,7 @@ export default function Ficha() {
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             className="w-full p-2 border rounded"
-            required
+            
           />
           <input
             type="text"
