@@ -12,11 +12,11 @@ datasource db {
  */
 
 enum TipoDePerfilEnum {
-  adm
-  defensor
-  servidor
-  psicossocial
-  estagiario
+  ADMIN
+  DEFENSOR
+  PSICOSSOCIAL
+  SERVIDOR
+  ESTAGIARIO
 }
 
 /**

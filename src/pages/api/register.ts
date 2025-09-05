@@ -23,15 +23,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const perfilNormalizado = normalizePerfilInput(tipo_de_perfil ?? tipoDePerfil);
 
-      if (!Object.values(TipoDePerfilEnum).includes(perfilNormalizado as TipoDePerfilEnum)) {
-        return res.status(400).json({ message: 'Tipo de perfil inválido.' });
-      } if (!email || !senha || !nome || !perfilNormalizado) {
+    if (!email || !senha || !nome || !perfilNormalizado) {
       return res.status(400).json({ 
         message: 
         "Campos obrigatórios não foram preenchidos."
       });
       }
-    
+
+    // Garante que o perfil é valido contra o enum do Prisma
+
+      if (!Object.values(TipoDePerfilEnum).includes(perfilNormalizado as TipoDePerfilEnum)) {
+        return res.status(400).json({ message: 'Tipo de perfil inválido.' });
+      } 
+      
+      // Verifica se o usuário já existe
       const exists = await prisma.login.findUnique({ where: { email } });
       if (exists) {
         return res.status(400).json({ message: 'Usuário já existe' });
@@ -47,9 +52,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           tipoDePerfil: perfilNormalizado as TipoDePerfilEnum },
       });
 
+      console.log("Dados recebidos: ", req.body)
+
       return res.status(201).json({
         message: 'Usuário criado com sucesso',
-        user: { id: user.id, email: user.email, TipoDePerfil: user.tipoDePerfil },
+        user: { 
+          id: user.id, 
+          email: user.email, 
+          TipoDePerfil: user.tipoDePerfil 
+        },
       });
 
   } catch (err: any) {
