@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, TipoDePerfilEnum } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { normalizePerfilInput } from '@/lib/perfil';
 
 const prisma = new PrismaClient();
 
@@ -9,30 +10,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Método não permitido' });
   }
 
-  const { email, senha, nome, tipo_de_perfil } = req.body;
-
-  if (!email || !senha || !nome || !tipo_de_perfil) {
-    return res.status(400).json({ message: 'Email e senha são obrigatórios' });
-  }
-
   try {
-    const existingUser = await prisma.login.findUnique({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({ message: 'Usuário já existe' });
+    const { email, senha, nome, tipo_de_perfil, tipoDePerfil } = req.body as {
+      email?: string;
+      senha?: string;
+      nome?: string;
+      tipoDePerfil?: string;
+      tipo_de_perfil?: string;
     }
 
-    const hashedPassword = await bcrypt.hash(senha, 10);
+    // Normaliza perfil vindo com qualquer nome
 
-    const user = await prisma.login.create({
-      data: { email, senha: hashedPassword, nome, tipo_de_perfil },
-    });
+    const perfilNormalizado = normalizePerfilInput(tipo_de_perfil ?? tipoDePerfil);
 
-    return res.status(201).json({
-      message: 'Usuário criado com sucesso',
-      user: { id: user.id, email: user.email }
-    });
+      if (!Object.values(TipoDePerfilEnum).includes(perfilNormalizado as TipoDePerfilEnum)) {
+        return res.status(400).json({ message: 'Tipo de perfil inválido.' });
+      } if (!email || !senha || !nome || !perfilNormalizado) {
+      return res.status(400).json({ 
+        message: 
+        "Campos obrigatórios não foram preenchidos."
+      });
+      }
+    
+      const exists = await prisma.login.findUnique({ where: { email } });
+      if (exists) {
+        return res.status(400).json({ message: 'Usuário já existe' });
+      }
 
-  } catch (error) {
+      const hashed = await bcrypt.hash(senha, 10);
+
+      const user = await prisma.login.create({
+        data: { 
+          email, 
+          senha: hashed, 
+          nome, 
+          tipoDePerfil: perfilNormalizado as TipoDePerfilEnum },
+      });
+
+      return res.status(201).json({
+        message: 'Usuário criado com sucesso',
+        user: { id: user.id, email: user.email, TipoDePerfil: user.tipoDePerfil },
+      });
+
+  } catch (err: any) {
+    console.error(err);
     return res.status(500).json({ message: 'Erro interno do servidor' });
   }
 }

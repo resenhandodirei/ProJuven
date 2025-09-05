@@ -45,23 +45,32 @@ model Login {
 }
 
 /**
- * Ficha simples (os campos que você solicitou)
+ * Ficha com campos obrigatórios e opcionais, 
+ * respeitando as regras de quem cria (Servidor ou outras personas).
  */
 model Ficha {
-  id              String   @id @default(uuid())
-  nomeAtendido    String   @map("nome_atendido")
-  cpf             String   @map("cpf")
-  numeroProcesso  String   @map("numero_processo")
-  nomeResponsavel String   @map("nome_responsavel")
-  dataNascimento  DateTime @map("data_nascimento")
+  id               String   @id @default(uuid())
+  nomeAtendido     String   @map("nome_atendido")
+  nomeFamiliar     String?  @map("nome_familiar") // obrigatório só p/ algumas personas
+  cpf              String?  @map("cpf")
+  rg               String?  @map("rg")
+  dataNascimento   DateTime? @map("data_nascimento")
 
-  descricao String?
+  qtdProcesso      Int?     @map("qtd_processo")
+  numeroProcesso   String?  @map("numero_processo") // pode ser 1 ou vários
+  varaProcesso     String?  @map("vara_processo")   // ex: "5ª Vara"
+  
+  telefonesContato String[] @map("telefones_contato") // servidor precisa registrar vários
+  nomeResponsavel  String?  @map("nome_responsavel")
+  documentoResponsavel String? @map("documento_responsavel") // cpf ou rg do responsável
+  endereco         String?  @map("endereco")
 
-  idUsuarioCriador Int   @map("id_usuario_criador")
-  criador          Login @relation("CriadorFicha", fields: [idUsuarioCriador], references: [id])
+  idUsuarioCriador Int      @map("id_usuario_criador") 
+  criador          Login    @relation("CriadorFicha", fields: [idUsuarioCriador], references: [id])
 
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
   ProntuarioJuridico     ProntuarioJuridico[]
   ProntuarioPsicossocial ProntuarioPsicossocial[]
 

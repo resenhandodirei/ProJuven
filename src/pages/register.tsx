@@ -17,7 +17,7 @@ const RegisterPage = () => {
     email: '',
     senha: '',
     confirmarSenha: '',
-    perfil: '',
+    perfil: 'usuario',
   });
 
  
@@ -40,7 +40,12 @@ const RegisterPage = () => {
             headers: { 
                 'Content-Type': 'application/json' 
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({
+              nome: formData.nome,
+              email: formData.email,
+              senha: formData.senha,
+              tipo_de_perfil: formData.perfil
+            })
         });
 
         if (!res.ok) {
@@ -113,16 +118,19 @@ const RegisterPage = () => {
 
           <InputSelect
           label="Perfil"
-          name="profile"
-          value=""
-          onChange={() => {}}
+          name="perfil"
+          value="formData.perfil"
+          onChange={handleChange}
           options={[
+            { label: "Usuário", value: "user" },
             { label: "Administrador", value: "admin" },
             { label: "Defensor", value: "defensor" },
             { label: "Psicossocial", value: "psicossocial" },
             { label: "Servidor", value: "servidor" },
             { label: "Estagiário", value: "estagiario"},
           ]}
+
+          required
         />
 
            <FormActions
