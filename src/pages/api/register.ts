@@ -10,6 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Método não permitido' });
   }
 
+  console.log("📩 register body:", req.body);
+
+
   try {
     const { email, senha, nome, tipo_de_perfil, tipoDePerfil } = req.body as {
       email?: string;
@@ -52,8 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           tipoDePerfil: perfilNormalizado as TipoDePerfilEnum },
       });
 
-      console.log("Dados recebidos: ", req.body)
-
+      
       return res.status(201).json({
         message: 'Usuário criado com sucesso',
         user: { 

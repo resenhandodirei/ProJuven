@@ -116,20 +116,20 @@ const RegisterPage = () => {
             />
           </div>
 
+  
+
           <InputSelect
           label="Perfil"
           name="tipo_de_perfil"
-          value="formData.tipo_de_perfil"
+          value={formData.tipo_de_perfil}     // <- sem aspas: passa a variável do state
           onChange={handleChange}
           options={[
             { label: "Administrador", value: "ADMIN" },
             { label: "Defensor", value: "DEFENSOR" },
             { label: "Psicossocial", value: "PSICOSSOCIAL" },
             { label: "Servidor", value: "SERVIDOR" },
-            { label: "Estagiário", value: "ESTAGIARIO"},
+            { label: "Estagiário", value: "ESTAGIARIO" },
           ]}
-
-          required
         />
 
            <FormActions

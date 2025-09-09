@@ -6,11 +6,11 @@ import { TipoDePerfilEnum } from "@prisma/client";
  * para o enum do Prisma (uppercase).
  */
 export const PERFIL_MAP: Record<string, TipoDePerfilEnum> = {
-  admin:        "ADMIN",
-  defensor:     "DEFENSOR",
-  psicossocial: "PSICOSSOCIAL",
-  servidor:     "SERVIDOR",
-  estagiario:   "ESTAGIARIO",
+  admin: TipoDePerfilEnum.ADMIN,
+  defensor: TipoDePerfilEnum.DEFENSOR,
+  psicossocial: TipoDePerfilEnum.PSICOSSOCIAL,
+  servidor: TipoDePerfilEnum.SERVIDOR,
+  estagiario: TipoDePerfilEnum.ESTAGIARIO,
 };
 
 /**
@@ -28,7 +28,7 @@ export function normalizePerfilInput(input?: string | null): TipoDePerfilEnum | 
   if (!input) return null;
   const key = String(input).trim().toLowerCase();
   const mapped = PERFIL_MAP[key];
-  return mapped ?? null;
+  return mapped || null;
 }
 
 /**
