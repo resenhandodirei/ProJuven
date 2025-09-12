@@ -26,8 +26,11 @@ export function isTipoDePerfilEnum(value: unknown): value is TipoDePerfilEnum {
  */
 export function normalizePerfilInput(input?: string | null): TipoDePerfilEnum | null {
   if (!input) return null;
+  
+  // normaliza pra minúsculo e sem espaços
   const key = String(input).trim().toLowerCase();
   const mapped = PERFIL_MAP[key];
+  
   return mapped || null;
 }
 
