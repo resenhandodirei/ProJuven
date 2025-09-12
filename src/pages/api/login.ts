@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient, TipoDePerfilEnum } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { success } from 'zod';
 
 const prisma = new PrismaClient();
 
@@ -13,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const { email, senha } = req.body;
 
-    console.log('Dados recebidos:', { email, senha });
+    console.log('📩 Dados recebidos:', { email, senha });
 
     const user = await prisma.login.findUnique({ where: { email } });
     if (!user) {
@@ -21,31 +22,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(401).json({ message: 'Usuário não encontrado' });
     }
 
-    console.log('Usuário encontrado:', {
+    console.log('✅ Usuário encontrado:', {
       id: user.id,
       email: user.email,
       TipoDePerfilEnum: user.tipoDePerfil,
-      senhaDoBanco: user.senha
+      //senhaDoBanco: user.senha
     })
 
     const isTipoDePerfilValido = Object.values(TipoDePerfilEnum).includes(user.tipoDePerfil as TipoDePerfilEnum);
     if (!isTipoDePerfilValido) {
-      console.log('Tipo de perfil inválido:', user.tipoDePerfil);
-      return res.status(500).json({ message: 'Tipo de perfil do usuário é inválido' });
+      console.log('❌ Tipo de perfil inválido:', user.tipoDePerfil);
+      return res.status(500).json({ success: false, message: 'Tipo de perfil do usuário é inválido' });
     }
   
     const isPasswordValid = await bcrypt.compare(senha, user.senha);
 
-    console.log('🔍 Teste direto do bcrypt.compare:', {
+    /**console.log('🔍 Teste direto do bcrypt.compare:', {
       testeManual: await bcrypt.compare('123456', user.senha),
       senhaDigitada: senha,
       senhaNoBanco: user.senha,
       resultado: isPasswordValid
-    });
+    });*/
 
     if (!isPasswordValid) {
-      console.log('Senha incorreta');
-      return res.status(401).json({ message: 'Senha incorreta' });
+      console.log('❌ Senha incorreta');
+      return res.status(401).json({ success: false, message: 'Senha incorreta' });
     }
 
     const token = jwt.sign(
@@ -53,13 +54,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         id: user.id, 
         email: user.email 
       },
-      process.env.JWT_SECRET!,
+      process.env.JWT_SECRET || 'default_secret',
       { 
         expiresIn: '1h' 
       }
     );
 
+    // 🔥 Resposta padronizada
     return res.status(200).json({
+      success: true,
       message: 'Login bem-sucedido',
       token,
       user: { 
@@ -71,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Erro interno do servidor' });
+    //console.error(error);
+    return res.status(500).json({ success: false, message: 'Erro interno do servidor' });
   }
 }
