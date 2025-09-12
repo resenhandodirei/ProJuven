@@ -17,7 +17,7 @@ const RegisterPage = () => {
     email: '',
     senha: '',
     confirmarSenha: '',
-    perfil: '',
+    tipo_de_perfil: '',
   });
 
  
@@ -40,7 +40,12 @@ const RegisterPage = () => {
             headers: { 
                 'Content-Type': 'application/json' 
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({
+              nome: formData.nome,
+              email: formData.email,
+              senha: formData.senha,
+              tipo_de_perfil: formData.tipo_de_perfil,
+            })
         });
 
         if (!res.ok) {
@@ -111,17 +116,19 @@ const RegisterPage = () => {
             />
           </div>
 
+  
+
           <InputSelect
           label="Perfil"
-          name="profile"
-          value=""
-          onChange={() => {}}
+          name="tipo_de_perfil"
+          value={formData.tipo_de_perfil}     // <- sem aspas: passa a variável do state
+          onChange={handleChange}
           options={[
-            { label: "Administrador", value: "admin" },
-            { label: "Defensor", value: "defensor" },
-            { label: "Psicossocial", value: "psicossocial" },
-            { label: "Servidor", value: "servidor" },
-            { label: "Estagiário", value: "estagiario"},
+            { label: "Administrador", value: "ADMIN" },
+            { label: "Defensor", value: "DEFENSOR" },
+            { label: "Psicossocial", value: "PSICOSSOCIAL" },
+            { label: "Servidor", value: "SERVIDOR" },
+            { label: "Estagiário", value: "ESTAGIARIO" },
           ]}
         />
 
