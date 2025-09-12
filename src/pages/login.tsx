@@ -88,6 +88,7 @@ export default function LoginPage() {
 
             <div className="text-right">
               <a href="/recuperar-senha" className="text-sm text-blue-600 hover:underline">
+             
                 Esqueci minha senha
               </a>
             </div>
