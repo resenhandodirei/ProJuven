@@ -46,7 +46,7 @@ export default function LoginPage() {
       localStorage.setItem('token', data.token);
 
       // Redireciona
-      router.push('/dashboard');
+      router.push('/home');
     } catch (error) {
       setErro('Erro de conexão. Tente novamente mais tarde.');
     } finally {
