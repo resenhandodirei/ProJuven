@@ -1,89 +1,122 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
-import { Button } from "@/components/Button";
-import { Bell, FileText, PlusCircle, Search } from "lucide-react";
+"use client"
+
+import { motion } from "framer-motion"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards"
+import { Button } from "@/components/Button"
+import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
 
 export default function HomePage() {
-  // Mock de dados - em produção puxaremos do backend
-  const recentes = [
-    { id: 1, titulo: "Prontuário - João da Silva", data: "05/09/2025" },
-    { id: 2, titulo: "Prontuário - Maria Oliveira", data: "04/09/2025" },
-    { id: 3, titulo: "Prontuário - Pedro Santos", data: "03/09/2025" },
-  ];
+  const nomeUsuario = "Larissa" // depois você pode puxar do contexto ou token
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Boas-vindas */}
-      <header>
-        <h1 className="text-2xl font-bold">Bem-vinda, Larissa (Defensora)</h1>
-        <p className="text-gray-600">Aqui está um resumo do que importa para você.</p>
-      </header>
+    <>
+    <Navbar />
 
-      {/* Cards Resumo */}
+    <div className="min-h-screen bg-gray-50 px-6 py-8">
+      {/* Cabeçalho */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mb-8"
+      >
+        <h1 className="text-3xl font-bold text-gray-800">
+          Olá, {nomeUsuario} 👋
+        </h1>
+        <p className="text-gray-600">
+          Bem-vinda ao ProJuven! Aqui você encontra um resumo das atividades.
+        </p>
+      </motion.div>
+
+      {/* Grid principal */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Prontuários em aberto</CardTitle>
-            <FileText className="h-5 w-5 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">8</p>
-            <p className="text-sm text-gray-500">Últimos 30 dias</p>
-          </CardContent>
-        </Card>
+        
+        {/* Acesso Rápido */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
+          className="md:col-span-2"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Acesso rápido</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Button className="flex items-center gap-2">
+                <UserPlus size={18} /> Novo Atendimento
+              </Button>
+              <Button className="flex items-center gap-2" variant="outline">
+                <FileText size={18} /> Prontuários
+              </Button>
+              <Button className="flex items-center gap-2" variant="outline">
+                <ClipboardList size={18} /> Histórico
+              </Button>
+              <Button className="flex items-center gap-2" variant="outline">
+                <Calendar size={18} /> Agenda
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Notificações</CardTitle>
-            <Bell className="h-5 w-5 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">3</p>
-            <p className="text-sm text-gray-500">Pendentes de leitura</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Agenda</CardTitle>
-            <Search className="h-5 w-5 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">2</p>
-            <p className="text-sm text-gray-500">Atendimentos hoje</p>
-          </CardContent>
-        </Card>
+        {/* Estatísticas */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Resumo</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-gray-700">
+                📂 <strong>24</strong> Prontuários ativos
+              </p>
+              <p className="text-gray-700">
+                🗓️ <strong>5</strong> Atendimentos esta semana
+              </p>
+              <p className="text-gray-700">
+                👩‍⚕️ <strong>3</strong> Profissionais ativos
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
-      {/* Ações rápidas */}
-      <div className="flex gap-4">
-        <Button className="flex items-center gap-2">
-          <PlusCircle className="h-4 w-4" /> Novo Prontuário
-        </Button>
-        <Button variant="outline" className="flex items-center gap-2">
-          <Search className="h-4 w-4" /> Buscar Prontuário
-        </Button>
-      </div>
-
-      {/* Últimos acessos */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Últimos prontuários acessados</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            {recentes.map((item) => (
-              <li
-                key={item.id}
-                className="flex justify-between items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
-              >
-                <span>{item.titulo}</span>
-                <span className="text-sm text-gray-500">{item.data}</span>
+      {/* Últimos prontuários */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mt-8"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Últimos prontuários</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="divide-y divide-gray-200">
+              <li className="py-3 flex justify-between">
+                <span className="text-gray-700">Maria Silva - 02/09</span>
+                <Button variant="outline">Ver</Button>
               </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+              <li className="py-3 flex justify-between">
+                <span className="text-gray-700">João Souza - 01/09</span>
+                <Button variant="outline">Ver</Button>
+              </li>
+              <li className="py-3 flex justify-between">
+                <span className="text-gray-700">Ana Lima - 30/08</span>
+                <Button variant="outline">Ver</Button>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </motion.div>
     </div>
-  );
+    <Footer />
+    </>
+  )
 }
