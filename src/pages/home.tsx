@@ -8,7 +8,6 @@ import Footer from "@/components/footer"
 import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
 
 export default function HomePage() {
-  const nomeUsuario = "Larissa" // depois você pode puxar do contexto ou token
 
   return (
     <>
@@ -22,9 +21,7 @@ export default function HomePage() {
         transition={{ duration: 0.4 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-gray-800">
-          Olá, {nomeUsuario} 👋
-        </h1>
+        
         <p className="text-gray-600">
           Bem-vinda ao ProJuven! Aqui você encontra um resumo das atividades.
         </p>

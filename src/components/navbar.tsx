@@ -1,133 +1,132 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, Menu, User } from "lucide-react";
 
-interface NavbarProps {
-  isAuthenticated?: boolean;
-  userName?: string;
+interface UserData {
+  nome: string;
+  perfil: string;
 }
 
-export default function Navbar({ isAuthenticated = false, userName = "Usuário" }: NavbarProps) {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // 🔎 Busca dados do usuário logado
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // 1️⃣ Recupera o token salvo no login (localStorage ou cookie)
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.warn("⚠️ Nenhum token encontrado. Usuário não autenticado.");
+          setLoading(false);
+          return;
+        }
+
+        // 2️⃣ Faz a requisição para a rota /api/me enviando o token
+        const res = await fetch("/api/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // ✅ Envia o JWT no cabeçalho
+          },
+        });
+
+        // 3️⃣ Se a resposta não for 200, lança erro
+        if (!res.ok) {
+          throw new Error(`Erro ao buscar usuário: ${res.status}`);
+        }
+
+        // 4️⃣ Converte o JSON e atualiza o estado
+        const data = await res.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("❌ Erro ao buscar dados do usuário:", error);
+      } finally {
+        // 5️⃣ Sempre desliga o carregamento
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
-    <nav className="bg-gray-900 shadow-md px-6 py-3">
+    <nav className="bg-gray-900 text-white shadow-md px-6 py-3">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <a href="/" className="text-white text-2xl font-bold tracking-tight">
+        <a href="/" className="text-2xl font-bold tracking-tight">
           ProJuven
         </a>
 
         {/* Menu Desktop */}
-        <div className="hidden md:flex items-center gap-6">
-          {!isAuthenticated ? (
-            <>
-              <a
-                href="/login"
-                className="text-gray-300 hover:text-white transition font-medium"
-              >
-                Login
-              </a>
-              <a
-                href="/register"
-                className="text-gray-300 hover:text-white transition font-medium"
-              >
-                Registrar
-              </a>
-            </>
-          ) : (
-            <>
-              {/* Botão Notificações */}
-              <button
-                className="relative bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition flex items-center justify-center"
-                aria-label="Notificações"
-              >
-                <Bell className="text-gray-300 w-6 h-6" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1">
-                  5
-                </span>
-              </button>
+        <ul className="hidden md:flex items-center gap-6 font-medium">
+          {/* ... seus dropdowns aqui ... */}
+        </ul>
 
-              {/* Avatar Usuário */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 bg-gray-800 px-3 py-2 rounded-full hover:bg-gray-700 transition"
-                >
-                  <User className="text-gray-300 w-5 h-5" />
-                  <span className="text-gray-200 font-medium">{userName}</span>
-                </button>
+        {/* Ações Direita */}
+        <div className="flex items-center gap-4">
+          {/* Pesquisa */}
+          <input
+            type="text"
+            placeholder="Pesquisar..."
+            className="hidden md:block rounded px-3 py-1 text-sm text-gray-900"
+          />
 
-                {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                    <a
-                      href="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    >
-                      Meu Perfil
-                    </a>
-                    <a
-                      href="/settings"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    >
-                      Configurações
-                    </a>
-                    <button
-                      onClick={() => alert("Logout")}
-                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
-                    >
-                      Sair
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+          {/* Notificações */}
+          <button className="relative p-2 rounded-full hover:bg-gray-800 transition">
+            <Bell className="w-5 h-5" />
+            <span className="absolute -top-1 -right-1 bg-red-500 text-xs font-bold rounded-full px-1">
+              3
+            </span>
+          </button>
 
-        {/* Menu Mobile (Hambúrguer) */}
-        <div className="md:hidden">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <Menu className="text-white w-7 h-7" />
+          {/* Usuário */}
+          <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
+            <User className="w-5 h-5" />
+            <span className="hidden md:inline">
+              {loading
+                ? "Carregando..."
+                : userData
+                ? `Olá, ${userData.nome} (${userData.perfil})`
+                : "Não autenticado"}
+            </span>
+          </div>
+
+          {/* Mobile */}
+          <button
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu className="w-6 h-6" />
           </button>
         </div>
       </div>
 
-      {/* Menu Mobile Dropdown */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-gray-800 mt-2 rounded-lg shadow-lg">
-          <div className="flex flex-col p-4 space-y-3">
-            {!isAuthenticated ? (
-              <>
-                <a href="/login" className="text-gray-300 hover:text-white">
-                  Login
-                </a>
-                <a href="/register" className="text-gray-300 hover:text-white">
-                  Registrar
-                </a>
-              </>
-            ) : (
-              <>
-                <button className="flex items-center gap-2 text-gray-300 hover:text-white">
-                  <Bell className="w-5 h-5" /> Notificações
-                </button>
-                <a href="/profile" className="text-gray-300 hover:text-white">
-                  Meu Perfil
-                </a>
-                <a href="/settings" className="text-gray-300 hover:text-white">
-                  Configurações
-                </a>
-                <button
-                  onClick={() => alert("Logout")}
-                  className="text-red-400 hover:text-red-500"
-                >
-                  Sair
-                </button>
-              </>
-            )}
-          </div>
+        <div className="md:hidden mt-3 bg-gray-800 rounded p-4 space-y-3">
+          <a href="/dashboard" className="block hover:text-blue-400">
+            Dashboard
+          </a>
+          <a href="/prontuarios" className="block hover:text-blue-400">
+            Prontuários
+          </a>
+          <a href="/documentos" className="block hover:text-blue-400">
+            Documentos
+          </a>
+          <a href="/anotacoes" className="block hover:text-blue-400">
+            Anotações
+          </a>
+          <a href="/usuarios" className="block hover:text-blue-400">
+            Administração
+          </a>
+          <a href="/importar" className="block hover:text-blue-400">
+            Dados
+          </a>
         </div>
       )}
     </nav>
