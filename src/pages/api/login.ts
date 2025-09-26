@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         id: user.id, 
         email: user.email 
       },
-      process.env.JWT_SECRET || 'default_secret',
+      process.env.JWT_SECRET!,
       { 
         expiresIn: '1h' 
       }
