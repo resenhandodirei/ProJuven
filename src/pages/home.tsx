@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards"
 import { Button } from "@/components/Button"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import DocumentList from "@/components/DocumentList"
 import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
+
 
 export default function HomePage() {
 
