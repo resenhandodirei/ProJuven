@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { Bell, Menu, User } from "lucide-react";
 
+import SearchBar from "./SearchBar";
+
 interface UserData {
   nome: string;
   perfil: string;
@@ -70,11 +72,7 @@ export default function Navbar() {
         {/* Ações Direita */}
         <div className="flex items-center gap-4">
           {/* Pesquisa */}
-          <input
-            type="text"
-            placeholder="Pesquisar..."
-            className="hidden md:block rounded px-3 py-1 text-sm text-gray-900"
-          />
+          <SearchBar />
 
           {/* Notificações */}
           <button className="relative p-2 rounded-full hover:bg-gray-800 transition">
