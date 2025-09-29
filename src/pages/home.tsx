@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards"
 import { Button } from "@/components/Button"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import SearchBar from "@/components/SearchBar"
 import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
 
 export default function HomePage() {
@@ -113,7 +112,7 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </motion.div>
-      <SearchBar />
+    {/* Estado vazio exemplo */}
     </div>
     <Footer />
     </>
