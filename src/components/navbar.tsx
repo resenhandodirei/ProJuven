@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Bell, Menu, User } from "lucide-react";
 
-import MenuDropdownUse from "./MenuDropdownUse";
 
 import SearchBar from "./SearchBar";
 
@@ -127,8 +126,6 @@ export default function Navbar() {
           <a href="/importar" className="block hover:text-blue-400">
             Dados
           </a>
-
-                <MenuDropdownUse items={[]} />
 
         </div>
       )}

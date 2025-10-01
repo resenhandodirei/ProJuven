@@ -7,7 +7,6 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
 
-import Topbar from "@/components/Topbar"
 
 export default function HomePage() {
 
@@ -117,7 +116,6 @@ export default function HomePage() {
     {/* Estado vazio exemplo */}
     </div>
     
-    <Topbar />
     <Footer />
     </>
   )
