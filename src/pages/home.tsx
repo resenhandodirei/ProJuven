@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
 
+import Breadcrumbs from "@/components/Breadcrumbs"
 
 export default function HomePage() {
 
@@ -115,7 +116,7 @@ export default function HomePage() {
       </motion.div>
     {/* Estado vazio exemplo */}
     </div>
-    
+    <Breadcrumbs items={[]} />
     <Footer />
     </>
   )
