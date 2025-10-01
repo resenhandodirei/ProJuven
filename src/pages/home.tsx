@@ -7,7 +7,6 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react"
 
-
 export default function HomePage() {
 
   return (
