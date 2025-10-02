@@ -47,7 +47,8 @@ model Login {
 /**
  * Ficha com campos obrigatórios e opcionais, 
  * respeitando as regras de quem cria (Servidor ou outras personas).
- */
+ */ 
+
 model Ficha {
   id               String   @id @default(uuid())
   nomeAtendido     String   @map("nome_atendido")
@@ -79,6 +80,104 @@ model Ficha {
 
 /**
  * ===== PRONTUÁRIOS (estrutura básica pronta para expansão) =====
+ */
+
+// ENUMS
+enum PessoaQueAtendeu {
+  DEFENSOR_RUBENS
+  DEFENSORA_LUCIANA
+  DEFENSORA_ANDREIA
+  ASSESSOR_PEDRO
+  ESTAGIARIO_ALEX
+  ESTAGIARIO_ALAN
+  ESTAGIARIA_GABRIELLE
+  ESTAGIARIO_GUSTAVO
+  ESTAGIARIA_LARISSA
+  ESTAGIARIO_MARCOS
+  ESTAGIARIA_RAYANE
+  ESTAGIARIA_THAYNA
+}
+
+enum DefensorResponsavel {
+  DEFENSOR_RUBENS
+  DEFENSORA_LUCIANA
+  DEFENSORA_ANDREIA
+}
+
+enum TipoCrime {
+  PATRIMONIO
+  VIDA
+  HONRA
+  DROGAS
+  ARMAS
+  SEXUAL
+  OUTROS
+}
+
+enum Parentesco {
+  MAE
+  PAI
+  IRMA
+  IRMAO
+  TIOS
+  AVOS
+  NORA
+  CUNHADO
+  OUTROS
+}
+
+// MODELS
+model Jovem {
+  id             Int       @id @default(autoincrement())
+  nome           String
+  dataNascimento DateTime
+  criadoEm       DateTime  @default(now())
+  atualizadoEm   DateTime  @updatedAt
+  processos      Processo[]
+  familiares     Familiar[]
+}
+
+model Familiar {
+  id                  Int        @id @default(autoincrement())
+  jovemId             Int
+  jovem               Jovem      @relation(fields: [jovemId], references: [id], onDelete: Cascade)
+  nome                String
+  parentesco          Parentesco
+  responsavelPrincipal Boolean   @default(false)
+  contatos            ContatoFamiliar[]
+}
+
+model ContatoFamiliar {
+  id          Int        @id @default(autoincrement())
+  familiarId  Int
+  familiar    Familiar   @relation(fields: [familiarId], references: [id], onDelete: Cascade)
+  telefone    String
+  parentesco  Parentesco?
+}
+
+model Processo {
+  id          Int        @id @default(autoincrement())
+  jovemId     Int
+  jovem       Jovem      @relation(fields: [jovemId], references: [id], onDelete: Cascade)
+  numero      String
+  tipoCrime   TipoCrime
+  descricao   String?
+  criadoEm    DateTime   @default(now())
+  atendimentos Atendimento[]
+}
+
+model Atendimento {
+  id                 Int                 @id @default(autoincrement())
+  processoId         Int
+  processo           Processo            @relation(fields: [processoId], references: [id], onDelete: Cascade)
+  pessoaQueAtendeu   PessoaQueAtendeu
+  defensorResponsavel DefensorResponsavel
+  criadoEm           DateTime            @default(now())
+  atualizadoEm       DateTime            @updatedAt
+}
+
+/**
+ * ===== PRONTUÁRIOS (ESTRUTURA INICIAL) =====
  */
 
 model ProntuarioJuridico {
