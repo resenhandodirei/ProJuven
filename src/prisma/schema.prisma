@@ -82,48 +82,52 @@ model Ficha {
  * ===== PRONTUÁRIOS (estrutura básica pronta para expansão) =====
  */
 
-// ENUMS
+// ENUNS DOS PRONTUÁRIOS
+// Pessoas que atendem
 enum PessoaQueAtendeu {
-  DEFENSOR_RUBENS
-  DEFENSORA_LUCIANA
-  DEFENSORA_ANDREIA
-  ASSESSOR_PEDRO
-  ESTAGIARIO_ALEX
-  ESTAGIARIO_ALAN
-  ESTAGIARIA_GABRIELLE
-  ESTAGIARIO_GUSTAVO
-  ESTAGIARIA_LARISSA
-  ESTAGIARIO_MARCOS
-  ESTAGIARIA_RAYANE
-  ESTAGIARIA_THAYNA
+  DEFENSOR_RUBENS      @map("Defensor Dr. Rubens")
+  DEFENSORA_LUCIANA    @map("Defensora Dra. Luciana")
+  DEFENSORA_ANDREIA    @map("Defensora Dra. Andreia")
+  ASSESSOR_PEDRO       @map("Assessor jurídico Dr. Pedro")
+  ESTAGIARIO_ALEX      @map("Estagiário Alex")
+  ESTAGIARIO_ALAN      @map("Estagiário Alan")
+  ESTAGIARIA_GABRIELLE @map("Estagiária Gabrielle")
+  ESTAGIARIO_GUSTAVO   @map("Estagiário Gustavo Cícero")
+  ESTAGIARIA_LARISSA   @map("Estagiária Larissa Corrêa")
+  ESTAGIARIO_MARCOS    @map("Estagiário Marcos")
+  ESTAGIARIA_RAYANE    @map("Estagiária Rayane")
+  ESTAGIARIA_THAYNA    @map("Estagiária Thayná Evelyn")
 }
 
+// Defensores responsáveis
 enum DefensorResponsavel {
-  DEFENSOR_RUBENS
-  DEFENSORA_LUCIANA
-  DEFENSORA_ANDREIA
+  DEFENSOR_RUBENS    @map("Defensor Dr. Rubens")
+  DEFENSORA_LUCIANA  @map("Defensora Dra. Luciana")
+  DEFENSORA_ANDREIA  @map("Defensora Dra. Andreia")
 }
 
+// Tipos fixos de crime
 enum TipoCrime {
-  PATRIMONIO
-  VIDA
-  HONRA
-  DROGAS
-  ARMAS
-  SEXUAL
-  OUTROS
+  PATRIMONIO @map("Patrimonio")
+  VIDA       @map("Vida")
+  HONRA      @map("Honra")
+  DROGAS     @map("Drogas")
+  ARMAS      @map("Armas")
+  SEXUAL     @map("Sexual")
+  OUTROS     @map("Outros")
 }
 
+// Tipo de parentesco
 enum Parentesco {
-  MAE
-  PAI
-  IRMA
-  IRMAO
-  TIOS
-  AVOS
-  NORA
-  CUNHADO
-  OUTROS
+  MAE       @map("Mãe")
+  PAI       @map("Pai")
+  IRMA      @map("Irmã")
+  IRMAO     @map("Irmão(ã)")
+  TIOS      @map("Tios")
+  AVOS      @map("Avos")
+  NORA      @map("Nora")
+  CUNHADO   @map("Cunhado(a)")
+  OUTROS    @map("Outros")
 }
 
 // MODELS
