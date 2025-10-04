@@ -8,7 +8,7 @@ datasource db {
 }
 
 /**
- * ===== ENUMS =====
+ * ===== ENUMS DE USUÁRIOS DO PROJUVEN =====
  */
 
 enum TipoDePerfilEnum {
@@ -20,7 +20,7 @@ enum TipoDePerfilEnum {
 }
 
 /**
- * ===== MODELS =====
+ * ===== MODELS DE USUÁRIOS DO PROJUVEN =====
  */
 
 /**
@@ -34,9 +34,14 @@ model Login {
   email        String           @unique @db.VarChar(255)
   senha        String           @db.VarChar(255)
 
+  ativo        Boolean          @default(true)
+
+  // Relacionamentos
   fichas              Ficha[]                  @relation("CriadorFicha")
   prontuariosJuridico ProntuarioJuridico[]     @relation("CriadorProntuarioJuridico")
   prontuariosPsico    ProntuarioPsicossocial[] @relation("CriadorProntuarioPsicossocial")
+  atendimentosComoAtendente Atendimento[]      @relation("Atendente")
+  atendimentosComoDefensor  Atendimento[]      @relation("DefensorResponsável")
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -65,9 +70,11 @@ model Ficha {
   nomeResponsavel  String?  @map("nome_responsavel")
   documentoResponsavel String? @map("documento_responsavel") // cpf ou rg do responsável
   endereco         String?  @map("endereco")
-
+  
+  //Relacionamentos
   idUsuarioCriador Int      @map("id_usuario_criador") 
   criador          Login    @relation("CriadorFicha", fields: [idUsuarioCriador], references: [id])
+  defensorResponsavel Login @relation("DefensorResponsavel", fields: [defensorResponsavel], references: [id])
 
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
@@ -83,6 +90,253 @@ model Ficha {
  */
 
 // ENUNS DOS PRONTUÁRIOS
+
+enum AtoInfracional {
+  FURTO
+  FEMINICIDIO
+  LESAO_CORPORAL
+  HOMICIDIO
+  LATROCINIO
+  ROUBO
+  RECEPTACAO
+  PORTE_ARMA
+  ESTUPRO
+  AMEACA
+  DANO
+  OUTROS
+}
+
+enum StatusConsumacao {
+  CONSUMADO
+  TENTADO
+}
+
+enum Reincidencia {
+  SIM
+  NAO
+}
+
+enum Faccao {
+  CV
+  GDE
+  FDN
+  PCC
+  OUTROS
+}
+
+enum Deficiencia {
+  VISUAL
+  AUDITIVA
+  MOTORA
+  INTELECTUAL
+  ADL
+  OUTRAS
+}
+
+enum FaixaRenda {
+  ATE_600
+  DE_600_A_1212
+  DE_1212_A_2424
+  DE_2424_A_3636
+  DE_3636_A_6060
+  DE_6060_A_12120
+  DE_12120_A_24240
+  MAIS_24240
+}
+
+enum OrigemRenda {
+  FORMAL
+  INFORMAL
+  APOSENTADORIA
+  PROGRAMAS_SOCIAIS
+  ALUGUEL
+  ALIMENTICIA
+  CRIMES
+  TRAFICO
+  OUTRAS
+}
+
+enum AgenteViolenciaUrbana {
+  FORCAS_SEGURANCA
+  FACCOES
+  OUTROS
+}
+
+enum RiscoAmeaca {
+  SIM
+  NAO
+}
+
+enum FormaProcesso {
+  LIBERDADE
+  INTERNACAO_PROVISORIA
+  SEMILIBERDADE
+  INTERNACAO_DEFINITIVA
+  OUTRA
+}
+
+enum StatusSaudeMental {
+  SIM
+  NAO
+}
+
+enum MomentoSaudeMental {
+  ANTERIOR
+  POSTERIOR
+}
+
+enum FrequenciaDrogas {
+  RARAMENTE
+  FREQUENTE
+  MAIS_3X_SEMANA
+  DIARIO
+}
+
+enum TipoDroga {
+  ALCOOL
+  TABACO
+  CRACK
+  MACONHA
+  COCAINA
+  SOLVENTES
+  TRANQUILIZANTES
+  ANESTESICOS
+  ALUCINOGENOS_SINTETICOS
+  ALUCINOGENOS_NATURAIS
+  ANFETAMINAS
+  OPIOIDES
+  ECSTASY
+  HEROINA
+  NAO_SABE
+}
+
+enum TentativaSuicidio {
+  SIM
+  NAO
+}
+
+enum MomentoSuicidio {
+  ANTERIOR
+  POSTERIOR
+}
+
+enum FormaSuicidio {
+  MUTILACAO
+  ATROPELAMENTO
+  ENFORCAMENTO
+  INTOXICACAO
+  ARMA_FOGO
+  QUEDA
+  AFOGAMENTO
+  OUTROS
+}
+
+enum UnidadeInternacao {
+  MARIA_FRANCISCA
+  ALDACI
+  ANTONIO_BEZERRA
+  CARDIAL
+  DOM_BOSCO
+  PATATIVA
+  SAO_FRANCISCO
+  SAO_MIGUEL
+  CANINDEZINHO
+  PASSARE
+  UAI
+  INTERIOR
+}
+
+enum TipoMedida {
+  ADVERTENCIA
+  PROVISORIA
+  INTERNACAO_SANCAO
+  SEMILIBERDADE
+  LIBERDADE_ASSISTIDA
+  PRESTACAO_SERVICOS
+  POS_MEDIDA
+}
+
+enum AgenteViolenciaInstitucional {
+  PM
+  PC
+  SOCIOEDUCADOR
+  AGENTE_PENITENCIARIO
+  MEDICO
+  OUTROS
+}
+
+enum FormaViolenciaInstitucional {
+  RECUSA_MEDICA
+  VIOLENCIA_FISICA
+  VIOLENCIA_PSICOLOGICA
+  MAUS_TRATOS
+}
+
+enum TipoAmeaca {
+  MORTE
+  EXPULSAO
+  PAGAMENTO
+  NOVO_ATO
+  PERDA_BEM
+  OUTROS
+}
+
+enum FaixaRenda {
+  ATE_600
+  DE_600_A_1212
+  DE_1212_A_2424
+  DE_2424_A_3636
+  DE_3636_A_6060
+  DE_6060_A_12120
+  DE_12120_A_24240
+  MAIS_24240
+}
+
+enum OrigemRenda {
+  FORMAL
+  INFORMAL
+  APOSENTADORIA
+  PROGRAMAS_SOCIAIS
+  ALUGUEL
+  ALIMENTICIA
+  CRIMES
+  TRAFICO
+  OUTRAS
+}
+
+enum EscolaridadeStatus {
+  ATIVO
+  INATIVO
+}
+
+// Escolaridade 
+enum EscolaridadeEnum {
+  ANALFABETO      @map("Analfabeto")
+  SEMIANALFABETO  @map("Semianalfabeto")
+  FUNDAMENTAL_INCOMPLETO @map("Fundamental incompleto")
+  FUNDAMENTAL_COMPLETO   @map("Fundamental completo")
+  MEDIO_INCOMPLETO       @map("Ensino médio incompleto")
+  MEDIO_COMPLETO         @map("Ensino médio completo")
+  TECNICO                @map("Ensino técnico")
+  SUPERIOR               @map("Superior")
+}
+
+// Raça
+enum RacaEnum {
+  BRANCO           @map("Branco")
+  AMARELO          @map("Amarelo")
+  PARDO            @map("Pardo")
+  PRETO            @map("Preto")
+  INDIGENA         @map("Indígena")
+}
+
+// Gênero
+enum GeneroEnum {
+  MASCULINO         @map("Masculino")
+  FEMININO          @map("Feminino")
+  NÃO_INFORMAR      @map("Prefere não informar")
+}
+
 // Pessoas que atendem
 enum PessoaQueAtendeu {
   DEFENSOR_RUBENS      @map("Defensor Dr. Rubens")
@@ -137,8 +391,23 @@ model Jovem {
   dataNascimento DateTime
   criadoEm       DateTime  @default(now())
   atualizadoEm   DateTime  @updatedAt
+
+  // Relacionamentos
   processos      Processo[]
   familiares     Familiar[]
+  atendimentos   Atendimento[]
+  ficha          Ficha
+}
+
+model Processo {
+  id          Int        @id @default(autoincrement())
+  jovemId     Int
+  jovem       Jovem      @relation(fields: [jovemId], references: [id], onDelete: Cascade)
+  numero      String
+  tipoCrime   TipoCrime
+  descricao   String?
+  criadoEm    DateTime   @default(now())
+  atendimentos Atendimento[]
 }
 
 model Familiar {
@@ -159,17 +428,6 @@ model ContatoFamiliar {
   parentesco  Parentesco?
 }
 
-model Processo {
-  id          Int        @id @default(autoincrement())
-  jovemId     Int
-  jovem       Jovem      @relation(fields: [jovemId], references: [id], onDelete: Cascade)
-  numero      String
-  tipoCrime   TipoCrime
-  descricao   String?
-  criadoEm    DateTime   @default(now())
-  atendimentos Atendimento[]
-}
-
 model Atendimento {
   id                 Int                 @id @default(autoincrement())
   processoId         Int
@@ -179,6 +437,96 @@ model Atendimento {
   criadoEm           DateTime            @default(now())
   atualizadoEm       DateTime            @updatedAt
 }
+
+// ---------- DADOS COMPLEMENTARES DO JOVEM ----------
+
+model Deficiencia {
+  id          Int             @id @default(autoincrement())
+  jovem       Jovem           @relation(fields: [jovemId], references: [id])
+  jovemId     Int
+  tipo        TipoDeficiencia
+}
+
+model Renda {
+  id          Int             @id @default(autoincrement())
+  jovem       Jovem           @relation(fields: [jovemId], references: [id])
+  jovemId     Int
+  faixa       FaixaRenda
+  origens     OrigemRenda[]
+}
+
+model Escolaridade {
+  id          Int             @id @default(autoincrement())
+  jovem       Jovem           @relation(fields: [jovemId], references: [id])
+  jovemId     Int
+  status      EscolaridadeStatus
+  tempoInativo Int?
+}
+
+// ---------- ATENDIMENTO DETALHES ----------
+
+model SaudeMental {
+  id                Int              @id @default(autoincrement())
+  atendimento       Atendimento      @relation(fields: [atendimentoId], references: [id])
+  atendimentoId     Int
+  status            StatusSaudeMental
+  momento           MomentoSaudeMental[]
+  usoDrogas         Boolean
+  frequenciaDrogas  FrequenciaDrogas?
+  tiposDrogas       TipoDroga[]
+  tentativaSuicidio TentativaSuicidio
+  momentoSuicidio   MomentoSuicidio[]
+  formaSuicidio     FormaSuicidio[]
+}
+
+model Violencia {
+  id                Int             @id @default(autoincrement())
+  atendimento       Atendimento     @relation(fields: [atendimentoId], references: [id])
+  atendimentoId     Int
+  violenciaUrbana   AgenteViolenciaUrbana[]
+  riscoAmeaca       RiscoAmeaca
+  institucional     AgenteViolenciaInstitucional[]
+  formaInstitucional FormaViolenciaInstitucional[]
+  localInstitucional UnidadeInternacao?
+  descricao         String?
+  qtdIncidentes     Int?
+}
+
+model Ameaca {
+  id             Int             @id @default(autoincrement())
+  atendimento    Atendimento     @relation(fields: [atendimentoId], references: [id])
+  atendimentoId  Int
+  origem         String?
+  tipo           TipoAmeaca[]
+  descricao      String?
+
+  // Relacionamentos auxiliares
+  ppcam          Ppcam?
+  ppro           Ppro?
+}
+
+model Ppcam {
+  id        Int      @id @default(autoincrement())
+  ameaca    Ameaca   @relation(fields: [ameacaId], references: [id])
+  ameacaId  Int
+
+  // Campos auxiliares (expansíveis futuramente)
+  voluntario Boolean?
+  meiosPropriosConvencionais Boolean?
+  meiosPropriosIlicitos Boolean?
+}
+
+model Ppro {
+  id        Int      @id @default(autoincrement())
+  ameaca    Ameaca   @relation(fields: [ameacaId], references: [id])
+  ameacaId  Int
+
+  // Campos auxiliares (expansíveis futuramente)
+  voluntario Boolean?
+  meiosPropriosConvencionais Boolean?
+  meiosPropriosIlicitos Boolean?
+}
+
 
 /**
  * ===== PRONTUÁRIOS (ESTRUTURA INICIAL) =====
