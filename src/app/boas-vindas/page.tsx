@@ -1,13 +1,16 @@
-// pages/boas-vindas.tsx
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
 import { Button } from "@/components/Button";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+
 import { useRouter } from "next/navigation";
 
 export default function BoasVindas() {
   const router = useRouter();
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <Card className="max-w-md w-full text-center shadow-lg p-6">
         <CardHeader>
@@ -33,5 +36,7 @@ export default function BoasVindas() {
         </CardContent>
       </Card>
     </div>
+    
+    </>
   );
 }

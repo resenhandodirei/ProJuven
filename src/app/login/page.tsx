@@ -1,5 +1,9 @@
-import { useRouter } from 'next/router';
+"use client";
+
+import { useRouter } from 'next/navigation';
+
 import { useState } from 'react';
+import  '../../styles/globals.css';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 
@@ -88,7 +92,7 @@ export default function LoginPage() {
             </div>
 
             <div className="text-right">
-              <a href="/trocar-senha" className="text-sm text-blue-600 hover:underline">
+              <a onClick={() => router.push("/trocar-senha")} href="/trocar-senha" className="text-sm text-blue-600 hover:underline">
              
                 Esqueci minha senha
               </a>

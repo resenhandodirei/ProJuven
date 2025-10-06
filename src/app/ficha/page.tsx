@@ -1,5 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import React from "react";
+
+import "@/styles/globals.css";
+
+
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
