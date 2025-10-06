@@ -1,5 +1,9 @@
-import { useRouter } from 'next/router';
+"use client";
+
+import { useRouter } from 'next/navigation';
+
 import { useState } from 'react';
+import  '../../styles/globals.css';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 

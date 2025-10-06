@@ -5,25 +5,15 @@ import "@/styles/globals.css";
 
 import { Button } from "@/components/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 import { motion } from "framer-motion";
 import { Shield, Users, FileText } from "lucide-react";
 
 export default function HomePublic() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
-      {/* NAVBAR */}
-      <nav className="w-full flex justify-between items-center px-6 py-4 bg-white shadow-sm">
-        <h1 className="text-2xl font-bold text-primary">ProJuven</h1>
-        <div className="flex gap-3">
-          <Button variant="outline" onClick={() => (window.location.href = "/login")}>
-            Entrar
-          </Button>
-          <Button onClick={() => (window.location.href = "/primeiro-acesso")}>
-            Primeiro Acesso
-          </Button>
-        </div>
-      </nav>
-
+      <Navbar />
       {/* HERO SECTION */}
       <section className="flex flex-col items-center justify-center flex-1 text-center px-6 py-16 bg-gradient-to-b from-blue-50 to-white">
         <motion.h2
@@ -116,13 +106,7 @@ export default function HomePublic() {
         </motion.div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-white py-6 border-t mt-auto text-center text-sm text-gray-500">
-        <p>
-          © {new Date().getFullYear()} ProJuven — Defensoria Pública do Estado.  
-          <br /> Todos os direitos reservados.
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }
