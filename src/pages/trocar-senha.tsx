@@ -1,19 +1,22 @@
-// src/pages/trocar-senha.tsx
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { parse } from "cookie";
 import { useRouter } from "next/router"; // <- Pages Router usa next/router
 import { useState } from "react";
 import axios from "axios";
 
+import { InputPassword } from "@/components/InputPassword";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+
 export const getServerSideProps: GetServerSideProps = async ({ req }: GetServerSidePropsContext) => {
   const cookies = req.headers.cookie ? parse(req.headers.cookie) : {};
   const token = cookies["auth-token"]; // ajuste o nome do cookie conforme seu app
 
-  if (!token) {
+  /* if (!token) {
     return {
       redirect: { destination: "/login", permanent: false },
     };
-  }
+  } */
 
   // opcional: validar token no servidor
 
@@ -61,7 +64,7 @@ export default function TrocarSenha() {
 
         <div className="mb-4">
           <label className="block mb-2 font-medium">Senha Atual</label>
-          <input
+          <InputPassword
             type="password"
             name="senhaAtual"
             value={form.senhaAtual}
@@ -73,7 +76,7 @@ export default function TrocarSenha() {
 
         <div className="mb-4">
           <label className="block mb-2 font-medium">Nova Senha</label>
-          <input
+          <InputPassword
             type="password"
             name="novaSenha"
             value={form.novaSenha}
@@ -85,7 +88,7 @@ export default function TrocarSenha() {
 
         <div className="mb-4">
           <label className="block mb-2 font-medium">Confirmar Nova Senha</label>
-          <input
+          <InputPassword
             type="password"
             name="confirmarSenha"
             value={form.confirmarSenha}

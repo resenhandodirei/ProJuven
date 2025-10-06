@@ -88,7 +88,7 @@ export default function LoginPage() {
             </div>
 
             <div className="text-right">
-              <a href="/trocar-senha" className="text-sm text-blue-600 hover:underline">
+              <a onClick={() => router.push("/trocar-senha")} href="/trocar-senha" className="text-sm text-blue-600 hover:underline">
              
                 Esqueci minha senha
               </a>
