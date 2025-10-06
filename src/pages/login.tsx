@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -87,7 +88,7 @@ export default function LoginPage() {
             </div>
 
             <div className="text-right">
-              <a href="/recuperar-senha" className="text-sm text-blue-600 hover:underline">
+              <a href="/trocar-senha" className="text-sm text-blue-600 hover:underline">
              
                 Esqueci minha senha
               </a>

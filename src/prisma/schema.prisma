@@ -8,7 +8,7 @@ datasource db {
 }
 
 /**
- * ===== ENUMS DE USUÁRIOS DO PROJUVEN =====
+ * ===== ENUMS =====
  */
 
 enum TipoDePerfilEnum {
@@ -19,112 +19,50 @@ enum TipoDePerfilEnum {
   ESTAGIARIO
 }
 
-/**
- * ===== MODELS DE USUÁRIOS DO PROJUVEN =====
- */
-
-/**
- * Usuários / contas de login
- */
-model Login {
-  id           Int              @id @default(autoincrement())
-  nome         String           @db.VarChar(100)
-  genero       String?          @db.VarChar(20)
-  tipoDePerfil TipoDePerfilEnum @map("tipo_de_perfil")
-  email        String           @unique @db.VarChar(255)
-  senha        String           @db.VarChar(255)
-
-  ativo        Boolean          @default(true)
-
-  // Relacionamentos
-  fichas              Ficha[]                  @relation("CriadorFicha")
-  prontuariosJuridico ProntuarioJuridico[]     @relation("CriadorProntuarioJuridico")
-  prontuariosPsico    ProntuarioPsicossocial[] @relation("CriadorProntuarioPsicossocial")
-  atendimentosComoAtendente Atendimento[]      @relation("Atendente")
-  atendimentosComoDefensor  Atendimento[]      @relation("DefensorResponsável")
-
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
-  @@map("login")
-}
-
-/**
- * Ficha com campos obrigatórios e opcionais, 
- * respeitando as regras de quem cria (Servidor ou outras personas).
- */ 
-
-model Ficha {
-  id               String   @id @default(uuid())
-  nomeAtendido     String   @map("nome_atendido")
-  nomeFamiliar     String?  @map("nome_familiar") // obrigatório só p/ algumas personas
-  cpf              String?  @map("cpf")
-  rg               String?  @map("rg")
-  dataNascimento   DateTime? @map("data_nascimento")
-
-  qtdProcesso      Int?     @map("qtd_processo")
-  numeroProcesso   String?  @map("numero_processo") // pode ser 1 ou vários
-  varaProcesso     String?  @map("vara_processo")   // ex: "5ª Vara"
-  
-  telefonesContato String[] @map("telefones_contato") // servidor precisa registrar vários
-  nomeResponsavel  String?  @map("nome_responsavel")
-  documentoResponsavel String? @map("documento_responsavel") // cpf ou rg do responsável
-  endereco         String?  @map("endereco")
-  
-  //Relacionamentos
-  idUsuarioCriador Int      @map("id_usuario_criador") 
-  criador          Login    @relation("CriadorFicha", fields: [idUsuarioCriador], references: [id])
-  defensorResponsavel Login @relation("DefensorResponsavel", fields: [defensorResponsavel], references: [id])
-
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-
-  ProntuarioJuridico     ProntuarioJuridico[]
-  ProntuarioPsicossocial ProntuarioPsicossocial[]
-
-  @@map("ficha")
-}
-
-/**
- * ===== PRONTUÁRIOS (estrutura básica pronta para expansão) =====
- */
-
-// ENUNS DOS PRONTUÁRIOS
-
-enum AtoInfracional {
-  FURTO
-  FEMINICIDIO
-  LESAO_CORPORAL
-  HOMICIDIO
-  LATROCINIO
-  ROUBO
-  RECEPTACAO
-  PORTE_ARMA
-  ESTUPRO
-  AMEACA
-  DANO
+enum TipoCrime {
+  PATRIMONIO
+  VIDA
+  HONRA
+  DROGAS
+  ARMAS
+  SEXUAL
   OUTROS
 }
 
-enum StatusConsumacao {
-  CONSUMADO
-  TENTADO
-}
-
-enum Reincidencia {
-  SIM
-  NAO
-}
-
-enum Faccao {
-  CV
-  GDE
-  FDN
-  PCC
+enum Parentesco {
+  MAE
+  PAI
+  IRMA
+  IRMAO
+  TIOS
+  AVOS
+  NORA
+  CUNHADO
   OUTROS
 }
 
-enum Deficiencia {
+enum PessoaQueAtendeu {
+  DEFENSOR_RUBENS      @map("Defensor Dr. Rubens")
+  DEFENSORA_LUCIANA    @map("Defensora Dra. Luciana")
+  DEFENSORA_ANDREIA    @map("Defensora Dra. Andreia")
+  ASSESSOR_PEDRO       @map("Assessor jurídico Dr. Pedro")
+  ESTAGIARIO_ALEX      @map("Estagiário Alex")
+  ESTAGIARIO_ALAN      @map("Estagiário Alan")
+  ESTAGIARIA_GABRIELLE @map("Estagiária Gabrielle")
+  ESTAGIARIO_GUSTAVO   @map("Estagiário Gustavo Cícero")
+  ESTAGIARIA_LARISSA   @map("Estagiária Larissa Corrêa")
+  ESTAGIARIO_MARCOS    @map("Estagiário Marcos")
+  ESTAGIARIA_RAYANE    @map("Estagiária Rayane")
+  ESTAGIARIA_THAYNA    @map("Estagiária Thayná Evelyn")
+}
+
+enum DefensorResponsavel {
+  DEFENSOR_RUBENS    @map("Defensor Dr. Rubens")
+  DEFENSORA_LUCIANA  @map("Defensora Dra. Luciana")
+  DEFENSORA_ANDREIA  @map("Defensora Dra. Andreia")
+}
+
+enum TipoDeficiencia {
   VISUAL
   AUDITIVA
   MOTORA
@@ -156,235 +94,73 @@ enum OrigemRenda {
   OUTRAS
 }
 
-enum AgenteViolenciaUrbana {
-  FORCAS_SEGURANCA
-  FACCOES
-  OUTROS
-}
-
-enum RiscoAmeaca {
-  SIM
-  NAO
-}
-
-enum FormaProcesso {
-  LIBERDADE
-  INTERNACAO_PROVISORIA
-  SEMILIBERDADE
-  INTERNACAO_DEFINITIVA
-  OUTRA
-}
-
-enum StatusSaudeMental {
-  SIM
-  NAO
-}
-
-enum MomentoSaudeMental {
-  ANTERIOR
-  POSTERIOR
-}
-
-enum FrequenciaDrogas {
-  RARAMENTE
-  FREQUENTE
-  MAIS_3X_SEMANA
-  DIARIO
-}
-
-enum TipoDroga {
-  ALCOOL
-  TABACO
-  CRACK
-  MACONHA
-  COCAINA
-  SOLVENTES
-  TRANQUILIZANTES
-  ANESTESICOS
-  ALUCINOGENOS_SINTETICOS
-  ALUCINOGENOS_NATURAIS
-  ANFETAMINAS
-  OPIOIDES
-  ECSTASY
-  HEROINA
-  NAO_SABE
-}
-
-enum TentativaSuicidio {
-  SIM
-  NAO
-}
-
-enum MomentoSuicidio {
-  ANTERIOR
-  POSTERIOR
-}
-
-enum FormaSuicidio {
-  MUTILACAO
-  ATROPELAMENTO
-  ENFORCAMENTO
-  INTOXICACAO
-  ARMA_FOGO
-  QUEDA
-  AFOGAMENTO
-  OUTROS
-}
-
-enum UnidadeInternacao {
-  MARIA_FRANCISCA
-  ALDACI
-  ANTONIO_BEZERRA
-  CARDIAL
-  DOM_BOSCO
-  PATATIVA
-  SAO_FRANCISCO
-  SAO_MIGUEL
-  CANINDEZINHO
-  PASSARE
-  UAI
-  INTERIOR
-}
-
-enum TipoMedida {
-  ADVERTENCIA
-  PROVISORIA
-  INTERNACAO_SANCAO
-  SEMILIBERDADE
-  LIBERDADE_ASSISTIDA
-  PRESTACAO_SERVICOS
-  POS_MEDIDA
-}
-
-enum AgenteViolenciaInstitucional {
-  PM
-  PC
-  SOCIOEDUCADOR
-  AGENTE_PENITENCIARIO
-  MEDICO
-  OUTROS
-}
-
-enum FormaViolenciaInstitucional {
-  RECUSA_MEDICA
-  VIOLENCIA_FISICA
-  VIOLENCIA_PSICOLOGICA
-  MAUS_TRATOS
-}
-
-enum TipoAmeaca {
-  MORTE
-  EXPULSAO
-  PAGAMENTO
-  NOVO_ATO
-  PERDA_BEM
-  OUTROS
-}
-
-enum FaixaRenda {
-  ATE_600
-  DE_600_A_1212
-  DE_1212_A_2424
-  DE_2424_A_3636
-  DE_3636_A_6060
-  DE_6060_A_12120
-  DE_12120_A_24240
-  MAIS_24240
-}
-
-enum OrigemRenda {
-  FORMAL
-  INFORMAL
-  APOSENTADORIA
-  PROGRAMAS_SOCIAIS
-  ALUGUEL
-  ALIMENTICIA
-  CRIMES
-  TRAFICO
-  OUTRAS
-}
-
 enum EscolaridadeStatus {
   ATIVO
   INATIVO
 }
 
-// Escolaridade 
 enum EscolaridadeEnum {
-  ANALFABETO      @map("Analfabeto")
-  SEMIANALFABETO  @map("Semianalfabeto")
-  FUNDAMENTAL_INCOMPLETO @map("Fundamental incompleto")
-  FUNDAMENTAL_COMPLETO   @map("Fundamental completo")
-  MEDIO_INCOMPLETO       @map("Ensino médio incompleto")
-  MEDIO_COMPLETO         @map("Ensino médio completo")
-  TECNICO                @map("Ensino técnico")
-  SUPERIOR               @map("Superior")
+  ANALFABETO
+  SEMIANALFABETO
+  FUNDAMENTAL_INCOMPLETO
+  FUNDAMENTAL_COMPLETO
+  MEDIO_INCOMPLETO
+  MEDIO_COMPLETO
+  TECNICO
+  SUPERIOR
 }
 
-// Raça
-enum RacaEnum {
-  BRANCO           @map("Branco")
-  AMARELO          @map("Amarelo")
-  PARDO            @map("Pardo")
-  PRETO            @map("Preto")
-  INDIGENA         @map("Indígena")
+/**
+ * ===== MODELS =====
+ */
+
+model Login {
+  id           Int              @id @default(autoincrement())
+  nome         String
+  genero       String?
+  tipoDePerfil TipoDePerfilEnum
+  email        String           @unique
+  senha        String
+  ativo        Boolean          @default(true)
+
+  fichas              Ficha[]                  @relation("CriadorFicha")
+  prontuariosJuridico ProntuarioJuridico[]     @relation("CriadorProntuarioJuridico")
+  prontuariosPsico    ProntuarioPsicossocial[] @relation("CriadorProntuarioPsicossocial")
+  atendimentosComoAtendente Atendimento[]      @relation("Atendente")
+  atendimentosComoDefensor  Atendimento[]      @relation("DefensorResponsavel")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Gênero
-enum GeneroEnum {
-  MASCULINO         @map("Masculino")
-  FEMININO          @map("Feminino")
-  NÃO_INFORMAR      @map("Prefere não informar")
+model Ficha {
+  id                 String   @id @default(uuid())
+  nomeAtendido       String
+  nomeFamiliar       String?
+  cpf                String?
+  rg                 String?
+  dataNascimento     DateTime?
+  qtdProcesso        Int?
+  numeroProcesso     String?
+  varaProcesso       String?
+  telefonesContato   String[]
+  nomeResponsavel    String?
+  documentoResponsavel String?
+  endereco           String?
+
+  idUsuarioCriador Int
+  criador          Login @relation("CriadorFicha", fields: [idUsuarioCriador], references: [id])
+
+  defensorResponsavelId Int
+  defensorResponsavel   Login @relation("DefensorResponsavel", fields: [defensorResponsavelId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ProntuarioJuridico     ProntuarioJuridico[]
+  ProntuarioPsicossocial ProntuarioPsicossocial[]
 }
 
-// Pessoas que atendem
-enum PessoaQueAtendeu {
-  DEFENSOR_RUBENS      @map("Defensor Dr. Rubens")
-  DEFENSORA_LUCIANA    @map("Defensora Dra. Luciana")
-  DEFENSORA_ANDREIA    @map("Defensora Dra. Andreia")
-  ASSESSOR_PEDRO       @map("Assessor jurídico Dr. Pedro")
-  ESTAGIARIO_ALEX      @map("Estagiário Alex")
-  ESTAGIARIO_ALAN      @map("Estagiário Alan")
-  ESTAGIARIA_GABRIELLE @map("Estagiária Gabrielle")
-  ESTAGIARIO_GUSTAVO   @map("Estagiário Gustavo Cícero")
-  ESTAGIARIA_LARISSA   @map("Estagiária Larissa Corrêa")
-  ESTAGIARIO_MARCOS    @map("Estagiário Marcos")
-  ESTAGIARIA_RAYANE    @map("Estagiária Rayane")
-  ESTAGIARIA_THAYNA    @map("Estagiária Thayná Evelyn")
-}
-
-// Defensores responsáveis
-enum DefensorResponsavel {
-  DEFENSOR_RUBENS    @map("Defensor Dr. Rubens")
-  DEFENSORA_LUCIANA  @map("Defensora Dra. Luciana")
-  DEFENSORA_ANDREIA  @map("Defensora Dra. Andreia")
-}
-
-// Tipos fixos de crime
-enum TipoCrime {
-  PATRIMONIO @map("Patrimonio")
-  VIDA       @map("Vida")
-  HONRA      @map("Honra")
-  DROGAS     @map("Drogas")
-  ARMAS      @map("Armas")
-  SEXUAL     @map("Sexual")
-  OUTROS     @map("Outros")
-}
-
-// Tipo de parentesco
-enum Parentesco {
-  MAE       @map("Mãe")
-  PAI       @map("Pai")
-  IRMA      @map("Irmã")
-  IRMAO     @map("Irmão(ã)")
-  TIOS      @map("Tios")
-  AVOS      @map("Avos")
-  NORA      @map("Nora")
-  CUNHADO   @map("Cunhado(a)")
-  OUTROS    @map("Outros")
-}
-
-// MODELS
 model Jovem {
   id             Int       @id @default(autoincrement())
   nome           String
@@ -392,11 +168,12 @@ model Jovem {
   criadoEm       DateTime  @default(now())
   atualizadoEm   DateTime  @updatedAt
 
-  // Relacionamentos
   processos      Processo[]
   familiares     Familiar[]
   atendimentos   Atendimento[]
-  ficha          Ficha
+  deficiencias   Deficiencia[]
+  rendas         Renda[]
+  escolaridade   Escolaridade[]
 }
 
 model Processo {
@@ -411,80 +188,94 @@ model Processo {
 }
 
 model Familiar {
-  id                  Int        @id @default(autoincrement())
-  jovemId             Int
-  jovem               Jovem      @relation(fields: [jovemId], references: [id], onDelete: Cascade)
-  nome                String
-  parentesco          Parentesco
+  id                   Int        @id @default(autoincrement())
+  jovemId              Int
+  jovem                Jovem      @relation(fields: [jovemId], references: [id], onDelete: Cascade)
+  nome                 String
+  parentesco           Parentesco
   responsavelPrincipal Boolean   @default(false)
-  contatos            ContatoFamiliar[]
+  contatos             ContatoFamiliar[]
 }
 
 model ContatoFamiliar {
-  id          Int        @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   familiarId  Int
-  familiar    Familiar   @relation(fields: [familiarId], references: [id], onDelete: Cascade)
+  familiar    Familiar @relation(fields: [familiarId], references: [id], onDelete: Cascade)
   telefone    String
   parentesco  Parentesco?
 }
 
 model Atendimento {
-  id                 Int                 @id @default(autoincrement())
-  processoId         Int
-  processo           Processo            @relation(fields: [processoId], references: [id], onDelete: Cascade)
-  pessoaQueAtendeu   PessoaQueAtendeu
+  id                  Int                 @id @default(autoincrement())
+  processoId          Int
+  processo            Processo            @relation(fields: [processoId], references: [id], onDelete: Cascade)
+  pessoaQueAtendeu    PessoaQueAtendeu
   defensorResponsavel DefensorResponsavel
-  criadoEm           DateTime            @default(now())
-  atualizadoEm       DateTime            @updatedAt
+  criadoEm            DateTime            @default(now())
+  atualizadoEm        DateTime            @updatedAt
+
+  saudeMental   SaudeMental?
+  violencia     Violencia?
 }
 
-// ---------- DADOS COMPLEMENTARES DO JOVEM ----------
-
 model Deficiencia {
-  id          Int             @id @default(autoincrement())
-  jovem       Jovem           @relation(fields: [jovemId], references: [id])
-  jovemId     Int
-  tipo        TipoDeficiencia
+  id      Int             @id @default(autoincrement())
+  jovemId Int
+  jovem   Jovem           @relation(fields: [jovemId], references: [id])
+  tipo    TipoDeficiencia
 }
 
 model Renda {
-  id          Int             @id @default(autoincrement())
-  jovem       Jovem           @relation(fields: [jovemId], references: [id])
-  jovemId     Int
-  faixa       FaixaRenda
-  origens     OrigemRenda[]
+  id      Int          @id @default(autoincrement())
+  jovemId Int
+  jovem   Jovem        @relation(fields: [jovemId], references: [id])
+  faixa   FaixaRenda
+  origens RendaOrigem[]
+}
+
+model RendaOrigem {
+  id       Int         @id @default(autoincrement())
+  rendaId  Int
+  renda    Renda       @relation(fields: [rendaId], references: [id])
+  origem   OrigemRenda
 }
 
 model Escolaridade {
-  id          Int             @id @default(autoincrement())
-  jovem       Jovem           @relation(fields: [jovemId], references: [id])
-  jovemId     Int
-  status      EscolaridadeStatus
+  id           Int                 @id @default(autoincrement())
+  jovemId      Int
+  jovem        Jovem               @relation(fields: [jovemId], references: [id])
+  status       EscolaridadeStatus
   tempoInativo Int?
+  nivel        EscolaridadeEnum?
 }
-
-// ---------- ATENDIMENTO DETALHES ----------
 
 model SaudeMental {
   id                Int              @id @default(autoincrement())
-  atendimento       Atendimento      @relation(fields: [atendimentoId], references: [id])
   atendimentoId     Int
-  status            StatusSaudeMental
+  atendimento       Atendimento      @relation(fields: [atendimentoId], references: [id])
+  status            Boolean
   momento           MomentoSaudeMental[]
   usoDrogas         Boolean
   frequenciaDrogas  FrequenciaDrogas?
-  tiposDrogas       TipoDroga[]
+  tiposDrogas       SaudeMentalDroga[]
   tentativaSuicidio TentativaSuicidio
   momentoSuicidio   MomentoSuicidio[]
   formaSuicidio     FormaSuicidio[]
 }
 
+model SaudeMentalDroga {
+  id             Int        @id @default(autoincrement())
+  saudeMentalId  Int
+  saudeMental    SaudeMental @relation(fields: [saudeMentalId], references: [id])
+  droga          TipoDroga
+}
+
 model Violencia {
   id                Int             @id @default(autoincrement())
-  atendimento       Atendimento     @relation(fields: [atendimentoId], references: [id])
   atendimentoId     Int
+  atendimento       Atendimento     @relation(fields: [atendimentoId], references: [id])
   violenciaUrbana   AgenteViolenciaUrbana[]
-  riscoAmeaca       RiscoAmeaca
+  riscoAmeaca       Boolean
   institucional     AgenteViolenciaInstitucional[]
   formaInstitucional FormaViolenciaInstitucional[]
   localInstitucional UnidadeInternacao?
@@ -492,62 +283,18 @@ model Violencia {
   qtdIncidentes     Int?
 }
 
-model Ameaca {
-  id             Int             @id @default(autoincrement())
-  atendimento    Atendimento     @relation(fields: [atendimentoId], references: [id])
-  atendimentoId  Int
-  origem         String?
-  tipo           TipoAmeaca[]
-  descricao      String?
-
-  // Relacionamentos auxiliares
-  ppcam          Ppcam?
-  ppro           Ppro?
-}
-
-model Ppcam {
-  id        Int      @id @default(autoincrement())
-  ameaca    Ameaca   @relation(fields: [ameacaId], references: [id])
-  ameacaId  Int
-
-  // Campos auxiliares (expansíveis futuramente)
-  voluntario Boolean?
-  meiosPropriosConvencionais Boolean?
-  meiosPropriosIlicitos Boolean?
-}
-
-model Ppro {
-  id        Int      @id @default(autoincrement())
-  ameaca    Ameaca   @relation(fields: [ameacaId], references: [id])
-  ameacaId  Int
-
-  // Campos auxiliares (expansíveis futuramente)
-  voluntario Boolean?
-  meiosPropriosConvencionais Boolean?
-  meiosPropriosIlicitos Boolean?
-}
-
-
 /**
- * ===== PRONTUÁRIOS (ESTRUTURA INICIAL) =====
+ * ===== PRONTUÁRIOS =====
  */
 
 model ProntuarioJuridico {
   id String @id @default(uuid())
 
-  idUsuarioCriador Int   @map("id_usuario_criador")
+  idUsuarioCriador Int
   criador          Login @relation("CriadorProntuarioJuridico", fields: [idUsuarioCriador], references: [id])
 
-  // ligação opcional com ficha
   fichaId String?
   ficha   Ficha?  @relation(fields: [fichaId], references: [id])
-
-  // campos básicos iniciais (adicione mais conforme a checklist)
-  pessoaQueAtendeu String?   @map("pessoa_que_atendeu")
-  numeroProcesso   String?   @map("numero_processo")
-  nomeJovem        String?   @map("nome_jovem")
-  cpf              String?   @map("cpf")
-  dataNascimento   DateTime? @map("data_nascimento")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -558,16 +305,15 @@ model ProntuarioJuridico {
 model ProntuarioPsicossocial {
   id String @id @default(uuid())
 
-  idUsuarioCriador Int   @map("id_usuario_criador")
+  idUsuarioCriador Int
   criador          Login @relation("CriadorProntuarioPsicossocial", fields: [idUsuarioCriador], references: [id])
 
   fichaId String?
   ficha   Ficha?  @relation(fields: [fichaId], references: [id])
 
-  // campos iniciais
-  avaliacaoInicial  String? @map("avaliacao_inicial")
-  historicoFamiliar String? @map("historico_familiar")
-  observacoes       String? @map("observacoes")
+  avaliacaoInicial  String?
+  historicoFamiliar String?
+  observacoes       String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
