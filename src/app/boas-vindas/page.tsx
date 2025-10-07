@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
 import { Button } from "@/components/Button";
 import Navbar from "@/components/navbar";
