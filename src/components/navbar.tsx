@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Menu, User, ChevronDown } from "lucide-react";
+import { Bell, Menu, User, ChevronDown, StickyNote, FileText } from "lucide-react";
 
 
 import SearchBar from "@/components/SearchBar";
-
+import NotificationBell from "@/components/NotificationBell";
+   
 interface UserData {
   nome: string;
   perfil: string;
@@ -86,47 +87,127 @@ export default function Navbar() {
           <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-48 py-2 animate-fade-in">
             <li>
               <a
-                href="/dashboard"
+                href="/dashboard/produtividade"
                 className="block px-4 py-2 hover:bg-gray-100"
               >
-                Visão Geral
+                Produtividade NUAJA
               </a>
             </li>
             <li>
               <a
-                href="/boas-vindas"
+                href="/dashboard/juridico"
                 className="block px-4 py-2 hover:bg-gray-100"
               >
-                Boas-vindas
+                Jurídico
+              </a>
+            </li>
+            <li>
+              <a
+                href="/dashboard/psicossocial"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Psicossocial
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="/dashboard/integral"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Integral
+              </a>
+            </li>
+          </ul>
+
+        )}
+      </li>
+
+      {/* PRONTUÁRIOS */}
+      
+        <ul className="hidden md:flex items-center gap-8 font-medium relative text-white">
+          <li
+            className="relative group"
+            onMouseEnter={() => toggleMenu("prontuarios")}
+            onMouseLeave={() => toggleMenu("")}
+          >
+          <button className="flex items-center gap-1 transition">
+            Prontuários <ChevronDown className="w-4 h-4" />
+          </button>
+
+    {openMenu === "prontuarios" && (
+      <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-60 py-2 animate-fade-in z-50">
+        <li>
+          <a
+            href="/prontuarios/busca-avancada"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            🔍 Busca avançada
+          </a>
+        </li>
+        <li>
+          <a
+            href="/prontuarios/listagem"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            📋 Listagem geral
+          </a>
+        </li>
+        <li>
+          <a
+            href="/prontuarios/adicionar"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            ➕ Novo prontuário ou ficha
+          </a>
+        </li>
+        <li>
+          <a
+            href="/dashboard/integral"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            📊 Visualização integral
+          </a>
+        </li>
+      </ul>
+    )}
+  </li>
+
+    <li
+        className="relative group"
+        onMouseEnter={() => toggleMenu("registros")}
+        onMouseLeave={() => toggleMenu("")}
+      >
+        <button className="flex items-center gap-1 hover:text-blue-400 transition">
+          Registros Complementares <ChevronDown className="w-4 h-4" />
+        </button>
+
+        {openMenu === "registros" && (
+          <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-56 py-2 animate-fade-in">
+            <li>
+              <a
+                href="/documentos"
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition"
+              >
+                <FileText className="w-4 h-4 text-blue-500" />
+                Documentos
+              </a>
+            </li>
+            <li>
+              <a
+                href="/anotacoes"
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition"
+              >
+                <StickyNote className="w-4 h-4 text-blue-500" />
+                Anotações
               </a>
             </li>
           </ul>
         )}
       </li>
 
-      {/* PRONTUÁRIOS */}
-      <li>
-        <a href="/prontuarios" className="hover:text-blue-400 transition">
-          Prontuários
-        </a>
-      </li>
-
-      {/* DOCUMENTOS */}
-      <li>
-        <a href="/documentos" className="hover:text-blue-400 transition">
-          Documentos
-        </a>
-      </li>
-
-      {/* ANOTAÇÕES */}
-      <li>
-        <a href="/anotacoes" className="hover:text-blue-400 transition">
-          Anotações
-        </a>
-      </li>
-
       {/* ADMINISTRAÇÃO */}
-      <li
+      {/* <li
         className="relative group"
         onMouseEnter={() => toggleMenu("admin")}
         onMouseLeave={() => toggleMenu("")}
@@ -154,7 +235,7 @@ export default function Navbar() {
             </li>
           </ul>
         )}
-      </li>
+      </li> */}
 
       {/* DADOS */}
       <li
@@ -200,19 +281,54 @@ export default function Navbar() {
           </ul>
         )}
       </li>
+
+      {/* ===== CENTRAL DE RECURSOS ===== */}
+  <li
+    className="relative group"
+    onMouseEnter={() => toggleMenu("recursos")}
+    onMouseLeave={() => toggleMenu("")}
+  >
+    <button className="flex items-center gap-1 hover:text-blue-500 transition">
+      Central de Recursos <ChevronDown className="w-4 h-4" />
+    </button>
+
+    {openMenu === "recursos" && (
+      <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-60 py-2 animate-fade-in z-50">
+        <li>
+          <a
+            href="/recursos/modelos"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            🧾 Modelos de Petições
+          </a>
+        </li>
+        <li>
+          <a
+            href="/recursos/documentos"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            📁 Documentos de Encaminhamento
+          </a>
+        </li>
+        <li>
+          <a
+            href="/recursos/faq"
+            className="block px-4 py-2 hover:bg-gray-100 transition"
+          >
+            ❓ FAQ - Dúvidas Frequentes
+          </a>
+        </li>
+      </ul>
+    )}
+  </li>
+</ul>
     </ul>
 
         <div className="flex items-center gap-4">
           <SearchBar />
           
 
-          {/* Notificações */}
-          <button className="relative p-2 rounded-full hover:bg-gray-800 transition">
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-xs font-bold rounded-full px-1">
-              3
-            </span>
-          </button>
+          <NotificationBell />
 
           {/* Usuário */}
           <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
