@@ -1,6 +1,8 @@
+"use client";
+
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { parse } from "cookie";
-import { useRouter } from "next/router"; // <- Pages Router usa next/router
+import { useRouter } from "next/navigation"; // <- Pages Router usa next/router
 import { useState } from "react";
 import axios from "axios";
 

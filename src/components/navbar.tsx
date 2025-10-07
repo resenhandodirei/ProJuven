@@ -6,6 +6,7 @@ import { Bell, Menu, User, ChevronDown, StickyNote, FileText } from "lucide-reac
 
 import SearchBar from "@/components/SearchBar";
 import NotificationBell from "@/components/NotificationBell";
+import UserMenu from "./UserMenu";
    
 interface UserData {
   nome: string;
@@ -206,36 +207,7 @@ export default function Navbar() {
         )}
       </li>
 
-      {/* ADMINISTRAÇÃO */}
-      {/* <li
-        className="relative group"
-        onMouseEnter={() => toggleMenu("admin")}
-        onMouseLeave={() => toggleMenu("")}
-      >
-        <button className="flex items-center gap-1 hover:text-blue-400 transition">
-          Administração <ChevronDown className="w-4 h-4" />
-        </button>
-        {openMenu === "admin" && (
-          <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-56 py-2 animate-fade-in">
-            <li>
-              <a
-                href="/usuarios"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Gerenciar Usuários
-              </a>
-            </li>
-            <li>
-              <a
-                href="/registro"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Registrar Novo Usuário
-              </a>
-            </li>
-          </ul>
-        )}
-      </li> */}
+      
 
       {/* DADOS */}
       <li
@@ -330,17 +302,7 @@ export default function Navbar() {
 
           <NotificationBell />
 
-          {/* Usuário */}
-          <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
-            <User className="w-5 h-5" />
-            <span className="hidden md:inline">
-              {loading
-                ? "Carregando..."
-                : userData
-                ? `Olá, ${userData.nome} (${userData.perfil})`
-                : ""}
-            </span>
-          </div>
+         <UserMenu userData={userData ?? undefined} loading={loading} />
 
           {/* Mobile */}
           <button
