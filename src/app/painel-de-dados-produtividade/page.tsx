@@ -10,14 +10,12 @@ import Toast from "@/components/Toast";
 import { Skeleton } from "@/components/Skeleton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { motion } from "framer-motion";
-
 import {
   Line,
   Radar,
   Doughnut,
   Bar,
 } from "react-chartjs-2";
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -45,7 +43,7 @@ ChartJS.register(
   Legend
 );
 
-export default function PainelProdutividade() {
+export default function PainelProdutividadeDashboard() {
   const [periodo, setPeriodo] = useState("mensal");
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "" }>({
@@ -63,22 +61,19 @@ export default function PainelProdutividade() {
     { label: "Anual", value: "anual" },
   ];
 
-  // Simula carregamento inicial
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
+    const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Simula atualização com toast
   useEffect(() => {
     if (!loading) {
-      setToast({ message: `Filtro "${periodo}" aplicado com sucesso.`, type: "success" });
+      setToast({ message: `Filtro "${periodo}" aplicado.`, type: "success" });
       const timer = setTimeout(() => setToast({ message: "", type: "" }), 2500);
       return () => clearTimeout(timer);
     }
   }, [periodo, loading]);
 
-  // Mock de dados (variando por período)
   const dados = useMemo(() => {
     const base = {
       fichasMensais: [10, 15, 22, 18, 25, 30, 28],
@@ -167,11 +162,13 @@ export default function PainelProdutividade() {
     return (
       <div className="flex flex-col min-h-screen bg-gray-50">
         <Navbar />
-        <div className="flex flex-col items-center justify-center flex-1 gap-6">
-          <LoadingSpinner />
-          <Skeleton className="w-96 h-10" />
-          <Skeleton className="w-3/4 h-64 rounded-xl" />
-          <Skeleton className="w-3/4 h-64 rounded-xl" />
+        <div className="flex flex-1">
+          <SidebarMenu />
+          <div className="flex flex-col items-center justify-center flex-1 gap-6">
+            <LoadingSpinner />
+            <Skeleton className="w-3/4 h-10" />
+            <Skeleton className="w-2/3 h-64 rounded-xl" />
+          </div>
         </div>
         <Footer />
       </div>
@@ -179,106 +176,103 @@ export default function PainelProdutividade() {
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
-      <SidebarMenu />
 
-      <div className="p-8 bg-gray-50 min-h-screen">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Painel de Produtividade</h1>
-          <div className="flex items-center gap-3 mt-3 md:mt-0">
-            <label htmlFor="periodo" className="text-gray-600 text-sm">
-              Filtro temporal:
-            </label>
-            <select
-              id="periodo"
-              value={periodo}
-              onChange={(e) => setPeriodo(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
-            >
-              {periodos.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
+      {/* LAYOUT PRINCIPAL */}
+      <div className="flex flex-1">
+        {/* Sidebar fixa */}
+        <aside className="w-64 border-r bg-white shadow-sm">
+          <SidebarMenu />
+        </aside>
+
+        {/* Conteúdo */}
+        <main className="flex-1 p-8 overflow-y-auto">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">Painel de Produtividade</h1>
+            <div className="flex items-center gap-3 mt-3 md:mt-0">
+              <label htmlFor="periodo" className="text-gray-600 text-sm">
+                Filtro temporal:
+              </label>
+              <select
+                id="periodo"
+                value={periodo}
+                onChange={(e) => setPeriodo(e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+              >
+                {periodos.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
 
-        {toast.message && (
-          <Toast
-            type={toast.type}
-            message={toast.message}
-            className="mb-6"
-          />
-        )}
+          {toast.message && (
+            <Toast type={toast.type} message={toast.message} className="mb-6" />
+          )}
 
-        <motion.div
-          key={periodo}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {/* Tendência */}
-          <Card className="p-6 col-span-1 lg:col-span-2 bg-white shadow rounded-2xl">
-            <h2 className="font-semibold text-gray-800 mb-2">
-              Evolução de Fichas e Prontuários
-            </h2>
-            <Line data={areaChartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
-          </Card>
+          <motion.div
+            key={periodo}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {/* Linha */}
+            <Card className="p-6 col-span-1 lg:col-span-2 bg-white shadow rounded-2xl">
+              <h2 className="font-semibold text-gray-800 mb-2">Evolução de Fichas e Prontuários</h2>
+              <Line data={areaChartData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
+            </Card>
 
-          {/* Radar */}
-          <Card className="p-6 bg-white shadow rounded-2xl flex flex-col items-center">
-            <h2 className="font-semibold text-gray-800 mb-3">Comparativo de Defensores</h2>
-            <div className="w-64">
-              <Radar data={radarData} options={{ scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }} />
-            </div>
-          </Card>
+            {/* Radar */}
+            <Card className="p-6 bg-white shadow rounded-2xl flex flex-col items-center">
+              <h2 className="font-semibold text-gray-800 mb-3">Comparativo de Defensores</h2>
+              <div className="w-64">
+                <Radar data={radarData} options={{ scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }} />
+              </div>
+            </Card>
 
-          {/* Doughnut */}
-          <Card className="p-6 bg-white shadow rounded-2xl flex flex-col items-center">
-            <h2 className="font-semibold text-gray-800 mb-3">Atendimento Primário</h2>
-            <div className="w-48">
-              <Doughnut data={doughnutData} options={{ cutout: "70%" }} />
-            </div>
-          </Card>
+            {/* Doughnut */}
+            <Card className="p-6 bg-white shadow rounded-2xl flex flex-col items-center">
+              <h2 className="font-semibold text-gray-800 mb-3">Atendimento Primário</h2>
+              <div className="w-48">
+                <Doughnut data={doughnutData} options={{ cutout: "70%" }} />
+              </div>
+            </Card>
 
-          {/* Barra */}
-          <Card className="p-6 col-span-1 lg:col-span-2 bg-white shadow rounded-2xl">
-            <h2 className="font-semibold text-gray-800 mb-3">Formas de Atendimento</h2>
-            <Bar data={barData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
-          </Card>
+            {/* Barra */}
+            <Card className="p-6 col-span-1 lg:col-span-2 bg-white shadow rounded-2xl">
+              <h2 className="font-semibold text-gray-800 mb-3">Formas de Atendimento</h2>
+              <Bar data={barData} options={{ responsive: true, plugins: { legend: { display: false } } }} />
+            </Card>
 
-          {/* Gauge (Taxa de Atualização) */}
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex flex-col items-center justify-center shadow">
-            <h2 className="font-semibold text-gray-800 mb-4">Taxa de Atualização</h2>
-            <div className="relative w-40 h-20">
-              <svg viewBox="0 0 100 50" className="w-full h-full">
-                <path
-                  d="M10 50 A40 40 0 0 1 90 50"
-                  fill="none"
-                  stroke="#e5e7eb"
-                  strokeWidth="10"
-                />
-                <path
-                  d="M10 50 A40 40 0 0 1 90 50"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="10"
-                  strokeDasharray={`${dados.taxaAtualizacao * 1.26}, 252`}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-blue-700">
-                {dados.taxaAtualizacao}%
-              </span>
-            </div>
-          </Card>
-        </motion.div>
+            {/* Gauge */}
+            <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex flex-col items-center justify-center shadow">
+              <h2 className="font-semibold text-gray-800 mb-4">Taxa de Atualização</h2>
+              <div className="relative w-40 h-20">
+                <svg viewBox="0 0 100 50" className="w-full h-full">
+                  <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" strokeWidth="10" />
+                  <path
+                    d="M10 50 A40 40 0 0 1 90 50"
+                    fill="none"
+                    stroke="#3b82f6"
+                    strokeWidth="10"
+                    strokeDasharray={`${dados.taxaAtualizacao * 1.26}, 252`}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-blue-700">
+                  {dados.taxaAtualizacao}%
+                </span>
+              </div>
+            </Card>
+          </motion.div>
+        </main>
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }
