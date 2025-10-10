@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "@/styles/globals.css";
+
 import { InputPassword } from "@/components/InputPassword";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";

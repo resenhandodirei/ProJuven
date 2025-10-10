@@ -22,7 +22,7 @@ export default function Badge({ label, type = "default", className }: BadgeProps
     info: "bg-blue-100 text-blue-800",
   };
 
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, React.ReactElement> = {
     default: <Circle className="w-3 h-3" />,
     success: <CheckCircle className="w-3 h-3" />,
     error: <XCircle className="w-3 h-3" />,

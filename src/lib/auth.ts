@@ -22,8 +22,9 @@ export async function getUserFromAuth(): Promise<UserPayload> {
 
   // 2) Tente cookie "token"
   try {
-    const tokenFromCookie = cookies().get('token')?.value;
-    const authHeader = headers().get('authorization') ?? undefined;
+    const tokenFromCookie = (await cookies()).get('token')?.value;
+    const headersList = await headers();
+    const authHeader = headersList.get('authorization') ?? undefined;
     const tokenFromHeader = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
 
     const token = tokenFromCookie || tokenFromHeader;

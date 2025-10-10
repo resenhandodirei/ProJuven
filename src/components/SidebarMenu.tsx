@@ -69,11 +69,9 @@ export default function SidebarMenu() {
         transition={{ duration: 0.3 }}
         className="bg-gray-900 text-white h-screen hidden md:flex flex-col shadow-lg overflow-hidden"
       >
-        <div className="p-4 text-lg font-bold border-b border-gray-700">
-          Meu App
-        </div>
+    
 
-        <nav className="flex flex-col flex-grow p-2">
+        <nav className="flex flex-col flex-grow p-2 h-full">
           {menuItems.map((item, i) => {
             const isActive = pathname === item.href;
             const isExpanded = expanded === item.label;
