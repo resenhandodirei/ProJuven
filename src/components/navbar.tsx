@@ -8,6 +8,7 @@ import SearchBar from "@/components/SearchBar";
 import NotificationBell from "@/components/NotificationBell";
 import UserMenu from "./UserMenu";
 import NavbarLogo from "./NavbarLogo";
+import icon from "../app/assets/icon.png";
    
 interface UserData {
   nome: string;
@@ -70,11 +71,15 @@ export default function Navbar() {
     <>
     <nav className="bg-[var(--greenDark)] text-white shadow-md px-6 py-3">
       <div className="container mx-auto flex justify-between items-center">
+        
         {/* Logo */}
-        <a href="/" className="text-2xl font-bold tracking-tight">
-          <NavbarLogo />
-
-        </a>
+        <div className="flex justify-center">
+          <a href="/"
+            className="flex items-center gap-3 text-2xl font-bold tracking-tight text-gray-800">
+            <img src={icon.src} width={60} alt="Logo" />
+            <NavbarLogo />
+          </a>
+        </div>
 
         {/* Menu Desktop */}
         <ul className="hidden md:flex items-center gap-6 font-medium relative">

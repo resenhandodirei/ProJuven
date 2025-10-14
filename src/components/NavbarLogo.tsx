@@ -6,7 +6,7 @@ const letters = "ProJuven".split("");
 
 const letterVariants = {
   animate: {
-    y: [0, -3, 0], // sobe e desce levemente
+    y: [0, -3, 0, -6], // sobe e desce levemente
     transition: {
       duration: 10,
       repeat: Infinity,
