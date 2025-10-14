@@ -65,7 +65,7 @@ export default function SearchBar({
       {showButton && (
         <button
           type="submit"
-          className="ml-2 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 active:scale-[0.98] transition"
+          className="ml-2 rounded-md bg-[var(--greenLight)] px-3 py-1.5 text-sm font-medium text-white hover:bg-[var(--golden)] active:scale-[0.98] transition"
         >
           Buscar
         </button>

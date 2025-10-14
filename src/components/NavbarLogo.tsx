@@ -22,7 +22,7 @@ const NavbarLogo: React.FC = () => {
       {letters.map((letter, index) => (
         <motion.span
           key={index}
-          className="text-xl font-bold text-blue-600"
+          className="text-xl font-bold text-[var(--golden)]"
           variants={letterVariants}
           animate="animate"
           transition={{ delay: index * 0.1 }}

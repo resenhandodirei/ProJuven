@@ -35,7 +35,7 @@ export default function NotificationBell() {
       {/* Botão do sino */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full hover:bg-blue-100 transition focus:outline-none"
+        className="relative p-2 rounded-full hover:bg-[var(--golden)] transition focus:outline-none"
         aria-label="Abrir notificações"
       >
         <Bell className="w-5 h-5 text-white-700" />
