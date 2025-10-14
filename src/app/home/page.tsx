@@ -17,7 +17,6 @@ export default function HomePage() {
     <Navbar />
 
     <div className="min-h-screen bg-gray-50 px-6 py-8">
-      {/* Cabeçalho */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -115,7 +114,6 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </motion.div>
-    {/* Estado vazio exemplo */}
     </div>
     <Footer />
     </>

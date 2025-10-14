@@ -8,8 +8,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const { nome, cpf, responsavel, dataNascimento } = req.body;
 
     // Validação básica no backend
-    if (!nome || !cpf) {
-      return res.status(400).json({ message: "Nome e CPF são obrigatórios." });
+    if (!nome) {
+      return res.status(400).json({ message: "Nome é obrigatório." });
     }
 
     // Cria a ficha

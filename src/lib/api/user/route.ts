@@ -8,9 +8,9 @@ export async function GET() {
     // 🔹 Troque por sua lógica de autenticação (ex.: pegar userId do token)
     const userId = 1;
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.login.findUnique({
       where: { id: userId },
-      select: { nome: true, perfil: true },
+      select: { nome: true, tipoDePerfil: true },
     });
 
     if (!user) {

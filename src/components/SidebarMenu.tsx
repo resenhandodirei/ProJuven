@@ -67,13 +67,11 @@ export default function SidebarMenu() {
         initial={{ width: 0 }}
         animate={{ width: isOpen ? 240 : 0 }}
         transition={{ duration: 0.3 }}
-        className="bg-gray-900 text-white h-screen hidden md:flex flex-col shadow-lg overflow-hidden"
+        className="bg-[var(--greenDark)] text-white h-screen hidden md:flex flex-col shadow-lg overflow-hidden"
       >
-        <div className="p-4 text-lg font-bold border-b border-gray-700">
-          Meu App
-        </div>
+    
 
-        <nav className="flex flex-col flex-grow p-2">
+        <nav className="flex flex-col flex-grow p-2 h-full">
           {menuItems.map((item, i) => {
             const isActive = pathname === item.href;
             const isExpanded = expanded === item.label;
@@ -84,7 +82,7 @@ export default function SidebarMenu() {
                   <button
                     onClick={() => toggleSubMenu(item.label)}
                     className={`flex items-center justify-between p-3 rounded-lg transition ${
-                      isExpanded ? "bg-gray-700" : "hover:bg-gray-700"
+                      isExpanded ? "bg-[var(--greenLight)]" : "hover:bg-[var(--golden)]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -108,8 +106,8 @@ export default function SidebarMenu() {
                           href={sub.href}
                           className={`p-2 rounded-lg text-sm transition ${
                             pathname === sub.href
-                              ? "bg-gray-700 font-semibold"
-                              : "hover:bg-gray-700"
+                              ? "bg-[var(--greenLight)] font-semibold"
+                              : "hover:bg-[var(--golden)"
                           }`}
                         >
                           {sub.label}
@@ -127,7 +125,7 @@ export default function SidebarMenu() {
                   key={i}
                   href={item.href}
                   className={`flex items-center gap-3 p-3 rounded-lg transition ${
-                    isActive ? "bg-gray-700 font-semibold" : "hover:bg-gray-700"
+                    isActive ? "bg-[var(--greenLight)] font-semibold" : "hover:bg-[var(--golden)]"
                   }`}
                 >
                   {item.icon}
@@ -140,7 +138,7 @@ export default function SidebarMenu() {
               <button
                 key={i}
                 onClick={item.onClick}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition text-left"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--golden)] transition text-left"
               >
                 {item.icon}
                 <span>{item.label}</span>
