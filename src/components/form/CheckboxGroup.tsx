@@ -9,7 +9,7 @@ interface CheckboxGroupProps {
   label: string;
   name: string;
   options: Option[];
-  values: string[];
+  values?: string[]; // deixa opcional para evitar undefined
   onChange: (values: string[]) => void;
 }
 
@@ -17,7 +17,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   label,
   name,
   options,
-  values,
+  values = [], // valor padrão protege contra undefined
   onChange,
 }) => {
   const handleToggle = (value: string) => {
@@ -30,12 +30,16 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
 
   return (
     <div className="mb-4">
-      <p className="block text-sm font-medium text-gray-700 mb-2">{label}</p>
+      {label && (
+        <p className="block text-sm font-medium text-gray-700 mb-2">
+          {label}
+        </p>
+      )}
       <div className="flex flex-wrap gap-4">
         {options.map((option) => (
           <label
             key={option.value}
-            className={`flex items-center gap-2 cursor-pointer rounded-lg border px-4 py-2
+            className={`flex items-center gap-2 cursor-pointer rounded-lg border px-4 py-2 transition-colors duration-150
               ${
                 values.includes(option.value)
                   ? "border-blue-500 bg-blue-50 text-blue-700"
