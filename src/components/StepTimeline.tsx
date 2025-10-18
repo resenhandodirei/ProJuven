@@ -15,7 +15,7 @@ const StepTimeline: React.FC<StepTimelineProps> = ({ steps, currentStep }) => {
 
         {/* Linha de progresso animada */}
         <motion.div
-          className="absolute top-1/2 left-0 h-1 bg-blue-500 rounded-full -translate-y-1/2"
+          className="absolute top-1/2 left-0 h-1 bg-[var(--greenLight)] rounded-full -translate-y-1/2"
           initial={{ width: 0 }}
           animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
           transition={{ duration: 0.4 }}
@@ -33,9 +33,9 @@ const StepTimeline: React.FC<StepTimelineProps> = ({ steps, currentStep }) => {
                   className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300
                     ${
                       isActive
-                        ? "bg-blue-500 border-blue-500 text-white"
+                        ? "bg-[var(--greenLight)] border-[var(--golden)] text-white"
                         : isCompleted
-                        ? "bg-blue-100 border-blue-500 text-blue-600"
+                        ? "bg-blue-100 border-[var(--golden)] text-[var(--golden)]"
                         : "bg-white border-gray-300 text-gray-400"
                     }`}
                 >
@@ -44,7 +44,7 @@ const StepTimeline: React.FC<StepTimelineProps> = ({ steps, currentStep }) => {
                 <span
                   className={`text-xs mt-2 ${
                     isActive
-                      ? "text-blue-600 font-semibold"
+                      ? "text-[var(--greenLight)] font-semibold"
                       : isCompleted
                       ? "text-gray-600"
                       : "text-gray-400"
