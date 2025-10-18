@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
 import { Button } from "@/components/Button";
-import { Input } from "@/components/Input";
-import { InputPassword } from "@/components/InputPassword";
+import { Input } from "@/components/form/Input";
+import { InputPassword } from "@/components/form/InputPassword";
 import { CardFeedback } from "@/components/CardFeedback";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";

@@ -1,48 +1,53 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 interface Tab {
   label: string;
-  content: React.ReactNode;
+  value: string;
 }
 
 interface TabsProps {
   tabs: Tab[];
-  defaultIndex?: number;
+  activeTab: string;
+  onChange: (value: string) => void;
+  orientation?: "horizontal" | "vertical";
+  className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, defaultIndex = 0 }) => {
-  const [activeIndex, setActiveIndex] = useState(defaultIndex);
-
+export default function Tabs({
+  tabs,
+  activeTab,
+  onChange,
+  orientation = "horizontal",
+  className = "",
+}: TabsProps) {
   return (
-    <div className="w-full">
-      {/* Navegação das abas */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700">
-        {tabs.map((tab, index) => (
+    <div
+      className={`flex ${
+        orientation === "vertical" ? "flex-col w-full" : "flex-row"
+      } ${className}`}
+    >
+      {tabs.map((tab) => {
+        const isActive = tab.value === activeTab;
+        return (
           <button
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className={`px-4 py-2 text-sm font-medium transition-colors duration-200 
+            key={tab.value}
+            type="button"
+            onClick={() => onChange(tab.value)}
+            className={`px-4 py-2 text-sm font-medium transition-all duration-150 rounded-lg
               ${
-                activeIndex === index
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-blue-500"
-              }`}
-            aria-selected={activeIndex === index}
-            role="tab"
+                isActive
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "text-gray-600 hover:bg-gray-100"
+              }
+              ${orientation === "vertical" ? "w-full text-left mb-2" : "mx-1"}
+            `}
           >
             {tab.label}
           </button>
-        ))}
-      </div>
-
-      {/* Conteúdo da aba ativa */}
-      <div className="mt-4" role="tabpanel">
-        {tabs[activeIndex].content}
-      </div>
+        );
+      })}
     </div>
   );
-};
-
-export default Tabs;
+}
