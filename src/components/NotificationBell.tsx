@@ -74,7 +74,7 @@ export default function NotificationBell() {
           </ul>
 
           <div className="p-2 border-t border-gray-100 text-center">
-            <button className="text-sm text-blue-600 hover:underline font-medium">
+            <button className="text-sm text-[var(--greenDark)] hover:underline font-medium">
               Ver todas
             </button>
           </div>

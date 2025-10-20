@@ -39,7 +39,7 @@ export default function UserMenu({
         className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-1 hover:bg-[var(--golden)] transition"
       >
         <User className="w-5 h-5 text-white-700" />
-        <span className="hidden md:inline text-sm font-medium text-blue-800">
+        <span className="hidden md:inline text-sm font-medium text-[var(--greenDark)]">
           {loading
             ? "Carregando..."
             : userData

@@ -41,8 +41,8 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
               onClick={() => handleToggle(option.value)}
               className={`px-4 py-2 rounded-full border text-sm font-medium transition-all duration-200 ${
                 active
-                  ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                  : "bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-600"
+                  ? "bg-[var(--greenLight)] text-white border-[var(--golden)] shadow-md"
+                  : "bg-white text-gray-600 border-gray-300 hover:border-[var(--greenLight)] hover:text--[var(--greenDark)]"
               }`}
             >
               {option.label}

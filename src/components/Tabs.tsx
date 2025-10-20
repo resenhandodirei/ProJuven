@@ -38,8 +38,8 @@ export default function Tabs({
             className={`px-4 py-2 text-sm font-medium transition-all duration-150 rounded-lg
               ${
                 isActive
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "text-gray-600 hover:bg-gray-100"
+                  ? "bg-[var(--greenLight)] text-white shadow-md"
+                  : "text-gray-600 hover:bg-[var(--golden)]"
               }
               ${orientation === "vertical" ? "w-full text-left mb-2" : "mx-1"}
             `}
