@@ -24,9 +24,9 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
                 className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold 
                   ${
                     isActive
-                      ? "bg-blue-500 text-white"
+                      ? "bg-[var(--greenLight)] text-white"
                       : isCompleted
-                      ? "bg-green-500 text-white"
+                      ? "bg-[var(--greenDark)] text-white"
                       : "bg-gray-200 text-gray-500"
                   }`}
               >
@@ -37,7 +37,7 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
               <span
                 className={`text-sm ${
                   isActive
-                    ? "font-semibold text-blue-600"
+                    ? "font-semibold text-[var(--greenDark)]"
                     : isCompleted
                     ? "text-gray-600"
                     : "text-gray-400"

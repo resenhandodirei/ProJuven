@@ -16,7 +16,8 @@ import FormWrapper from "@/components/form/FormWrapper";
 import { Button } from "@/components/Button";
 import Alert from "@/components/Alert";
 import Textarea from "@/components/form/Textarea";
-import { Radio } from "lucide-react";
+import SaveProntuarioButton from "@/components/form/SaveProntuarioButton";
+import { Radio, Save } from "lucide-react";
 
 const ATO_OPTIONS = [
   { label: "Furto", value: "FURTO" },
@@ -140,6 +141,39 @@ export default function JuridicoPage() {
       setActiveTab(TABS[currentIndex - 1].value);
     }
   };
+
+  const handleSubmit = async () => {
+  try {
+    // Validação básica antes do envio
+    if (!form.nomeJovem) {
+      alert("Por favor, preencha o nome do jovem atendido.");
+      return;
+    }
+
+    // Simulação de envio (poderá ser substituído por API real)
+    console.log("📤 Enviando prontuário...", form);
+
+    // Exemplo de requisição (quando tiver endpoint pronto)
+    /*
+    const response = await fetch("/api/prontuario", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao salvar o prontuário");
+    }
+    */
+
+    // Feedback visual temporário
+    alert("✅ Prontuário salvo com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao salvar prontuário:", error);
+    alert("Ocorreu um erro ao salvar o prontuário. Tente novamente.");
+  }
+};
+
 
   return (
     <>
@@ -879,17 +913,16 @@ export default function JuridicoPage() {
                     Anterior
                   </Button>
 
-                  <Button
-                    className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
-                    onClick={handleNext}
-                  >
-                    Próximo
-                  </Button>
+                  
                 </div>
 
+                <SaveProntuarioButton formData={form} />
 
-              </FormWrapper>
-            )}
+
+
+
+</FormWrapper>
+)}
 
 
 
