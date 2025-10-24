@@ -143,9 +143,14 @@ export default function BuscaProntuarioPage() {
                 value={filters.faseProcessual}
                 onChange={(v) => handleChange("faseProcessual", v)}
               />
-
-              
               <InputCPF />
+              <Input 
+                id="numeroProcesso"
+                label="Número do Processo"
+                placeholder="Digite o número do processo"
+                value={filters.cpf}
+                onChange={(e) => handleChange("cpf", e.target.value)}
+              />
             </div>
 
             <div className="flex justify-end mt-6">
