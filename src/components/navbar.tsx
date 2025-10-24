@@ -182,6 +182,7 @@ export default function Navbar() {
     )}
   </li>
 
+    {/** 
     <li
         className="relative group"
         onMouseEnter={() => toggleMenu("registros")}
@@ -215,7 +216,7 @@ export default function Navbar() {
         )}
       </li>
 
-      
+      */}
 
       {/* DADOS */}
       <li
