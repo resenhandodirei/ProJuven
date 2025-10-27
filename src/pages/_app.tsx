@@ -15,7 +15,7 @@ export default function HomePublic() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Navbar />
       {/* HERO SECTION */}
-      <section className="flex flex-col items-center justify-center flex-1 text-center px-6 py-16 bg-gradient-to-b from-blue-50 to-white">
+      <section className="flex flex-col items-center justify-center flex-1 text-center px-6 py-16 bg-[var(--greenLight-transparent)] to-white">
         <motion.h2
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export default function HomePublic() {
         >
           <Card className="h-full shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary">
+              <CardTitle className="flex items-center gap-2 text-[var(--golden)]">
                 <Shield size={22} /> Segurança e Sigilo
               </CardTitle>
             </CardHeader>
@@ -75,7 +75,7 @@ export default function HomePublic() {
         >
           <Card className="h-full shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary">
+              <CardTitle className="flex items-center gap-2 text-[var(--golden)]">
                 <Users size={22} /> Trabalho Integrado
               </CardTitle>
             </CardHeader>
@@ -93,7 +93,7 @@ export default function HomePublic() {
         >
           <Card className="h-full shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary">
+              <CardTitle className="flex items-center gap-2 text-[var(--golden)]">
                 <FileText size={22} /> Gestão Documental
               </CardTitle>
             </CardHeader>

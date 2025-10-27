@@ -10,6 +10,10 @@
   --greenLight: #96c33b;
   --greenDark: #006d29;
   --golden: #ffb400;
+  --greenLight-transparent: rgba(150, 195, 59, 0.3);
+  --greenDark-transparent: rgba(0, 109, 41, 0.3);
+  --golden-transparent: rgba(255, 180, 0, 0.3);
+
 }
 
 @theme inline {

@@ -224,7 +224,7 @@ const FAQProJuven: React.FC = () => {
             {topic.questions.map((q) => (
               <div key={q.question} className="border rounded-md overflow-hidden shadow-sm">
                 <button
-                  className="w-full text-left px-4 py-2 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
+                  className="w-full text-left px-4 py-2 bg-[var(--greenLight-transparent)] hover:bg-[var(--golden-transparent)] focus:outline-none focus:ring-2 focus:ring-[var(--greenLight)] font-medium"
                   onClick={() => toggle(q.question)}
                 >
                   {q.question}
