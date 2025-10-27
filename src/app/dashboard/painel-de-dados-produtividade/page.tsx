@@ -216,7 +216,6 @@ export default function PainelProdutividadeAvancado() {
       <div className="flex min-h-screen bg-gray-50">
         <SidebarMenu />
         <main className="flex-1 p-8 overflow-y-auto">
-          {/* Cabeçalho */}
           <motion.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -270,9 +269,7 @@ export default function PainelProdutividadeAvancado() {
             </div>
           </motion.div>
 
-          {/* Grade de gráficos */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Linha 1 */}
             <Card className="col-span-2 p-6 bg-white rounded-2xl shadow-md">
               <h2 className="font-semibold text-gray-800 mb-3">
                 Fichas e Prontuários Abertos/Atualizados
@@ -306,12 +303,11 @@ export default function PainelProdutividadeAvancado() {
                 Taxa de Atualização
               </h2>
 
-              {/* Container fixo e proporcional */}
               <div className="w-28 h-28 flex justify-center items-center">
                 <Doughnut
                   data={doughnutAtualizacao}
                   options={{
-                    cutout: "70%", // deixa o anel mais fino e elegante
+                    cutout: "70%", 
                     plugins: {
                       legend: { display: false },
                       tooltip: { enabled: true },
@@ -322,7 +318,6 @@ export default function PainelProdutividadeAvancado() {
                 />
               </div>
 
-              {/* Texto de destaque */}
               <p className="text-sm font-semibold text-blue-600 mt-3">
                 {dados.taxaAtualizacao}% atualizadas
               </p>
@@ -338,7 +333,6 @@ export default function PainelProdutividadeAvancado() {
               </div>
             </Card>
 
-            {/* Linha 3 */}
             <Card className="p-6 bg-white rounded-2xl shadow-md">
               <h2 className="font-semibold text-gray-800 mb-3">
                 Atendimento Primário

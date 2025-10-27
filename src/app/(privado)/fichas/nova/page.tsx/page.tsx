@@ -14,9 +14,7 @@ export default function NovaFichaPage() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Se seu JWT estiver no cookie httpOnly, não precisa Authorization.
-        // Se estiver no localStorage, envie:
-        // Authorization: `Bearer ${localStorage.getItem('token')}`,
+        
       },
       body: JSON.stringify(form),
     });
