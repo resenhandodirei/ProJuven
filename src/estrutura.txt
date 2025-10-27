@@ -1,0 +1,146 @@
+Listagem de caminhos de pasta
+O número de série do volume é 00610065 62AE:08BE
+C:.
+¦   estrutura.txt
+¦   gerarHash.ts
+¦   
++---app
+¦   ¦   favicon.ico
+¦   ¦   
+¦   +---(privado)
+¦   ¦   +---fichas
+¦   ¦       +---nova
+¦   ¦           +---page.tsx
+¦   ¦                   page.tsx
+¦   ¦                   
+¦   +---fichas
+¦       +---novo
+¦               ClientForm.tsx
+¦               page.tsx
+¦               
++---components
+¦       Badge.tsx
+¦       Breadcrumbs.tsx
+¦       Button.tsx
+¦       Cards.tsx
+¦       CheckboxGroup.tsx
+¦       DataTable.tsx
+¦       DocumentList.tsx
+¦       EmptyState.tsx
+¦       footer.tsx
+¦       FormActions.tsx
+¦       FormWrapper.tsx
+¦       Input.tsx
+¦       InputCPF.tsx
+¦       InputDate.tsx
+¦       InputFileUpload.tsx
+¦       InputPassword.tsx
+¦       InputSelect.tsx
+¦       InputText.tsx
+¦       LoadingSpinner.tsx
+¦       MenuDropdownUse.tsx
+¦       Modal.tsx
+¦       navbar.tsx
+¦       RadioGroup.tsx
+¦       SearchBar.tsx
+¦       SidebarMenu.tsx
+¦       Skeleton.tsx
+¦       Tabs.tsx
+¦       tailwindjs.tsx
+¦       Textarea.tsx
+¦       Toast.tsx
+¦       Topbar.tsx
+¦       
++---contexts
++---hooks
+¦       AuthContext.tsx
+¦       useAuth.ts
+¦       
++---lib
+¦   ¦   auth.ts
+¦   ¦   db.ts
+¦   ¦   perfil.ts
+¦   ¦   prisma.ts
+¦   ¦   schemas.ts
+¦   ¦   utils.ts
+¦   ¦   
+¦   +---api
+¦       ¦   fichas.ts
+¦       ¦   
+¦       +---login
+¦       ¦       route.ts
+¦       ¦       
+¦       +---me
+¦       ¦       route.ts
+¦       ¦       
+¦       +---user
+¦               route.ts
+¦               
++---pages
+¦   ¦   boas-vindas.tsx
+¦   ¦   dashboard.tsx
+¦   ¦   ficha.tsx
+¦   ¦   home.tsx
+¦   ¦   layout.tsx
+¦   ¦   login.tsx
+¦   ¦   logout.tsx
+¦   ¦   page.tsx
+¦   ¦   primeiro-acesso.tsx
+¦   ¦   register.tsx
+¦   ¦   search.tsx
+¦   ¦   trocar-senha.tsx
+¦   ¦   _app.tsx
+¦   ¦   
+¦   +---api
+¦   ¦   ¦   ficha.ts
+¦   ¦   ¦   login.ts
+¦   ¦   ¦   me.ts
+¦   ¦   ¦   prontuario.ts
+¦   ¦   ¦   protected.ts
+¦   ¦   ¦   register.ts
+¦   ¦   ¦   
+¦   ¦   +---fichas
+¦   ¦   ¦       route.ts
+¦   ¦   ¦       
+¦   ¦   +---login
+¦   ¦   ¦       route.ts
+¦   ¦   ¦       
+¦   ¦   +---utils
+¦   ¦           middleware.ts
+¦   ¦           withAuth.ts
+¦   ¦           
+¦   +---middleware
+¦   ¦       auth.js
+¦   ¦       
+¦   +---scripts
+¦           gerarHash.ts
+¦           hash.ts
+¦           
++---prisma
+¦   ¦   schema.prisma
+¦   ¦   seed.ts
+¦   ¦   
+¦   +---migrations
+¦       ¦   migration_lock.toml
+¦       ¦   
+¦       +---20250626191152_init
+¦       ¦       migration.sql
+¦       ¦       
+¦       +---20250813170255_fix_schema_login_ficha
+¦       ¦       migration.sql
+¦       ¦       
+¦       +---20250903201707_alteracao_ficha
+¦       ¦       migration.sql
+¦       ¦       
+¦       +---20250905162623_alteracao_tipo_perfil
+¦       ¦       migration.sql
+¦       ¦       
+¦       +---20251002145306_modelando_dados_pessoais_atendimento
+¦       ¦       migration.sql
+¦       ¦       
+¦       +---20251002154838_refactor_dos_enuns
+¦               migration.sql
+¦               
++---styles
+        globals.css
+        
