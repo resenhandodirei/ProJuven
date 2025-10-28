@@ -3,11 +3,18 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, AlertTriangle, Info, XCircle } from "lucide-react";
 import React from "react";
+import "@/styles/globals.css";
 
 interface AlertProps {
   type?: "success" | "error" | "warning" | "info";
-  message: string;
+  message?: string; 
   onClose?: () => void;
+  className?: string;
+  children?: React.ReactNode; 
+}
+
+interface SubcomponentProps {
+  children: React.ReactNode;
   className?: string;
 }
 
@@ -25,15 +32,24 @@ const bgColors = {
   info: "bg-blue-50 border-blue-400",
 };
 
+export const AlertTitle: React.FC<SubcomponentProps> = ({ children, className = "" }) => (
+  <h4 className={`text-sm font-semibold text-gray-900 ${className}`}>{children}</h4>
+);
+
+export const AlertDescription: React.FC<SubcomponentProps> = ({ children, className = "" }) => (
+  <p className={`text-sm text-gray-700 mt-1 ${className}`}>{children}</p>
+);
+
 export const Alert: React.FC<AlertProps> = ({
   type = "info",
   message,
   onClose,
   className = "",
+  children,
 }) => {
   return (
     <AnimatePresence>
-      {message && (
+      {(message || children) && (
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -43,7 +59,13 @@ export const Alert: React.FC<AlertProps> = ({
         >
           <div className="mt-0.5">{icons[type]}</div>
 
-          <p className="flex-1 text-sm text-gray-800">{message}</p>
+          <div className="flex-1">
+            {/* Compatibilidade com uso anterior (message direto) */}
+            {message && <p className="text-sm text-gray-800">{message}</p>}
+
+            {/* Novo formato — conteúdo via children */}
+            {children}
+          </div>
 
           {onClose && (
             <button
@@ -58,3 +80,5 @@ export const Alert: React.FC<AlertProps> = ({
     </AnimatePresence>
   );
 };
+
+export default Alert;

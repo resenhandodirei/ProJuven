@@ -2,7 +2,7 @@ import React from "react";
 
 interface StepProgressProps {
   steps: string[];
-  currentStep: number; // índice baseado em 0
+  currentStep: number;
 }
 
 const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
@@ -19,7 +19,6 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
 
           return (
             <div key={index} className="flex items-center space-x-3">
-              {/* Círculo de progresso */}
               <div
                 className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold 
                   ${
@@ -33,7 +32,6 @@ const StepProgress: React.FC<StepProgressProps> = ({ steps, currentStep }) => {
                 {isCompleted ? "✓" : index + 1}
               </div>
 
-              {/* Nome da etapa */}
               <span
                 className={`text-sm ${
                   isActive

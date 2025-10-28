@@ -31,7 +31,6 @@ export default function BuscaProntuarioPage() {
   const handleSearch = () => {
     setBuscou(true);
 
-    // 🔍 Mock de resultados
     const mockResultados = [
       {
         id: 1,
@@ -51,7 +50,6 @@ export default function BuscaProntuarioPage() {
       },
     ];
 
-    // Filtro simples mockado
     const filtrados = mockResultados.filter(
       (r) =>
         (!filters.nome || r.nome.toLowerCase().includes(filters.nome.toLowerCase())) &&
@@ -80,7 +78,6 @@ export default function BuscaProntuarioPage() {
       <Navbar />
       <main className="min-h-screen bg-gray-50 py-10 px-6">
         <div className="max-w-6xl mx-auto space-y-10">
-          {/* Cabeçalho */}
           <div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2">
               <FaSearch className="text-[var(--greenLight)]" /> Busca Avançada de Prontuários
@@ -90,7 +87,6 @@ export default function BuscaProntuarioPage() {
             </p>
           </div>
 
-          {/* Filtros */}
           <Card className="p-6 bg-white border border-gray-200 shadow-sm rounded-2xl">
             <div className="flex items-center gap-2 mb-4 text-gray-700">
               <FaFilter className="text-[var(--golden)]" />
@@ -158,7 +154,6 @@ export default function BuscaProntuarioPage() {
             </div>
           </Card>
 
-          {/* Resultados */}
           <section>
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
               <FaClipboardList className="text-[var(--golden)]" /> Resultados da Pesquisa

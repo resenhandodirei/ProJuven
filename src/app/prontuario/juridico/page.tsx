@@ -71,7 +71,6 @@ export default function JuridicoPage() {
   const [activeTab, setActiveTab] = useState("dados-pessoais");
 
   const [form, setForm] = useState({
-    // Dados pessoais
     nomeJovem: "",
     familiar1: "",
     familiar2: "",
@@ -81,8 +80,6 @@ export default function JuridicoPage() {
     telResp22: "",
     qtdProcessos: 0,
     processos: [] as { numero: string; vara: string }[],
-
-    // Ato infracional
     atos: [] as string[],
     consumado: "CONSUMADO",
     reincidencia: "NAO",
@@ -93,7 +90,6 @@ export default function JuridicoPage() {
     faccaoBairroMoradia: "",
     faccaoBairroAto: "",
 
-    // Sociodemográficos
     dataNascimento: "",
     idadeAto: "",
     idadeAtual: "",
@@ -144,29 +140,14 @@ export default function JuridicoPage() {
 
   const handleSubmit = async () => {
   try {
-    // Validação básica antes do envio
     if (!form.nomeJovem) {
       alert("Por favor, preencha o nome do jovem atendido.");
       return;
     }
 
-    // Simulação de envio (poderá ser substituído por API real)
     console.log("📤 Enviando prontuário...", form);
 
-    // Exemplo de requisição (quando tiver endpoint pronto)
-    /*
-    const response = await fetch("/api/prontuario", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao salvar o prontuário");
-    }
-    */
-
-    // Feedback visual temporário
+   
     alert("✅ Prontuário salvo com sucesso!");
   } catch (error) {
     console.error("❌ Erro ao salvar prontuário:", error);
@@ -180,7 +161,6 @@ export default function JuridicoPage() {
       <Navbar />
 
       <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Linha do tempo */}
         <StepTimeline
           steps={TABS.map((t) => t.label)}
           currentStep={TABS.findIndex((t) => t.value === activeTab)}
@@ -188,7 +168,6 @@ export default function JuridicoPage() {
         />
 
         <div className="min-h-screen bg-gray-50 py-10 px-4 flex">
-          {/* Tabs laterais */}
           <div className="w-64 border-r border-gray-200 pr-4">
             <Tabs
               orientation="vertical"
@@ -198,9 +177,7 @@ export default function JuridicoPage() {
             />
           </div>
 
-          {/* Conteúdo principal */}
           <div className="flex-1 pl-8">
-            {/* DADOS PESSOAIS */}
             {activeTab === "dados-pessoais" && (
               <FormWrapper title="Dados Pessoais">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -225,7 +202,6 @@ export default function JuridicoPage() {
                   </div>
                 )}
 
-                {/* Botões */}
                 <div className="mt-6 flex justify-between">
               
                   <Button
@@ -238,7 +214,6 @@ export default function JuridicoPage() {
               </FormWrapper>
             )}
 
-            {/* ATO INFRACIONAL */}
             {activeTab === "dados-ato-infracional" && (
               <FormWrapper title="Dados do Ato Infracional">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -253,7 +228,6 @@ export default function JuridicoPage() {
                   <InputSelect id="faccaoBairroAto" label="Facção do bairro do ato" options={FACCAO_OPTIONS} value={form.faccaoBairroAto} onChange={(v) => setField("faccaoBairroAto", v)} />
                 </div>
 
-                {/* Botões */}
                 <div className="mt-6 flex justify-between">
                   <Button
                     className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
@@ -272,7 +246,6 @@ export default function JuridicoPage() {
               </FormWrapper>
             )}
 
-            {/* SOCIODEMOGRÁFICOS */}
             {activeTab === "dados-sociodemograficos" && (
               <FormWrapper title="Dados Sociodemográficos">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -292,7 +265,6 @@ export default function JuridicoPage() {
                   <InputSelect id="formaRespostaProcesso" label="Forma de responder ao processo" options={[{ label: "Em liberdade", value: "LIBERDADE" }, { label: "Internação provisória", value: "INTERNACAO_PROVISORIA" }, { label: "Semiliberdade", value: "SEMILIBERDADE" }, { label: "Internação definitiva", value: "INTERNACAO_DEFINITIVA" }, { label: "Outra forma", value: "OUTRA" }]} value={form.formaRespostaProcesso} onChange={(v) => setField("formaRespostaProcesso", v)} />
                 </div>
                 
-                {/* Botões */}
                 <div className="mt-6 flex justify-between">
                   <Button
                     className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
@@ -313,7 +285,6 @@ export default function JuridicoPage() {
 
             {activeTab === "dados-saude-mental" && (
               <FormWrapper title="Dados de Saúde Mental">
-                {/* Bloco principal de informações */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                   <RadioGroup
                     label="Comprometimento da saúde mental"
@@ -338,7 +309,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Frequência do uso */}
                 <div className="mt-6">
                   <RadioGroup
                     label="Frequência do uso de drogas"
@@ -349,7 +319,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Tipos de drogas */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Tipos de drogas usadas
@@ -380,7 +349,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Tentativas de suicídio */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Tentativa de suicídio
@@ -419,7 +387,6 @@ export default function JuridicoPage() {
                   </div>
                 </div>
 
-                {/* Tratamentos */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Tratamentos relacionados à saúde mental
@@ -461,7 +428,6 @@ export default function JuridicoPage() {
                   </div>
                 </div>
                 
-                {/* Botões */}
                 <div className="mt-6 flex justify-between">
                   <Button
                     className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
@@ -483,7 +449,6 @@ export default function JuridicoPage() {
 
             {activeTab === "dados-de-internamento" && (
               <FormWrapper title="Dados da Internação">
-                {/* Centro Socioeducativo */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Centro Socioeducativo
@@ -511,7 +476,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Tipo de medida socioeducativa */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Tipo de medida socioeducativa
@@ -544,7 +508,6 @@ export default function JuridicoPage() {
                   </div>
                 </div>
 
-                {/* Violência institucional */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Violência institucional
@@ -561,7 +524,6 @@ export default function JuridicoPage() {
                     onChange={(v) => setField("violenciaInstitucional", v)}
                   />
 
-                  {/* Campos condicionais - exibe apenas se SIM */}
                   {form.violenciaInstitucional === "SIM" && (
                     <div className="mt-6 space-y-6">
                       <CheckboxGroup
@@ -644,8 +606,7 @@ export default function JuridicoPage() {
                   )}
                 </div>
 
-                {/* Botões de navegação */}
-                {/* Botões */}
+                
                 <div className="mt-6 flex justify-between">
                   <Button
                     className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
@@ -666,7 +627,6 @@ export default function JuridicoPage() {
 
             {activeTab === "dados-de-ameaca" && (
               <FormWrapper title="Dados de Ameaça">
-                {/* Possui ameaça */}
                 <div className="mt-6">
                   <RadioGroup
                     label="Possui ameaça?"
@@ -677,13 +637,11 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Origem da ameaça */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Origem da ameaça
                   </h3>
 
-                  {/* Facção de origem */}
                   <div className="mb-4">
                     <h4 className="text-sm font-semibold text-gray-700 mb-2">
                       Facção de origem
@@ -703,7 +661,6 @@ export default function JuridicoPage() {
                     />
                   </div>
 
-                  {/* Facção rival */}
                   <div className="mb-4">
                     <h4 className="text-sm font-semibold text-gray-700 mb-2">
                       Facção rival
@@ -723,7 +680,6 @@ export default function JuridicoPage() {
                     />
                   </div>
 
-                  {/* Autoridade pública */}
                   <div className="mb-4">
                     <h4 className="text-sm font-semibold text-gray-700 mb-2">
                       Autoridade pública
@@ -744,7 +700,6 @@ export default function JuridicoPage() {
                     />
                   </div>
 
-                  {/* Familiar / Outros */}
                   <div className="grid sm:grid-cols-2 gap-3">
                     <CheckboxGroup
                       name="ameacaFamiliar"
@@ -761,7 +716,6 @@ export default function JuridicoPage() {
                   </div>
                 </div>
 
-                {/* Tipo de ameaça */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Tipo de ameaça
@@ -781,7 +735,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Descritivo e encaminhamentos */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200 space-y-4">
                   <Textarea
                     label="Descritivo da ameaça"
@@ -799,7 +752,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Voluntariedade e programas */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200 space-y-4">
                   <RadioGroup
                     label="Voluntariedade"
@@ -843,7 +795,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Botões */}
                 <div className="mt-6 flex justify-between">
                   <Button
                     className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
@@ -864,7 +815,6 @@ export default function JuridicoPage() {
 
             {activeTab === "dados-de-atendimento" && (
               <FormWrapper title="Dados de Atendimento">
-                {/* Descritivo do atendimento */}
                 <div className="mt-6 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Descritivo do atendimento
@@ -879,7 +829,6 @@ export default function JuridicoPage() {
                   />
                 </div>
 
-                {/* Documentos em anexo */}
                 <div className="mt-8 bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">
                     Documentos em anexo
@@ -904,7 +853,6 @@ export default function JuridicoPage() {
                   </div>
                 </div>
 
-                {/* Botões */}
                 <div className="mt-6 flex justify-between">
                   <Button
                     className="!bg-[var(--greenLight)] !text-white transition-colors duration-300 hover:!bg-[var(--golden)]"
@@ -917,7 +865,6 @@ export default function JuridicoPage() {
                 </div>
 
                 <SaveProntuarioButton formData={form} />
-
 
 
 

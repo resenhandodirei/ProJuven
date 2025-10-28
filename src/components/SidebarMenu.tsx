@@ -57,12 +57,10 @@ export default function SidebarMenu() {
 
   return (
     <div className="flex">
-      {/* Botão Mobile */}
       <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
         <Menu size={24} />
       </button>
 
-      {/* Sidebar */}
       <motion.aside
         initial={{ width: 0 }}
         animate={{ width: isOpen ? 240 : 0 }}
@@ -92,7 +90,6 @@ export default function SidebarMenu() {
                     {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                   </button>
 
-                  {/* Submenu animado */}
                   {isExpanded && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}

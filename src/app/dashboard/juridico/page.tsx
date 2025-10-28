@@ -9,7 +9,6 @@ import Navbar from "@/components/navbar";
 import { motion, AnimatePresence } from "framer-motion";
 
 
-// 🧩 Imports do Chart.js
 import {
   Chart as ChartJS,
   ArcElement,
@@ -81,7 +80,6 @@ export default function JudicialDashboard() {
     </div>
   );
 
-  // 📈 Dados base
   const reincidenciaData = [
     { mes: "Jan", valor: 20 },
     { mes: "Fev", valor: 25 },

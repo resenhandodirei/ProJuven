@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react";
 
 interface BreadcrumbItem {
   label: string;
-  href?: string; // se não tiver href, significa que é a página atual
+  href?: string; 
 }
 
 interface BreadcrumbsProps {

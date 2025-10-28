@@ -5,11 +5,10 @@ import TailwindJS from '@/components/tailwindjs';
 
 export default function SearchPage() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<string[]>([]); // simulação de dados
+  const [results, setResults] = useState<string[]>([]); 
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulando busca
     const fakeResults = [
       'Usuário: João - Psicossocial',
       'Usuário: Ana - Defensor',

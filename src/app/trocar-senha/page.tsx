@@ -20,7 +20,6 @@ export default function TrocarSenhaPage() {
   const [message, setMessage] = useState("");
   const [token, setToken] = useState<string | null>(null);
 
-  // ✅ Captura o token diretamente do cookie do navegador (lado do cliente)
   useEffect(() => {
     const match = document.cookie.match(/auth-token=([^;]+)/);
     setToken(match ? match[1] : null);
@@ -135,7 +134,7 @@ export default function TrocarSenhaPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+            className="w-full bg-[var(--greenLight)] text-white py-2 px-4 rounded-lg hover:bg-[var(--golden)] transition disabled:opacity-50"
           >
             {loading ? "Processando..." : "Trocar Senha"}
           </button>

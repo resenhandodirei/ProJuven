@@ -8,7 +8,6 @@ export default function Footer() {
     <footer className="bg-[var(--greenDark)] text-gray-300 py-10 mt-auto border-t border-gray-700">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
 
-        {/* 📍 Informações institucionais */}
         <div>
           <h2 className="text-white text-2xl font-bold mb-2">ProJuven</h2>
           <p className="text-sm text-gray-300 leading-relaxed">
@@ -36,7 +35,6 @@ export default function Footer() {
   
         </div>
 
-        {/* 💻 Créditos técnicos */}
         <div className="flex flex-col items-center md:items-start">
           <h3 className="text-white font-semibold text-lg mb-2">Desenvolvido por</h3>
           <p className="text-gray-200 font-medium">Larissa Corrêa</p>
@@ -55,7 +53,7 @@ export default function Footer() {
               <FaGithub size={22} />
             </a>
             <a
-              href="https://linkedin.com/in/larimscorrea"
+              href="https://linkedin.com/in/resenhandodirei"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white transition"
@@ -63,7 +61,7 @@ export default function Footer() {
               <FaLinkedin size={22} />
             </a>
             <a
-              href="https://instagram.com/larimscorrea"
+              href="https://instagram.com/resenhandodirei"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white transition"
@@ -71,7 +69,7 @@ export default function Footer() {
               <FaInstagram size={22} />
             </a>
             <a
-              href="mailto:larissa.correa@alu.ufc.br"
+              href="mailto:larimscorrea@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white transition"
@@ -79,7 +77,7 @@ export default function Footer() {
               <FaEnvelope size={22} />
             </a>
             <a
-              href="https://wa.me/5585988986166?text=Olá%20Larissa!%20Gostaria%20de%20conversar%20sobre%20o%20ProJuven."
+              href="https://wa.me/5585991984587?text=Olá%20Larissa!%20Gostaria%20de%20conversar%20sobre%20o%20ProJuven."
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white transition"
@@ -89,7 +87,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 📜 Política e Termos */}
         <div className="flex flex-col items-center md:items-end justify-center gap-2">
           <a
             href="/privacy"
@@ -106,7 +103,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* 🌟 Frase final */}
       <div className="mt-8 text-center text-sm text-gray-400 border-t border-gray-700 pt-4">
         <p>
           “ProJuven — Tecnologia e Justiça Social caminhando juntas.” <br />

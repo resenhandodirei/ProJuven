@@ -7,7 +7,7 @@ interface InputTextProps {
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string; // text, email, password etc.
+  type?: string;
   placeholder?: string;
   required?: boolean;
 }

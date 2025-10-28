@@ -1,30 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Menu, User, ChevronDown, StickyNote, FileText } from "lucide-react";
-
+import { Bell, Menu, User, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import SearchBar from "@/components/SearchBar";
 import NotificationBell from "@/components/NotificationBell";
+import { Button } from "./Button";
 import UserMenu from "./UserMenu";
 import NavbarLogo from "./NavbarLogo";
 import icon from "../app/assets/icon.png";
-   
+
 interface UserData {
   nome: string;
   perfil: string;
 }
 
+let closeTimeout: NodeJS.Timeout;
+
 export default function Navbar() {
+  const userRouter = useRouter();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [openMenu, setOpenMenu] = useState<string>("");
 
-  // 🔎 Busca dados do usuário logado
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // 1️⃣ Recupera o token salvo no login (localStorage ou cookie)
         const token = localStorage.getItem("token");
 
         if (!token) {
@@ -33,27 +37,21 @@ export default function Navbar() {
           return;
         }
 
-        // 2️⃣ Faz a requisição para a rota /api/me enviando o token
         const res = await fetch("/api/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ Envia o JWT no cabeçalho
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        // 3️⃣ Se a resposta não for 200, lança erro
-        if (!res.ok) {
-          throw new Error(`Erro ao buscar usuário: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`Erro ao buscar usuário: ${res.status}`);
 
-        // 4️⃣ Converte o JSON e atualiza o estado
         const data = await res.json();
         setUserData(data);
       } catch (error) {
         console.error("❌ Erro ao buscar dados do usuário:", error);
       } finally {
-        // 5️⃣ Sempre desliga o carregamento
         setLoading(false);
       }
     };
@@ -61,294 +59,169 @@ export default function Navbar() {
     fetchUserData();
   }, []);
 
-  const [openMenu, setOpenMenu] = useState<string>("");
-
   function toggleMenu(menu: string): void {
-    setOpenMenu(menu);
+    if (menu === "") {
+      closeTimeout = setTimeout(() => setOpenMenu(""), 150);
+    } else {
+      clearTimeout(closeTimeout);
+      setOpenMenu(menu);
+    }
   }
 
   return (
-    <>
-    <nav className="bg-[var(--greenDark)] text-white shadow-md px-6 py-3">
+    <nav className="bg-[var(--greenDark)] text-white shadow-md px-6 py-3 relative z-50">
       <div className="container mx-auto flex justify-between items-center">
-        
-        {/* Logo */}
         <div className="flex justify-center">
-          <a href="/"
-            className="flex items-center gap-3 text-2xl font-bold tracking-tight text-gray-800">
+          <a
+            href="/page"
+            className="flex items-center gap-3 text-2xl font-bold tracking-tight text-gray-800"
+          >
             <img src={icon.src} width={60} alt="Logo" />
             <NavbarLogo />
           </a>
         </div>
 
-        {/* Menu Desktop */}
-        <ul className="hidden md:flex items-center gap-6 font-medium relative">
-      {/* DASHBOARD */}
-      <li
-        className="relative group"
-        onMouseEnter={() => toggleMenu("dashboard")}
-        onMouseLeave={() => toggleMenu("")}
-      >
-        <button className="flex items-center gap-1 hover:text-blue-400 transition">
-          Dashboard <ChevronDown className="w-4 h-4" />
-        </button>
-        {openMenu === "dashboard" && (
-          <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-48 py-2 animate-fade-in">
-            <li>
-              <a
-                href="/dashboard/produtividade"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Produtividade NUAJA
-              </a>
-            </li>
-            <li>
-              <a
-                href="/dashboard/juridico"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Jurídico
-              </a>
-            </li>
-            <li>
-              <a
-                href="/dashboard/psicossocial"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Psicossocial
-              </a>
-            </li>
+        {!userData && !loading && (
+          <div className="flex items-center gap-4">
+            <Button
+              className="bg-[var(--greenLight)] text-white px-6 py-2 rounded-xl transition-all duration-300 hover:bg-[var(--golden)] shadow-md hover:shadow-lg"
+              onClick={() => (window.location.href = "/login")}
+            >
+              Login
+            </Button>
 
-            <li>
-              <a
-                href="/dashboard/integral"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Integral
-              </a>
-            </li>
-          </ul>
-
+            <Button
+              className="bg-[var(--greenLight-transparent)] text-white px-6 py-2 rounded-xl transition-all duration-300 hover:bg-[var(--greenLight)] shadow-md hover:shadow-lg"
+              onClick={() => (window.location.href = "/registro")}
+            >
+              Faça seu cadastro
+            </Button>
+          </div>
         )}
-      </li>
 
-      {/* PRONTUÁRIOS */}
-      
-        <ul className="hidden md:flex items-center gap-8 font-medium relative text-white">
-          <li
-            className="relative group"
-            onMouseEnter={() => toggleMenu("prontuarios")}
-            onMouseLeave={() => toggleMenu("")}
-          >
-          <button className="flex items-center gap-1 transition">
-            Prontuários <ChevronDown className="w-4 h-4" />
-          </button>
-
-    {openMenu === "prontuarios" && (
-      <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-60 py-2 animate-fade-in z-50">
-        <li>
-          <a
-            href="/prontuarios/busca-avancada"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            🔍 Busca avançada
-          </a>
-        </li>
-        <li>
-          <a
-            href="/prontuarios/listagem"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            📋 Listagem geral
-          </a>
-        </li>
-        <li>
-          <a
-            href="/prontuarios/adicionar"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            ➕ Novo prontuário ou ficha
-          </a>
-        </li>
-        <li>
-          <a
-            href="/dashboard/integral"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            📊 Visualização integral
-          </a>
-        </li>
-      </ul>
-    )}
-  </li>
-
-    {/** 
-    <li
-        className="relative group"
-        onMouseEnter={() => toggleMenu("registros")}
-        onMouseLeave={() => toggleMenu("")}
-      >
-        <button className="flex items-center gap-1 hover:text-blue-400 transition">
-          Registros Complementares <ChevronDown className="w-4 h-4" />
-        </button>
-
-        {openMenu === "registros" && (
-          <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-56 py-2 animate-fade-in">
-            <li>
-              <a
-                href="/documentos"
-                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition"
+        {userData && (
+          <div className="flex items-center gap-6">
+            <ul className="hidden md:flex items-center gap-6 font-medium relative">
+              <li
+                className="relative"
+                onMouseEnter={() => toggleMenu("dashboard")}
+                onMouseLeave={() => toggleMenu("")}
               >
-                <FileText className="w-4 h-4 text-blue-500" />
-                Documentos
-              </a>
-            </li>
-            <li>
-              <a
-                href="/anotacoes"
-                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition"
-              >
-                <StickyNote className="w-4 h-4 text-blue-500" />
-                Anotações
-              </a>
-            </li>
-          </ul>
-        )}
-      </li>
-
-      */}
-
-      {/* DADOS */}
-      <li
-        className="relative group"
-        onMouseEnter={() => toggleMenu("dados")}
-        onMouseLeave={() => toggleMenu("")}
-      >
-        <button className="flex items-center gap-1 hover:text-blue-400 transition">
-          Dados <ChevronDown className="w-4 h-4" />
-        </button>
-        {openMenu === "dados" && (
-          <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-56 py-2 animate-fade-in">
-            <li className="px-4 py-2 text-sm font-semibold text-gray-700">
-              Importar Dados
-            </li>
-            <ul className="ml-2">
-              <li>
-                <a
-                  href="/importar/usuarios"
-                  className="block px-4 py-1 hover:bg-gray-100 text-sm"
-                >
-                  Atendimentos presenciais
-                </a>
+                <button className="flex items-center gap-1 hover:text-[var(--golden)] transition">
+                  Dashboard <ChevronDown className="w-4 h-4" />
+                </button>
+                {openMenu === "dashboard" && (
+                  <div
+                    className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-48 py-2 animate-fade-in z-50"
+                    onMouseEnter={() => toggleMenu("dashboard")}
+                    onMouseLeave={() => toggleMenu("")}
+                  >
+                    <ul>
+                      <li><a href="/dashboard/produtividade" className="block px-4 py-2 hover:bg-gray-100">Produtividade NUAJA</a></li>
+                      <li><a href="/dashboard/juridico" className="block px-4 py-2 hover:bg-gray-100">Jurídico</a></li>
+                      <li><a href="/dashboard/psicossocial" className="block px-4 py-2 hover:bg-gray-100">Psicossocial</a></li>
+                      <li><a href="/dashboard/integral" className="block px-4 py-2 hover:bg-gray-100">Integral</a></li>
+                    </ul>
+                  </div>
+                )}
               </li>
-              <li>
-                <a
-                  href="/importar/prontuarios"
-                  className="block px-4 py-1 hover:bg-gray-100 text-sm"
-                >
-                  Prontuários
-                </a>
+
+              <li
+                className="relative"
+                onMouseEnter={() => toggleMenu("prontuarios")}
+                onMouseLeave={() => toggleMenu("")}
+              >
+                <button className="flex items-center gap-1 hover:text-[var(--golden)] transition">
+                  Prontuários <ChevronDown className="w-4 h-4" />
+                </button>
+                {openMenu === "prontuarios" && (
+                  <div
+                    className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-60 py-2 animate-fade-in z-50"
+                    onMouseEnter={() => toggleMenu("prontuarios")}
+                    onMouseLeave={() => toggleMenu("")}
+                  >
+                    <ul>
+                      <li><a href="/prontuario/search" className="block px-4 py-2 hover:bg-gray-100">🔍 Busca avançada</a></li>
+                      <li><a href="/prontuario/lista-prontuarios" className="block px-4 py-2 hover:bg-gray-100">📋 Listagem geral</a></li>
+                      <li><a href="/prontuario/juridico" className="block px-4 py-2 hover:bg-gray-100">➕ Novo prontuário</a></li>
+                      <li><a href="/ficha" className="block px-4 py-2 hover:bg-gray-100">➕ Nova ficha de atendimento</a></li>
+                      <li><a href="/dashboard/integral" className="block px-4 py-2 hover:bg-gray-100">📊 Visualização integral</a></li>
+                    </ul>
+                  </div>
+                )}
+              </li>
+
+              <li
+                className="relative"
+                onMouseEnter={() => toggleMenu("dados")}
+                onMouseLeave={() => toggleMenu("")}
+              >
+                <button className="flex items-center gap-1 hover:text-[var(--golden)] transition">
+                  Dados <ChevronDown className="w-4 h-4" />
+                </button>
+                {openMenu === "dados" && (
+                  <div
+                    className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-56 py-2 animate-fade-in z-50"
+                    onMouseEnter={() => toggleMenu("dados")}
+                    onMouseLeave={() => toggleMenu("")}
+                  >
+                    <ul>
+                      <li className="px-4 py-2 text-sm font-semibold text-gray-700">Importar Dados</li>
+                      <li><a href="/importar/usuarios" className="block px-4 py-1 hover:bg-gray-100 text-sm">Atendimentos presenciais</a></li>
+                      <li><a href="/importar/prontuarios" className="block px-4 py-1 hover:bg-gray-100 text-sm">Prontuários</a></li>
+                      <li className="border-t border-gray-200 my-1"></li>
+                      <li><a href="/exportar" className="block px-4 py-2 hover:bg-gray-100">Exportar Dados</a></li>
+                    </ul>
+                  </div>
+                )}
+              </li>
+
+              <li
+                className="relative"
+                onMouseEnter={() => toggleMenu("recursos")}
+                onMouseLeave={() => toggleMenu("")}
+              >
+                <button className="flex items-center gap-1 hover:text-[var(--golden)] transition">
+                  Central de Recursos <ChevronDown className="w-4 h-4" />
+                </button>
+                {openMenu === "recursos" && (
+                  <div
+                    className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-60 py-2 animate-fade-in z-50"
+                    onMouseEnter={() => toggleMenu("recursos")}
+                    onMouseLeave={() => toggleMenu("")}
+                  >
+                    <ul>
+                      <li><a href="/recursos/modelos" className="block px-4 py-2 hover:bg-gray-100">🧾 Modelos de Petições</a></li>
+                      <li><a href="/recursos/documentos" className="block px-4 py-2 hover:bg-gray-100">📁 Documentos de Encaminhamento</a></li>
+                      <li><a href="/recursos/faq" className="block px-4 py-2 hover:bg-gray-100">❓ FAQ - Dúvidas Frequentes</a></li>
+                    </ul>
+                  </div>
+                )}
               </li>
             </ul>
-            <li className="border-t border-gray-200 my-1"></li>
-            <li>
-              <a
-                href="/exportar"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Exportar Dados
-              </a>
-            </li>
-          </ul>
+
+            <div className="flex items-center gap-4">
+              <SearchBar />
+              <NotificationBell />
+              <UserMenu userData={userData} loading={loading} />
+              <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <Menu className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
         )}
-      </li>
-
-      {/* ===== CENTRAL DE RECURSOS ===== */}
-  <li
-    className="relative group"
-    onMouseEnter={() => toggleMenu("recursos")}
-    onMouseLeave={() => toggleMenu("")}
-  >
-    <button className="flex items-center gap-1 hover:text-blue-500 transition">
-      Central de Recursos <ChevronDown className="w-4 h-4" />
-    </button>
-
-    {openMenu === "recursos" && (
-      <ul className="absolute left-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg w-60 py-2 animate-fade-in z-50">
-        <li>
-          <a
-            href="/recursos/modelos"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            🧾 Modelos de Petições
-          </a>
-        </li>
-        <li>
-          <a
-            href="/recursos/documentos"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            📁 Documentos de Encaminhamento
-          </a>
-        </li>
-        <li>
-          <a
-            href="/central-recursos/faq"
-            className="block px-4 py-2 hover:bg-gray-100 transition"
-          >
-            ❓ FAQ - Dúvidas Frequentes
-          </a>
-        </li>
-      </ul>
-    )}
-  </li>
-</ul>
-    </ul>
-
-        <div className="flex items-center gap-4">
-          <SearchBar />
-          
-
-          <NotificationBell />
-
-         <UserMenu userData={userData ?? undefined} loading={loading} />
-
-          {/* Mobile */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
+      {userData && isMenuOpen && (
         <div className="md:hidden mt-3 bg-gray-800 rounded p-4 space-y-3">
-          <a href="/dashboard" className="block hover:text-blue-400">
-            Dashboard
-          </a>
-          <a href="/prontuarios" className="block hover:text-blue-400">
-            Prontuários
-          </a>
-          <a href="/documentos" className="block hover:text-blue-400">
-            Documentos
-          </a>
-          <a href="/anotacoes" className="block hover:text-blue-400">
-            Anotações
-          </a>
-          <a href="/usuarios" className="block hover:text-blue-400">
-            Administração
-          </a>
-          <a href="/importar" className="block hover:text-blue-400">
-            Dados
-          </a>
-
+          <a href="/dashboard" className="block hover:text-[var(--golden)]">Dashboard</a>
+          <a href="/prontuarios" className="block hover:text-[var(--golden)]">Prontuários</a>
+          <a href="/documentos" className="block hover:text-[var(--golden)]">Documentos</a>
+          <a href="/anotacoes" className="block hover:text-[var(--golden)]">Anotações</a>
+          <a href="/usuarios" className="block hover:text-[var(--golden)]">Administração</a>
+          <a href="/importar" className="block hover:text-[var(--golden)]">Dados</a>
         </div>
       )}
-
     </nav>
-    </>
   );
 }

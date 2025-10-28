@@ -19,7 +19,6 @@ export default function NotificationBell() {
     { id: 3, message: "Lembrete: reunião às 14h.", time: "há 1h" },
   ];
 
-  // Fecha o menu ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -32,7 +31,6 @@ export default function NotificationBell() {
 
   return (
     <div ref={ref} className="relative">
-      {/* Botão do sino */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 rounded-full hover:bg-[var(--golden)] transition focus:outline-none"
@@ -46,7 +44,6 @@ export default function NotificationBell() {
         )}
       </button>
 
-      {/* Dropdown de notificações */}
       {isOpen && (
         <div className="absolute right-0 mt-3 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
           <div className="p-3 border-b border-gray-100">
@@ -62,7 +59,9 @@ export default function NotificationBell() {
                   key={n.id}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer flex justify-between items-center"
                 >
-                  <span>{n.message}</span>
+                  <span>
+                    <a href="/notificacoes/id">{n.message}</a>
+                  </span>
                   <span className="text-xs text-gray-400">{n.time}</span>
                 </li>
               ))
@@ -75,7 +74,7 @@ export default function NotificationBell() {
 
           <div className="p-2 border-t border-gray-100 text-center">
             <button className="text-sm text-[var(--greenDark)] hover:underline font-medium">
-              Ver todas
+               <a href="/notificacoes">Ver todas as notificações </a>
             </button>
           </div>
         </div>

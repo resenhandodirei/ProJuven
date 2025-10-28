@@ -39,7 +39,7 @@ export default function UserMenu({
         className="flex items-center gap-2 cursor-pointer rounded-md px-3 py-1 hover:bg-[var(--golden)] transition"
       >
         <User className="w-5 h-5 text-white-700" />
-        <span className="hidden md:inline text-sm font-medium text-[var(--greenDark)]">
+        <span className="hidden md:inline text-sm font-medium text-white-700">
           {loading
             ? "Carregando..."
             : userData
@@ -53,7 +53,6 @@ export default function UserMenu({
         />
       </button>
 
-      {/* Dropdown */}
       {isOpen && (
         <ul className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50 animate-fade-in">
           <li className="px-4 py-2 border-b border-gray-100 text-sm text-gray-700">
@@ -107,7 +106,7 @@ export default function UserMenu({
               className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
             >
               <LogOut className="w-4 h-4" />
-              Sair
+              <a href="/logout">Sair</a>
             </button>
           </li>
         </ul>

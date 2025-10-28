@@ -5,7 +5,7 @@ import { Upload, File } from "lucide-react";
 
 interface InputFileUploadProps {
   label?: string;
-  accept?: string; // exemplo: "image/*,.pdf"
+  accept?: string;
   multiple?: boolean;
   onChange?: (files: FileList | null) => void;
 }

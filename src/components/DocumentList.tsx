@@ -39,7 +39,6 @@ export default function DocumentList({
           className="flex items-center justify-between p-4 hover:bg-gray-50 transition cursor-pointer"
           onClick={() => onSelect?.(doc)}
         >
-          {/* Ícone + Título + Data */}
           <div className="flex items-center gap-3">
             <FileText className="w-6 h-6 text-blue-600" />
             <div>
@@ -48,7 +47,6 @@ export default function DocumentList({
             </div>
           </div>
 
-          {/* Status + Ações */}
           <div className="flex items-center gap-3">
             {doc.status && (
               <span
@@ -68,7 +66,7 @@ export default function DocumentList({
               <button
                 className="p-2 rounded-full hover:bg-gray-200 transition"
                 onClick={(e) => {
-                  e.stopPropagation(); // 👈 evita disparar onSelect
+                  e.stopPropagation(); 
                   onAction(doc);
                 }}
               >

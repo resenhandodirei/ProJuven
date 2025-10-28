@@ -29,7 +29,6 @@ export default function SaveProntuarioButton({ form }: SaveProntuarioButtonProps
       setLoading(true);
       console.log("📤 Enviando prontuário simulado...", form);
 
-      // Simulação de envio
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setToast({ message: "✅ Prontuário salvo com sucesso!", type: "success" });

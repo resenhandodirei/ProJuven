@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ToastProps {
   message: string;
   type?: "success" | "error" | "info";
-  duration?: number; // em ms
+  duration?: number; 
   onClose?: () => void;
 }
 

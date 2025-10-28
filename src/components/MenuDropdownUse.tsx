@@ -9,7 +9,7 @@ interface MenuItem {
   icon?: React.ReactNode;
   shortcut?: string;
   danger?: boolean;
-  children?: MenuItem[]; // ✅ Submenu
+  children?: MenuItem[]; 
 }
 
 interface MenuDropdownUseProps {
@@ -22,7 +22,6 @@ export default function MenuDropdownUse({ items }: MenuDropdownUseProps) {
 
   return (
     <div className="relative inline-block text-left">
-      {/* Botão principal */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 rounded hover:bg-gray-100 transition"
@@ -57,15 +56,12 @@ export default function MenuDropdownUse({ items }: MenuDropdownUseProps) {
                   {item.label}
                 </div>
 
-                {/* Atalho */}
                 {item.shortcut && (
                   <span className="text-xs text-gray-400">{item.shortcut}</span>
                 )}
 
-                {/* Indicador de submenu */}
                 {item.children && <ChevronRight className="w-4 h-4 text-gray-400" />}
 
-                {/* Submenu */}
                 {item.children && submenuIndex === index && (
                   <div className="absolute top-0 left-full ml-1 w-48 bg-white rounded-lg shadow-lg border z-50">
                     <ul className="py-1">

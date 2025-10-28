@@ -56,7 +56,6 @@ export default function FichaPage() {
 
       <main className="min-h-screen bg-gray-50 py-12 px-6">
         <div className="max-w-6xl mx-auto space-y-10">
-          {/* Header da ficha */}
           <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <h1 className="text-3xl font-semibold text-gray-800 flex items-center gap-3 mb-2">
@@ -83,7 +82,6 @@ export default function FichaPage() {
             </div>
           </div>
 
-          {/* Prontuários */}
           <section>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
               <FaFileAlt className="text-[var(--golden)]" />

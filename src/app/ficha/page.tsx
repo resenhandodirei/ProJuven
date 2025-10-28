@@ -1,189 +1,284 @@
 "use client";
 
-import { useState } from "react";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import "@/styles/globals.css";
-
-
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import Tabs from "@/components/Tabs";
+import StepTimeline from "@/components/StepTimeline";
+import { Input } from "@/components/form/Input";
+import InputText from "@/components/form/InputText";
+import { Button } from "@/components/Button";
 
-export default function Ficha() {
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [responsavel, setResponsavel] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ nome?: string; cpf?: string }>({});
+export default function NovaFichaPage() {
+  const [activeTab, setActiveTab] = useState("local");
+  const [usuario, setUsuario] = useState<any>(null);
 
-  // Função para validar CPF segundo as regras da Receita Federal
-  const validarCPF = (cpf: string) => {
-    const cleaned = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
+  const [form, setForm] = useState({
+    localAtendimento: "",
+    nomeAtendido: "",
+    documento: "",
+    qtdProcessos: 0,
+    processos: [] as { numero: string; vara: string }[],
+    qtdResponsaveis: 0,
+    responsaveis: [] as { nome: string; telefone: string }[],
+    criadoPor: "",
+    criadoEm: "",
+  });
 
-    if (cleaned.length !== 11) return false;
+  const tabs = [
+    { label: "Local do Atendimento", value: "local" },
+    { label: "Dados do Atendido", value: "dados" },
+    { label: "Processos", value: "processos" },
+    { label: "Responsáveis", value: "responsaveis" },
+    { label: "Revisão e Salvamento", value: "revisao" },
+  ];
 
-    // Rejeita CPFs com todos os dígitos iguais
-    if (/^(\d)\1{10}$/.test(cleaned)) return false;
+  useEffect(() => {
+    const data =
+      localStorage.getItem("usuario_logado") ||
+      sessionStorage.getItem("usuario_logado");
+    if (data) setUsuario(JSON.parse(data));
+  }, []);
 
-    const digits = cleaned.split("").map(Number);
-
-    // Validação do primeiro dígito verificador (J)
-    let sum = 0;
-    for (let i = 0; i < 9; i++) {
-      sum += digits[i] * (10 - i);
-    let firstCheck = (sum * 10) % 11;
-    if (firstCheck === 10) firstCheck = 0;
-
-    if (firstCheck !== digits[9]) return false;
-
-    // Validação do segundo dígito verificador (K)
-    sum = 0;
-    for (let i = 0; i < 10; i++) {
-      sum += digits[i] * (11 - i);
-    }
-    let secondCheck = (sum * 10) % 11;
-    if (secondCheck === 10) secondCheck = 0;
-
-    return secondCheck === digits[10];
+  const handleQtdProcessosChange = (value: number) => {
+    const qtd = Math.max(0, value);
+    const novos = Array.from({ length: qtd }, (_, i) => {
+      return form.processos[i] || { numero: "", vara: "" };
+    });
+    setForm((prev) => ({ ...prev, qtdProcessos: qtd, processos: novos }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const newErrors: { nome?: string; cpf?: string } = {};
-    setLoading(true);
-
-    // Valida CPF
-    if (!nome.trim()) newErrors.nome = "O nome é obrigatório.";
-    if (!cpf.trim()) newErrors.cpf = "O CPF é obrigatório.";
-    else if (!validarCPF(cpf)) newErrors.cpf = "CPF inválido.";
-
-    setErrors(newErrors);
-
-    // Se houver erros, não prossegue
-    if (Object.keys(newErrors).length > 0) return;
-
-    try {
-    const response = await fetch("/api/ficha", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nome,
-        cpf,
-        responsavel,
-        dataNascimento,
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      alert(`Erro: ${error.message}`);
-      setLoading(false);
-      return;
-    }
-
-    alert("Ficha cadastrada com sucesso!");
-    setNome("");
-    setCpf("");
-    setResponsavel("");
-    setDataNascimento("");
-  } catch (error) {
-    alert("Erro ao conectar com o servidor");
-  } finally {
-    setLoading(false);
-  }
-};
-
-    // Por enquanto, só mostra no console. Depois integraremos com a API.
-    console.log({
-      nome,
-      cpf,
-      responsavel,
-      dataNascimento,
-    });
-
-    // Reset após salvar
-    setTimeout(() => {
-      setLoading(false);
-      setNome("");
-      setCpf("");
-      setResponsavel("");
-      setDataNascimento("");
-      alert("Ficha cadastrada (simulação)!");
-    }, 2000);
+  const handleProcessoChange = (index: number, field: string, value: string) => {
+    const novos = [...form.processos];
+    novos[index][field as "numero" | "vara"] = value;
+    setForm((prev) => ({ ...prev, processos: novos }));
   };
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    const newErrors: { nome?: string; cpf?: string } = {};
+  const handleQtdResponsaveisChange = (value: number) => {
+    const qtd = Math.max(0, value);
+    const novos = Array.from({ length: qtd }, (_, i) => {
+      return form.responsaveis[i] || { nome: "", telefone: "" };
+    });
+    setForm((prev) => ({ ...prev, qtdResponsaveis: qtd, responsaveis: novos }));
+  };
 
-    if (!nome.trim()) newErrors.nome = "O nome é obrigatório.";
-    if (!cpf.trim()) newErrors.cpf = "O CPF é obrigatório.";
-    else if (!validarCPF(cpf)) newErrors.cpf = "CPF inválido.";
+  const handleResponsavelChange = (index: number, field: string, value: string) => {
+    const novos = [...form.responsaveis];
+    novos[index][field as "nome" | "telefone"] = value;
+    setForm((prev) => ({ ...prev, responsaveis: novos }));
+  };
 
-    setErrors(newErrors);
+  const handleSave = () => {
+    const ficha = {
+      ...form,
+      criadoPor: usuario?.nome || "Usuário desconhecido",
+      cargo: usuario?.cargo || "Indefinido",
+      defensorResponsavel:
+        usuario?.cargo === "Estagiário" ? usuario.defensorResponsavel : null,
+      criadoEm: new Date().toLocaleString("pt-BR"),
+    };
 
-    if (Object.keys(newErrors).length > 0) return;
-
-    setLoading(true);
-
-    // Simula envio e reset
-    setTimeout(() => {
-      setLoading(false);
-      setNome("");
-      setCpf("");
-      setResponsavel("");
-      setDataNascimento("");
-      alert("Ficha cadastrada (simulação)!");
-    }, 2000);
-  }
+    const existentes = JSON.parse(localStorage.getItem("projuven_fichas") || "[]");
+    localStorage.setItem("projuven_fichas", JSON.stringify([...existentes, ficha]));
+    alert("✅ Ficha salva com sucesso!");
+    setActiveTab("local");
+  };
 
   return (
     <>
       <Navbar />
-      <div className="max-w-lg mx-auto mt-8 p-6 bg-white shadow-md rounded-xl">
-        <h1 className="text-2xl font-bold mb-4">Cadastro de Ficha</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Nome do atendido"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            className="w-full p-2 border rounded"
-            required
-          />
-          <input
-            type="text"
-            placeholder="CPF"
-            value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
-            className="w-full p-2 border rounded"
-            
-          />
-          <input
-            type="text"
-            placeholder="Nome do Responsável"
-            value={responsavel}
-            onChange={(e) => setResponsavel(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            type="date"
-            value={dataNascimento}
-            onChange={(e) => setDataNascimento(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            disabled={loading}
-          >
-            {loading ? "Salvando..." : "Salvar"}
-          </button>
-        </form>
-      </div>
+
+      <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <StepTimeline
+          steps={tabs.map((t) => t.label)}
+          currentStep={tabs.findIndex((t) => t.value === activeTab)}
+          onStepClick={(index) => setActiveTab(tabs[index].value)}
+        />
+
+        <div className="min-h-screen bg-gray-50 py-10 px-4 flex">
+          <div className="w-72 border-r border-gray-200 pr-6">
+            <Tabs
+              orientation="vertical"
+              activeTab={activeTab}
+              onChange={setActiveTab}
+              tabs={tabs}
+            />
+          </div>
+
+          <div className="flex-1 pl-10 space-y-8">
+            {activeTab === "local" && (
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                  Local do Atendimento
+                </h2>
+                <select
+                  value={form.localAtendimento}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      localAtendimento: e.target.value,
+                    }))
+                  }
+                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[var(--greenLight)]"
+                >
+                  <option value="">Selecione...</option>
+                  <option value="CENTRO_SOCIOEDUCATIVO">Centro Socioeducativo</option>
+                  <option value="NUAJA">Nuaja</option>
+                  <option value="REMOTO">Remoto</option>
+                </select>
+              </div>
+            )}
+
+            {activeTab === "dados" && (
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                  Dados do Atendido
+                </h2>
+                <InputText
+                  id="nomeAtendido"
+                  label="Nome do Atendido"
+                  value={form.nomeAtendido}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, nomeAtendido: e.target.value }))
+                  }
+                />
+                <InputText
+                  id="documento"
+                  label="Número do Documento"
+                  value={form.documento}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, documento: e.target.value }))
+                  }
+                />
+              </div>
+            )}
+
+            {activeTab === "processos" && (
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                  Processos Vinculados
+                </h2>
+
+                <Input
+                  id="qtdProcessos"
+                  type="number"
+                  label="Quantidade de processos"
+                  value={form.qtdProcessos}
+                  onChange={(e) => handleQtdProcessosChange(Number(e.target.value))}
+                />
+
+                {form.qtdProcessos > 0 && (
+                  <div className="mt-6 space-y-4">
+                    {form.processos.map((p, i) => (
+                      <div
+                        key={i}
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm"
+                      >
+                        <InputText
+                          id={`processo-${i}`}
+                          label={`Número do Processo ${i + 1}`}
+                          value={p.numero}
+                          onChange={(e) =>
+                            handleProcessoChange(i, "numero", e.target.value)
+                          }
+                        />
+                        <InputText
+                          id={`vara-${i}`}
+                          label="Vara do Processo"
+                          value={p.vara}
+                          onChange={(e) =>
+                            handleProcessoChange(i, "vara", e.target.value)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "responsaveis" && (
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                  Responsáveis pelo Atendido
+                </h2>
+
+                <Input
+                  id="qtdResponsaveis"
+                  type="number"
+                  label="Quantidade de Responsáveis"
+                  value={form.qtdResponsaveis}
+                  onChange={(e) => handleQtdResponsaveisChange(Number(e.target.value))}
+                />
+
+                {form.qtdResponsaveis > 0 && (
+                  <div className="mt-6 space-y-4">
+                    {form.responsaveis.map((r, i) => (
+                      <div
+                        key={i}
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm"
+                      >
+                        <InputText
+                          id={`responsavel-${i}`}
+                          label={`Nome do Responsável ${i + 1}`}
+                          value={r.nome}
+                          onChange={(e) =>
+                            handleResponsavelChange(i, "nome", e.target.value)
+                          }
+                        />
+                        <InputText
+                          id={`telefone-${i}`}
+                          label="Telefone"
+                          value={r.telefone}
+                          onChange={(e) =>
+                            handleResponsavelChange(i, "telefone", e.target.value)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "revisao" && (
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                  Revisão da Ficha
+                </h2>
+
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-sm space-y-2">
+                  <p><strong>Local:</strong> {form.localAtendimento}</p>
+                  <p><strong>Nome:</strong> {form.nomeAtendido}</p>
+                  <p><strong>Documento:</strong> {form.documento}</p>
+                  <p><strong>Processos:</strong> {form.qtdProcessos}</p>
+                  <p><strong>Responsáveis:</strong> {form.qtdResponsaveis}</p>
+                  <p>
+                    <strong>Usuário Logado:</strong> {usuario?.nome} ({usuario?.cargo})
+                  </p>
+                  {usuario?.cargo === "Estagiário" && (
+                    <p>
+                      <strong>Vinculado ao Defensor:</strong>{" "}
+                      {usuario.defensorResponsavel || "Não informado"}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex justify-end mt-8">
+                  <Button
+                    className="bg-[var(--greenLight)] text-white px-6 py-2 rounded-xl hover:bg-[var(--golden)] transition"
+                    onClick={handleSave}
+                  >
+                    Salvar Ficha
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+
       <Footer />
     </>
   );

@@ -18,7 +18,7 @@ type Evento = {
   id: string;
   title: string;
   description?: string;
-  date: string; // yyyy-mm-dd
+  date: string; 
   type?: string;
 };
 
@@ -48,18 +48,15 @@ export default function CalendarioPage() {
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
 
-  // === carregar eventos do localStorage ===
   useEffect(() => {
     const saved = localStorage.getItem("projuven_eventos");
     if (saved) setEventos(JSON.parse(saved));
   }, []);
 
-  // salvar eventos no localStorage
   useEffect(() => {
     localStorage.setItem("projuven_eventos", JSON.stringify(eventos));
   }, [eventos]);
 
-  // === buscar feriados da BrasilAPI ===
   useEffect(() => {
     async function fetchFeriados() {
       if (feriadosAno[year]) return;
@@ -89,7 +86,6 @@ export default function CalendarioPage() {
     [eventos, month, year]
   );
 
-  // === montar grid do calendário ===
   const calendarGrid = useMemo(() => {
     const first = startOfMonth(viewDate);
     const last = endOfMonth(viewDate);
@@ -113,7 +109,6 @@ export default function CalendarioPage() {
     if (!newEvent.title || !newEvent.date) return;
 
     if (editEvent) {
-      // Atualizar evento existente
       setEventos((prev) =>
         prev.map((e) =>
           e.id === editEvent.id ? { ...e, title: newEvent.title, description: newEvent.description, date: newEvent.date } : e
@@ -152,7 +147,7 @@ export default function CalendarioPage() {
       <Navbar />
 
       <main className="min-h-screen bg-gray-50 py-12 px-6 flex justify-center">
-        <div className="w-full max-w-7xl space-y-8"> {/* 🔹 ligeiramente maior */}
+        <div className="w-full max-w-7xl space-y-8"> 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <FaCalendarAlt className="text-[var(--greenLight)] text-3xl" />
@@ -173,7 +168,6 @@ export default function CalendarioPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Calendário */}
             <Card className="p-6 bg-white rounded-2xl shadow-sm">
               <h2 className="text-lg font-semibold mb-4 text-gray-800 capitalize">
                 {viewDate.toLocaleString("pt-BR", { month: "long", year: "numeric" })}
@@ -215,7 +209,6 @@ export default function CalendarioPage() {
               </table>
             </Card>
 
-            {/* Lista de eventos */}
             <Card className="p-6 bg-white rounded-2xl shadow-sm md:col-span-2">
               <h2 className="text-lg font-semibold mb-4 text-gray-800">
                 Eventos — {viewDate.toLocaleString("pt-BR", { month: "long" })}
@@ -248,7 +241,6 @@ export default function CalendarioPage() {
           </div>
         </div>
 
-        {/* MODAL NOVO/EDITAR EVENTO */}
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
             <div className="bg-white p-8 rounded-2xl w-full max-w-md shadow-xl">

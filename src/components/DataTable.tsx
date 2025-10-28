@@ -8,7 +8,7 @@ import MenuDropdownUse from "./MenuDropdownUse";
 export interface Column<T> {
   key: keyof T;
   label: string;
-  render?: (row: T) => React.ReactNode; // 👈 custom renderer
+  render?: (row: T) => React.ReactNode;
 }
 
 interface DataTableProps<T> {
@@ -30,7 +30,6 @@ export default function DataTable<T extends { id: string | number }>({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [page, setPage] = useState(1);
 
-  // 🔹 Ordenação simples
   const sortedData = [...data].sort((a, b) => {
     if (!sortKey) return 0;
     const valA = a[sortKey];
@@ -40,7 +39,6 @@ export default function DataTable<T extends { id: string | number }>({
     return 0;
   });
 
-  // 🔹 Paginação
   const startIndex = (page - 1) * pageSize;
   const paginatedData = sortedData.slice(startIndex, startIndex + pageSize);
   const totalPages = Math.ceil(data.length / pageSize);
@@ -57,7 +55,6 @@ export default function DataTable<T extends { id: string | number }>({
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <table className="w-full border-collapse">
-        {/* Cabeçalho */}
         <thead className="bg-gray-100">
           <tr>
             {columns.map((col) => (
@@ -81,7 +78,6 @@ export default function DataTable<T extends { id: string | number }>({
           </tr>
         </thead>
 
-        {/* Corpo */}
         <tbody>
           {paginatedData.length === 0 ? (
             <tr>
@@ -109,7 +105,7 @@ export default function DataTable<T extends { id: string | number }>({
                     <button
                       className="p-2 rounded-full hover:bg-gray-200 transition"
                       onClick={(e) => {
-                        e.stopPropagation(); // 👈 evita disparar onRowClick
+                        e.stopPropagation();
                         onAction(row);
                       }}
                     >
@@ -123,7 +119,6 @@ export default function DataTable<T extends { id: string | number }>({
         </tbody>
       </table>
 
-      {/* Paginação */}
       {totalPages > 1 && (
         <div className="flex justify-between items-center p-4 bg-gray-50 text-sm text-gray-600">
           <span>

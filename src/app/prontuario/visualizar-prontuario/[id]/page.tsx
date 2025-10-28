@@ -83,14 +83,12 @@ export default function ProntuarioDetalhePage() {
     }
   };
 
-  // 👇 Aqui começa o return PRINCIPAL, agora no lugar certo!
   return (
     <>
       <Navbar />
 
       <main className="min-h-screen bg-gray-50 py-12 px-6 flex justify-center">
         <div className="w-full max-w-4xl">
-          {/* Cabeçalho */}
           <div className="flex justify-between items-center mb-10">
             <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
               <FaFileAlt className="text-[var(--golden)]" /> Prontuário {prontuario.tipo}
@@ -104,7 +102,6 @@ export default function ProntuarioDetalhePage() {
             </Button>
           </div>
 
-          {/* Conteúdo imprimível */}
           <div
             ref={printRef}
             className="bg-white p-10 rounded-2xl shadow-md border border-gray-200"
@@ -121,7 +118,6 @@ export default function ProntuarioDetalhePage() {
                     </p>
                 </div>
 
-            {/* Cabeçalho da impressão */}
             <div className="flex justify-center items-center mb-8 border-b pb-4">
                 <img src={dpgeceIcon.src} alt="Cabeçalho DPGECE" />
 
@@ -132,7 +128,6 @@ export default function ProntuarioDetalhePage() {
               </div>
             </div>
 
-            {/* Dados primários */}
             <Card className="p-5 mb-8 bg-gray-50 border border-gray-200 rounded-2xl">
               <h2 className="text-2xl font-semibold text-gray-900 mb-2">
                 {prontuario.nomeAtendido} — {prontuario.idade} anos
@@ -148,19 +143,16 @@ export default function ProntuarioDetalhePage() {
               </p>
             </Card>
 
-            {/* Ato infracional */}
             <section className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-1">Ato Infracional</h3>
               <p className="text-gray-700">{prontuario.atoInfracional}</p>
             </section>
 
-            {/* Resumo do caso */}
             <section className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-1">Resumo do Caso</h3>
               <p className="text-gray-700 leading-relaxed">{prontuario.resumo}</p>
             </section>
 
-            {/* Anotações */}
             <section>
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Anotações do Caso</h3>
               {prontuario.anotacoes.map((nota, i) => (
@@ -187,7 +179,6 @@ export default function ProntuarioDetalhePage() {
                 </div>
               ))}
 
-              {/* Adicionar anotação */}
               <textarea
                 className="w-full p-3 border border-gray-300 rounded-xl mt-4 focus:ring-2 focus:ring-[var(--greenLight)] outline-none"
                 placeholder="Escreva uma nova anotação..."
@@ -222,7 +213,6 @@ export default function ProntuarioDetalhePage() {
               </div>
             </section>
 
-            {/* Rodapé da impressão */}
             <div className="flex justify-between items-center text-gray-500 text-sm mt-10 border-t pt-4">
                 <div className="flex justify-start">
                     <img src={icon.src} width={60} alt="Logo" />

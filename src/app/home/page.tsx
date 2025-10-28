@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import "@/styles/globals.css";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
@@ -11,6 +13,8 @@ import { Calendar, FileText, UserPlus, ClipboardList } from "lucide-react";
 import ListaProntuariosRecentes from "@/components/ListaProntuariosRecentes";
 
 export default function HomePage() {
+  const router = useRouter();
+
   const prontuariosMock = [
     {
       id: 1,
@@ -90,23 +94,40 @@ export default function HomePage() {
                 <CardTitle>Acesso rápido</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Button className="flex items-center gap-2">
+                <Button
+                  className="flex items-center gap-2"
+                  onClick={() => router.push("/ficha")}
+                >
                   <UserPlus size={18} /> Novo Atendimento
                 </Button>
-                <Button className="flex items-center gap-2" variant="outline">
+
+                <Button
+                  className="flex items-center gap-2"
+                  variant="outline"
+                  onClick={() => router.push("/prontuario/lista-prontuarios")}
+                >
                   <FileText size={18} /> Prontuários
                 </Button>
-                <Button className="flex items-center gap-2" variant="outline">
+
+                <Button
+                  className="flex items-center gap-2"
+                  variant="outline"
+                  onClick={() => router.push("/historico")}
+                >
                   <ClipboardList size={18} /> Histórico
                 </Button>
-                <Button className="flex items-center gap-2" variant="outline">
+
+                <Button
+                  className="flex items-center gap-2"
+                  variant="outline"
+                  onClick={() => router.push("/calendario")}
+                >
                   <Calendar size={18} /> Agenda
                 </Button>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Estatísticas */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -144,7 +165,7 @@ export default function HomePage() {
             <CardContent>
               <ListaProntuariosRecentes
                 prontuarios={prontuariosMock}
-                onVisualizar={(id) => alert(`Abrir prontuário ID ${id}`)}
+                onVisualizar={(id) => router.push(`/prontuario/visualizar-prontuario/${id}`)}
               />
             </CardContent>
           </Card>

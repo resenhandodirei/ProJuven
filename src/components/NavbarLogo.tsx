@@ -1,4 +1,3 @@
-// NavbarLogo.tsx
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -6,7 +5,7 @@ const letters = "ProJuven".split("");
 
 const letterVariants = {
   animate: {
-    y: [0, -3, 0, -6], // sobe e desce levemente
+    y: [0, -3, 0, -6], 
     transition: {
       duration: 10,
       repeat: Infinity,

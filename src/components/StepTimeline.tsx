@@ -3,17 +3,15 @@ import { motion } from "framer-motion";
 
 interface StepTimelineProps {
   steps: string[];
-  currentStep: number; // índice baseado em 0
+  currentStep: number; 
 }
 
 const StepTimeline: React.FC<StepTimelineProps> = ({ steps, currentStep }) => {
   return (
     <div className="w-full flex flex-col items-center py-6">
-      {/* Linha de fundo */}
       <div className="relative w-full max-w-4xl">
         <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 rounded-full -translate-y-1/2" />
 
-        {/* Linha de progresso animada */}
         <motion.div
           className="absolute top-1/2 left-0 h-1 bg-[var(--greenLight)] rounded-full -translate-y-1/2"
           initial={{ width: 0 }}
@@ -21,7 +19,6 @@ const StepTimeline: React.FC<StepTimelineProps> = ({ steps, currentStep }) => {
           transition={{ duration: 0.4 }}
         />
 
-        {/* Círculos de etapas */}
         <div className="flex justify-between items-center relative z-10">
           {steps.map((step, index) => {
             const isActive = index === currentStep;

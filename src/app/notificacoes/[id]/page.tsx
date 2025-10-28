@@ -70,7 +70,6 @@ export default function NotificacaoDetalhePage() {
   const [notificacao, setNotificacao] = useState<Notificacao | null>(null);
 
   useEffect(() => {
-    // Se tiver id na URL, procura pelo id; senão, mostra a primeira do mock
     const encontrada =
       notificacoesMock.find((n) => n.id === idParam) || notificacoesMock[0];
     setNotificacao(encontrada);
@@ -144,7 +143,6 @@ export default function NotificacaoDetalhePage() {
             </Badge>
           </div>
 
-          {/* Corpo principal */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}

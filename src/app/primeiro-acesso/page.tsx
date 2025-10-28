@@ -30,7 +30,6 @@ export default function PrimeiroAcesso() {
     }
 
     try {
-      // simula API de ativação
       await new Promise((r) => setTimeout(r, 1200));
 
       setFeedback({
@@ -71,10 +70,8 @@ export default function PrimeiroAcesso() {
             Confirme sua identidade e defina uma nova senha.
           </p>
 
-          {/* Feedback */}
           {feedback.type && <CardFeedback type={feedback.type} message={feedback.message} />}
 
-          {/* Data de nascimento */}
           <div>
             <label className="text-sm font-medium text-gray-700">
               Data de Nascimento
@@ -87,7 +84,6 @@ export default function PrimeiroAcesso() {
             />
           </div>
 
-          {/* Senhas */}
           <InputPassword
             label="Senha"
             placeholder="Digite sua senha"

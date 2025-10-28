@@ -75,7 +75,6 @@ const InputDate: React.FC<InputDateProps> = ({
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Cabeçalho do calendário */}
               <div className="flex justify-between items-center mb-3">
                 <button onClick={prevMonth}>
                   <ChevronLeftIcon className="h-5 w-5 text-gray-500 hover:text-blue-500" />
@@ -88,7 +87,6 @@ const InputDate: React.FC<InputDateProps> = ({
                 </button>
               </div>
 
-              {/* Dias da semana */}
               <div className="grid grid-cols-7 text-xs font-semibold text-gray-500 mb-2">
                 {["D", "S", "T", "Q", "Q", "S", "S"].map((d) => (
                   <div key={d} className="text-center">

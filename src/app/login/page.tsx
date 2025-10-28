@@ -1,17 +1,16 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-
-import { useState } from 'react';
-import  '../../styles/globals.css';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
-
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import "../../styles/globals.css";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [erro, setErro] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -19,41 +18,37 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!email || !senha) {
-      setErro('Por favor, preencha todos os campos.');
+      setErro("Por favor, preencha todos os campos.");
       return;
     }
 
-    // Validação de e-mail com regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setErro('Por favor, insira um e-mail válido.');
+      setErro("Por favor, insira um e-mail válido.");
       return;
     }
 
     setLoading(true);
-    setErro('');
+    setErro("");
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha }), // 👈 envia "senha", não "password"
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setErro(data.message || 'E-mail ou senha incorretos.');
+        setErro(data.message || "E-mail ou senha incorretos.");
         return;
       }
 
-      // Armazena o token
-      localStorage.setItem('token', data.token);
-
-      // Redireciona
-      router.push('/home');
+      localStorage.setItem("token", data.token);
+      router.push("/home");
     } catch (error) {
-      setErro('Erro de conexão. Tente novamente mais tarde.');
+      setErro("Erro de conexão. Tente novamente mais tarde.");
     } finally {
       setLoading(false);
     }
@@ -62,54 +57,90 @@ export default function LoginPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold text-center mb-6">Entrar</h1>
 
-          {erro && <p className="text-red-600 text-sm text-center mb-4">{erro}</p>}
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-fade-in">
+          <h1 className="text-3xl font-bold text-center text-[var(--greenDark)] mb-6">
+            Acesse sua conta
+          </h1>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          {erro && (
+            <div className="bg-red-50 text-red-700 text-sm p-3 rounded-md mb-4 text-center border border-red-200">
+              {erro}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-1">E-mail</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                E-mail
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                placeholder="exemplo@email.com"
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--greenLight)] focus:border-transparent transition"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Senha</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Senha
+              </label>
               <input
                 type="password"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                placeholder="••••••••"
+                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--greenLight)] focus:border-transparent transition"
                 required
               />
             </div>
 
             <div className="text-right">
-              <a onClick={() => router.push("/trocar-senha")} href="/trocar-senha" className="text-sm text-blue-600 hover:underline">
-             
-                Esqueci minha senha
-              </a>
+              <button
+                type="button"
+                onClick={() => router.push("/trocar-senha")}
+                className="text-sm text-[var(--greenLight)] hover:underline"
+              >
+                <a href="/trocar-senha"> Esqueci minha senha </a>
+              </button>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 rounded-md text-white transition ${
-                loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+              className={`w-full flex justify-center items-center gap-2 py-2 rounded-lg font-semibold text-white transition-all duration-300 ${
+                loading
+                  ? "bg-[var(--greenLight-transparent)] cursor-not-allowed"
+                  : "bg-[var(--greenLight)] hover:bg-[var(--golden)] shadow-md hover:shadow-lg"
               }`}
             >
-              {loading ? 'Entrando...' : 'Acessar'}
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Entrando...
+                </>
+              ) : (
+                "Entrar"
+              )}
             </button>
           </form>
+
+          <p className="text-sm text-center text-gray-600 mt-6">
+            Ainda não possui uma conta?{" "}
+            <a
+              href="/registro"
+              className="text-[var(--greenLight)] font-semibold hover:underline"
+            >
+              Cadastre-se aqui
+            </a>
+          </p>
         </div>
       </div>
+
       <Footer />
     </>
   );
